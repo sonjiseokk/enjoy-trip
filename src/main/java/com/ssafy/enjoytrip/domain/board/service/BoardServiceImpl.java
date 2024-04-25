@@ -19,7 +19,7 @@ public class BoardServiceImpl implements BoardService {
         BoardDto boardDto = BoardDto.builder()
                 .subject(subject)
                 .content(content)
-                .createDate(LocalDateTime.now())
+                .createDate(LocalDateTime.now().toString())
                 .userId(userId)  // 사용자 ID 설정
                 .build();
         try {
@@ -37,6 +37,7 @@ public class BoardServiceImpl implements BoardService {
             }
             return search(keyword);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("게시물 리스트 조회중에 오류가 발생했습니다.");
         }
     }

@@ -1,11 +1,11 @@
-<%@page import="org.json.JSONObject" %>
+<%--<%@page import="org.json.JSONObject" %>--%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page import="com.ssafy.enjoytrip.trip.SidoDto" %>
-<%@ page import="com.ssafy.enjoytrip.trip.GugunDto" %>
-<%@ page import="java.util.List" %>
-<%@ page import="org.json.JSONObject" %>
+<%--<%@ page import="com.ssafy.enjoytrip.trip.SidoDto" %>--%>
+<%--<%@ page import="com.ssafy.enjoytrip.trip.GugunDto" %>--%>
+<%--<%@ page import="java.util.List" %>--%>
+<%--<%@ page import="org.json.JSONObject" %>--%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,8 +18,8 @@
     <meta content="" name="keywords"/>
 
     <!-- Favicons -->
-    <link href="img/favicon.png" rel="icon"/>
-    <link href="img/apple-touch-icon.png" rel="apple-touch-icon"/>
+    <link href="../../img/favicon.png" rel="icon"/>
+    <link href="../../img/apple-touch-icon.png" rel="apple-touch-icon"/>
 
     <!-- Google Fonts -->
     <link
@@ -32,6 +32,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
             integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
             crossorigin="anonymous"></script>
+
+    <!-- Vendor CSS Files -->
+    <link href="../../vendor/animate.css/animate.min.css" rel="stylesheet"/>
+    <link href="../../vendor/aos/aos.css" rel="stylesheet"/>
+    <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"/>
+    <link href="../../vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="../../vendor/remixicon/remixicon.css" rel="stylesheet"/>
+    <link href="../../vendor/swiper/swiper-bundle.min.css" rel="stylesheet"/>
+
+    <!-- Template Main CSS File -->
+    <link href="../../css/style.css" rel="stylesheet"/>
 
     <!-- =======================================================
       * Template Name: Mentor
@@ -98,7 +110,7 @@
 
                 <div class="col-md-6">
                     <!-- 검색 폼 -->
-                    <form action="${root}/boardDto" method="get">
+                    <form action="${root}/board" method="get">
                         <div class="input-group">
                             <input type="hidden" name="action" value="search"/>
                             <input type="text" class="form-control" placeholder="검색어 입력"
@@ -125,26 +137,26 @@
                     <table class="table" style="text-align: center">
                         <thead>
                         <tr class="table-success">
-                            <th>글번호
+                            <td>글번호
                                 </th>
-                            <th>제목
+                            <td>제목
                                 </th>
-                            <th>내용
+                            <td>내용
                                 </th>
                         </tr>
                         </thead>
 
                         <tbody>
-                        <c:if test="${not empty boardDtoList}">
-                            <c:forEach var="boardDto" items="${boardDtoList}">
+                        <c:if test="${not empty boardList}">
+                            <c:forEach var="board" items="${boardList}">
                                 <tr>
-                                    <td>${boardDto.boardId}</td>
-                                    <td>${boardDto.subject}</td>
-                                    <td>${boardDto.content}</td>
+                                    <td>${board.boardId}</td>
+                                    <td>${board.subject}</td>
+                                    <td>${board.content}</td>
                                 </tr>
                             </c:forEach>
                         </c:if>
-                        <c:if test="${empty boardDtoList}">
+                        <c:if test="${empty boardList}">
                             <tr>
                                 <td colspan="3">아직 글이 없습니다.</td>
                             </tr>
@@ -196,7 +208,7 @@
 
 
 <!-- Template Main JS File -->
-<script src="js/main.js"></script>
+<script src="../../js/main.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -206,5 +218,14 @@
             });
     });
 </script>
+<!-- Vendor JS Files -->
+<script src="../../vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="../../vendor/aos/aos.js"></script>
+<script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../vendor/swiper/swiper-bundle.min.js"></script>
+<script src="../../vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="../../js/main.js"></script>
 </body>
 </html>

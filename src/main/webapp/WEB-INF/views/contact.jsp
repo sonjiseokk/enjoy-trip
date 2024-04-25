@@ -18,8 +18,8 @@
     <meta content="" name="keywords"/>
 
     <!-- Favicons -->
-    <link href="img/favicon.png" rel="icon"/>
-    <link href="img/apple-touch-icon.png" rel="apple-touch-icon"/>
+    <link href="../../img/favicon.png" rel="icon"/>
+    <link href="../../img/apple-touch-icon.png" rel="apple-touch-icon"/>
 
     <!-- Google Fonts -->
     <link
@@ -31,15 +31,20 @@
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
             integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-            crossorigin="anonymous"></script
+            crossorigin="anonymous"></script>
 
-    <!- =======================================================
-      * Template Name: Mentor
-      * Updated: Mar 13 2024 with Bootstrap v5.3.3
-      * Template URL: https://bootstrapmade.com/mentor-free-education-bootstrap-theme/
-      * Author: BootstrapMade.com
-      * License: https://bootstrapmade.com/license/
-      ======================================================== -->
+    <!-- Vendor CSS Files -->
+    <link href="../../vendor/animate.css/animate.min.css" rel="stylesheet"/>
+    <link href="../../vendor/aos/aos.css" rel="stylesheet"/>
+    <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"/>
+    <link href="../../vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="../../vendor/remixicon/remixicon.css" rel="stylesheet"/>
+    <link href="../../vendor/swiper/swiper-bundle.min.css" rel="stylesheet"/>
+
+    <!-- Template Main CSS File -->
+    <link href="../../css/style.css" rel="stylesheet"/>
+
 
     <style>
         ::-webkit-scrollbar {
@@ -63,7 +68,7 @@
     </style>
 
 
-    <script type="module" src="./js/map.js"></script>
+    <script type="module" src="../../js/map.js"></script>
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3c9544e401e78560632eaaf871996656"></script>
 </head>
@@ -206,14 +211,14 @@
         class="bi bi-arrow-up-short"></i></a>
 
 <!-- Vendor JS Files -->
-<script src="./vendor/purecounter/purecounter_vanilla.js"></script>
-<script src="./vendor/aos/aos.js"></script>
-<script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="./vendor/swiper/swiper-bundle.min.js"></script>
-<script src="./vendor/php-email-form/validate.js"></script>
+<script src="../../vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="../../vendor/aos/aos.js"></script>
+<script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../vendor/swiper/swiper-bundle.min.js"></script>
+<script src="../../vendor/php-email-form/validate.js"></script>
 
 <!-- Template Main JS File -->
-<script src="js/main.js"></script>
+<script src="../../js/main.js"></script>
 
 <script>
     let data = <%=sido%>;

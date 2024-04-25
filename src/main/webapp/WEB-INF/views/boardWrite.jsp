@@ -18,8 +18,8 @@
     <meta content="" name="keywords"/>
 
     <!-- Favicons -->
-    <link href="img/favicon.png" rel="icon"/>
-    <link href="img/apple-touch-icon.png" rel="apple-touch-icon"/>
+    <link href="../../img/favicon.png" rel="icon"/>
+    <link href="../../img/apple-touch-icon.png" rel="apple-touch-icon"/>
 
     <!-- Google Fonts -->
     <link
@@ -32,6 +32,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
             integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
             crossorigin="anonymous"></script>
+
+    <!-- Vendor CSS Files -->
+    <link href="../../vendor/animate.css/animate.min.css" rel="stylesheet"/>
+    <link href="../../vendor/aos/aos.css" rel="stylesheet"/>
+    <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"/>
+    <link href="../../vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="../../vendor/remixicon/remixicon.css" rel="stylesheet"/>
+    <link href="../../vendor/swiper/swiper-bundle.min.css" rel="stylesheet"/>
+
+    <!-- Template Main CSS File -->
+    <link href="../../css/style.css" rel="stylesheet"/>
 
     <!-- =======================================================
       * Template Name: Mentor
@@ -168,10 +180,11 @@
 
 
 <!-- Template Main JS File -->
-<script src="js/main.js"></script>
-
-<script>
-
-</script>
+<script src="../../js/main.js"></script>
+<script src="../../vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="../../vendor/aos/aos.js"></script>
+<script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../vendor/swiper/swiper-bundle.min.js"></script>
+<script src="../../vendor/php-email-form/validate.js"></script>
 </body>
 </html>

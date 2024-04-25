@@ -111,7 +111,7 @@ public class MemberController {
      * @return
      * @throws Exception
      */
-    @PostMapping("/update/password/find")
+        @PostMapping("/update/password/find")
     public String updateMemberPasswordFind(@RequestParam("userId") String userId, @RequestParam("userName") String userName) throws Exception {
         memberService.findPassword(userId, userName);
         return "/";

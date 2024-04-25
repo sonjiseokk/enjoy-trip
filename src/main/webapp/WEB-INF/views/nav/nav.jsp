@@ -207,12 +207,12 @@
 	<!-- ======= Header ======= -->
 	<header id="header" class="fixed-top">
 		<div class="container d-flex align-items-center">
-			<h1 class="logo me-auto"><a href="index.jsp">EnjoyTrip</a></h1>
+			<h1 class="logo me-auto"><a href="${root}/">EnjoyTrip</a></h1>
 			<!-- <a href="index.html" class="logo me-auto"><img src="./img/logo.png" alt="" class="img-fluid"></a>-->
 
 			<nav id="navbar" class="navbar order-last order-lg-0">
 				<ul>
-					<li><a href="${root}/boardDto?action=mvlist">게시판</a></li>
+					<li><a href="${root}/board/list">게시판</a></li>
 
 					<li class="dropdown"><a href="#"><span>회원</span> <i class="bi bi-chevron-down"></i></a>
 						<ul>
@@ -288,7 +288,7 @@
 	  if(joinCommitElement != null){			  
 	  joinCommitElement.addEventListener("click", function () {
         let form = document.querySelector("#form-join");
-        form.setAttribute("action", "${root}/user?action=join");
+        form.setAttribute("action", "${root}/member/join");
    	  if(form.checkValidity()){	        	  
         	form.submit();
         }
@@ -304,7 +304,7 @@
 	  if(loginCommitElement != null){			  
 	  loginCommitElement.addEventListener("click", function () {
 		  let form = document.querySelector("#form-login");
-        form.setAttribute("action", "${root}/user?action=login");
+        form.setAttribute("action", "${root}/member/login");
         if(form.checkValidity()){	        	  
         	form.submit();
         }
@@ -320,7 +320,7 @@
 	  if(logoutCommitElement != null){
 	  logoutCommitElement.addEventListener("click", function () {
 	    if (window.confirm("로그아웃하시겠습니까?")) {
-	    	location.href = "${root}/user?action=logout";
+	    	location.href = "${root}/member/logout";
 	    }
 	  });
 	  }
@@ -332,7 +332,7 @@
 	  if(mypageCommitElement != null){
 	  mypageCommitElement.addEventListener("click", function () {
 		  let form = document.querySelector("#form-mypage");
-        form.setAttribute("action", "${root}/user?action=updateInfo");
+        form.setAttribute("action", "${root}/member/update/info");
         if(form.checkValidity()){	        	  
         	form.submit();
         }
@@ -348,7 +348,7 @@
 	  if(pwChangeCommitElement != null){			  
 	  pwChangeCommitElement.addEventListener("click", function () {
 		  let form = document.querySelector("#form-pwchange");
-        form.setAttribute("action", "${root}/user?action=updatePassword");
+        form.setAttribute("action", "${root}/member//update/password");
         if(form.checkValidity()){	        	  
         	form.submit();
         }
@@ -363,7 +363,7 @@
 	  let findPwCommitElement = document.querySelector("#find-pw-commit");
 	  findPwCommitElement.addEventListener("click", function () {
 		  let form = document.querySelector("#form-findpw");
-        form.setAttribute("action", "${root}/user?action=findPassword");
+        form.setAttribute("action", "${root}/member/update/password/find");
         if(form.checkValidity()){	        	  
         	form.submit();
         }
@@ -377,7 +377,7 @@
 	  let signoutCommitElement = document.querySelector("#signout-commit");
 	  signoutCommitElement.addEventListener("click", function () {
 		  let form = document.querySelector("#form-signout");
-        form.setAttribute("action", "${root}/user?action=signout");
+        form.setAttribute("action", "${root}/member/exit");
         if(form.checkValidity()){	        	  
         	form.submit();
         }

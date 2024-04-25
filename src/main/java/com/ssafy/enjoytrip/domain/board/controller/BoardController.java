@@ -66,7 +66,7 @@ public class BoardController {
      */
     @GetMapping("/list")
     public String list(Model model) throws Exception {
-        List<BoardDto> list = boardService.listArticle(null);
+        List<BoardDto> list = boardService.listArticle("");
         model.addAttribute("boardList", list);
         return "board";
     }
