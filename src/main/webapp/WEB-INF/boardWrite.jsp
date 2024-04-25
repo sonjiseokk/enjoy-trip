@@ -96,7 +96,7 @@
                 </h2>
             </div>
             <div class="col-lg-8 col-md-10 col-sm-12">
-                <form id="form-register" method="POST" action="${root}/board?action=register">
+                <form id="form-register" method="POST" action="${root}/boardDto?action=register">
                     <input type="hidden" name="action" value="article">
                     <div class="mb-3">
                         <label for="subject" class="form-label">제목 : </label>

@@ -2,7 +2,7 @@ package com.ssafy.enjoytrip.domain.member.service;
 
 import com.ssafy.enjoytrip.domain.member.controller.request.LoginMemberDto;
 import com.ssafy.enjoytrip.domain.member.controller.request.UpdateMemberDto;
-import com.ssafy.enjoytrip.domain.member.entity.Member;
+import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.mapper.MemberMapper;
 import com.ssafy.enjoytrip.global.util.Encrypt;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberMapper memberMapper;
 
     @Override
-    public void joinMember(Member memberDto) throws Exception {
+    public void joinMember(MemberDto memberDto) throws Exception {
         memberDto.encryptPassword(hashing(memberDto.getUserPassword()));
         try {
             memberMapper.joinMember(memberDto);
@@ -26,12 +26,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member login(LoginMemberDto dto) throws Exception {
+    public MemberDto login(LoginMemberDto dto) throws Exception {
         String newUserPassword = hashing(dto.getLoginPw());
 
-        Member member = memberMapper.findMemberById(dto.getLoginId());
-        if (member.getUserId().equals(dto.getLoginId()) && member.getUserPassword().equals(newUserPassword)) {
-            return member;
+        MemberDto memberDto = memberMapper.findMemberById(dto.getLoginId());
+        if (memberDto.getUserId().equals(dto.getLoginId()) && memberDto.getUserPassword().equals(newUserPassword)) {
+            return memberDto;
         } else {
             throw new Exception("로그인에 실패했습니다.");
         }
@@ -49,7 +49,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member updateMemberInfo(final String id, UpdateMemberDto dto) throws Exception {
+    public MemberDto updateMemberInfo(final String id, UpdateMemberDto dto) throws Exception {
         try {
             memberMapper.updateMemberInfo(id, dto);
             return memberMapper.findMemberById(id);
@@ -61,8 +61,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void updateMemberPassword(String userId, String newPw) throws Exception {
 
-        Member member = memberMapper.findMemberById(userId);
-        if (member == null || newPw.isEmpty()) {
+        MemberDto memberDto = memberMapper.findMemberById(userId);
+        if (memberDto == null || newPw.isEmpty()) {
             throw new Exception("해당 유저가 없습니다.");
         }
         try {
@@ -74,9 +74,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String findPassword(String userId, String userName) throws Exception {
-        Member member = memberMapper.findMemberById(userId);
-        if (member.getUserId().equals(userId) && member.getUserName().equals(userName)) {
-            return member.getUserPassword();
+        MemberDto memberDto = memberMapper.findMemberById(userId);
+        if (memberDto.getUserId().equals(userId) && memberDto.getUserName().equals(userName)) {
+            return memberDto.getUserPassword();
         }
         throw new Exception("비밀번호 찾기에 실패했습니다.");
     }

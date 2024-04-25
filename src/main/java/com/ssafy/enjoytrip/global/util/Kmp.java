@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.global.util;
 
-import com.ssafy.enjoytrip.domain.board.entity.Board;
+import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +48,9 @@ public class Kmp {
         return false;
     }
 
-    public static List<Board> multiKmp(List<Board> parents, String[] keywords){
+    public static List<BoardDto> multiKmp(List<BoardDto> parents, String[] keywords){
         List<int[]> tableList = new ArrayList<>();
-        List<Board> result = new ArrayList<>();
+        List<BoardDto> result = new ArrayList<>();
         for (String keyword: keywords) {
             tableList.add(makeTable(keyword));
         }

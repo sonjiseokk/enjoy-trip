@@ -1,16 +1,16 @@
 package com.ssafy.enjoytrip.domain.member.mapper;
 
 import com.ssafy.enjoytrip.domain.member.controller.request.UpdateMemberDto;
-import com.ssafy.enjoytrip.domain.member.entity.Member;
+import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.sql.SQLException;
 
 @Mapper
 public interface MemberMapper {
-    void joinMember(Member member) throws SQLException;
+    void joinMember(MemberDto memberDto) throws SQLException;
 
-    Member findMemberById(String userId) throws SQLException;
+    MemberDto findMemberById(String userId) throws SQLException;
 
     void deleteMember(String userId) throws SQLException;
 

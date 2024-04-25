@@ -2,7 +2,7 @@ package com.ssafy.enjoytrip.domain.member.controller;
 
 import com.ssafy.enjoytrip.domain.member.controller.request.LoginMemberDto;
 import com.ssafy.enjoytrip.domain.member.controller.request.UpdateMemberDto;
-import com.ssafy.enjoytrip.domain.member.entity.Member;
+import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.service.MemberService;
 import com.ssafy.enjoytrip.global.util.CookieUtil;
 
@@ -24,14 +24,14 @@ public class MemberController {
     /**
      * 회원 정보를 입력받아 회원가입을 수행하는 메소드
      *
-     * @param member
+     * @param memberDto
      * @param model
      * @return
      * @throws Exception
      */
     @PostMapping("/join")
-    public String join(@ModelAttribute Member member, Model model) throws Exception {
-        memberService.joinMember(member);
+    public String join(@ModelAttribute MemberDto memberDto, Model model) throws Exception {
+        memberService.joinMember(memberDto);
         return "/";
     }
 
@@ -52,8 +52,8 @@ public class MemberController {
                         HttpServletRequest request, HttpServletResponse response,
                         Model model) throws Exception {
 
-        Member loginMember = memberService.login(dto);
-        model.addAttribute("userinfo", loginMember);
+        MemberDto loginMemberDto = memberService.login(dto);
+        model.addAttribute("userinfo", loginMemberDto);
 
         if (memberService.rememberMe(saveId)) {
             CookieUtil.logic(saveId, request, response);
@@ -85,18 +85,18 @@ public class MemberController {
      */
     @PatchMapping("/update/info")
     public String updateMember(@ModelAttribute UpdateMemberDto dto, HttpSession session) throws Exception {
-        Member userinfo = (Member) session.getAttribute("userinfo");
+        MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
 
-        Member updatedMember = memberService.updateMemberInfo(userinfo.getUserId(), dto);
+        MemberDto updatedMemberDto = memberService.updateMemberInfo(userinfo.getUserId(), dto);
         session.removeAttribute("userinfo");
-        session.setAttribute("userinfo", updatedMember);
+        session.setAttribute("userinfo", updatedMemberDto);
 
         return "/";
     }
 
     @PostMapping("/update/password")
     public String updateMemberPassword(@RequestParam("password") String password, HttpSession session, Model model) throws Exception {
-        Member userinfo = (Member) session.getAttribute("userinfo");
+        MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
 
         memberService.updateMemberPassword(userinfo.getUserId(), password);
         return "/";
@@ -125,7 +125,7 @@ public class MemberController {
      */
     @GetMapping("/exit")
     public String exit(HttpSession session) throws Exception {
-        Member userinfo = (Member) session.getAttribute("userinfo");
+        MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
         memberService.deleteMember(userinfo.getUserId());
         return "/";
     }

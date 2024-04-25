@@ -2,16 +2,16 @@ package com.ssafy.enjoytrip.domain.member.service;
 
 import com.ssafy.enjoytrip.domain.member.controller.request.LoginMemberDto;
 import com.ssafy.enjoytrip.domain.member.controller.request.UpdateMemberDto;
-import com.ssafy.enjoytrip.domain.member.entity.Member;
+import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 
 public interface MemberService {
-    void joinMember(Member member) throws Exception;
+    void joinMember(MemberDto memberDto) throws Exception;
 
-    Member login(LoginMemberDto dto) throws Exception;
+    MemberDto login(LoginMemberDto dto) throws Exception;
 
     void deleteMember(String userId) throws Exception;
 
-    Member updateMemberInfo(final String id, UpdateMemberDto memberDto) throws Exception;
+    MemberDto updateMemberInfo(final String id, UpdateMemberDto memberDto) throws Exception;
 
     void updateMemberPassword(String userId, String newPw) throws Exception;
 

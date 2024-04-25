@@ -98,7 +98,7 @@
 
                 <div class="col-md-6">
                     <!-- 검색 폼 -->
-                    <form action="${root}/board" method="get">
+                    <form action="${root}/boardDto" method="get">
                         <div class="input-group">
                             <input type="hidden" name="action" value="search"/>
                             <input type="text" class="form-control" placeholder="검색어 입력"
@@ -135,16 +135,16 @@
                         </thead>
 
                         <tbody>
-                        <c:if test="${not empty boardList}">
-                            <c:forEach var="board" items="${boardList}">
+                        <c:if test="${not empty boardDtoList}">
+                            <c:forEach var="boardDto" items="${boardDtoList}">
                                 <tr>
-                                    <td>${board.boardId}</td>
-                                    <td>${board.subject}</td>
-                                    <td>${board.content}</td>
+                                    <td>${boardDto.boardId}</td>
+                                    <td>${boardDto.subject}</td>
+                                    <td>${boardDto.content}</td>
                                 </tr>
                             </c:forEach>
                         </c:if>
-                        <c:if test="${empty boardList}">
+                        <c:if test="${empty boardDtoList}">
                             <tr>
                                 <td colspan="3">아직 글이 없습니다.</td>
                             </tr>
@@ -202,7 +202,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('mvregister').addEventListener('click',
             function () {
-                location.href = "${root}/board?action=mvregister";
+                location.href = "${root}/boardDto?action=mvregister";
             });
     });
 </script>
