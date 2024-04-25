@@ -1,0 +1,33 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.enjoytrip.domain.member.mapper.MemberMapper">
+    <insert id="joinMember" parameterType="member">
+        insert into members (user_id, user_name, user_password, user_email)
+        values (#{userId}, #{userName}, #{userPassword}, #{userEmail});
+    </insert>
+
+    <select id="findMemberById" parameterType="String" resultType="member">
+        select *
+        from members
+        where user_id = #{userId}
+    </select>
+    <delete id="deleteMember">
+        delete
+        from members
+        where user_id = #{userId};
+    </delete>
+    <update id="updateMemberInfo" parameterType="updateMemberDto">
+        update members
+        set user_email    = #{userEmail},
+            user_name=#{userName},
+            user_password = #{userPassword}
+        where user_id = #{userId};
+    </update>
+    <update id="updateMemberPassword" parameterType="String">
+        update members
+        set user_password = #{password}
+        where user_id = #{id}
+    </update>
+
+</mapper>

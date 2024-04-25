@@ -36,7 +36,7 @@ public class BoardController {
 
     @GetMapping("/write")
     public String mvwrite() {
-        return "write";
+        return "boardwrite";
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");

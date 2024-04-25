@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ssafy.enjoytrip.domain.board.entity.Board;
 import com.ssafy.enjoytrip.domain.board.mapper.BoardMapper;
+import com.ssafy.enjoytrip.global.util.Kmp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

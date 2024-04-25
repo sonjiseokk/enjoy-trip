@@ -1,50 +1,24 @@
 package com.ssafy.enjoytrip.domain.member.entity;
 
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
 public class Member {
 	private String userId;
-	private String userPassword;
 	private String userName;
+	private String userPassword;
 	private String userEmail;
-	
-	public Member() {	}
 
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
+	@Builder
+	public Member(final String userId, final String userName, final String userPassword, final String userEmail) {
 		this.userId = userId;
-	}
-
-	public String getUserPassword() {
-		return userPassword;
-	}
-
-	public void setUserPassword(String userPw) {
-		this.userPassword = userPw;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getUserEmail() {
-		return userEmail;
-	}
-
-	public void setUserEmail(String userEmail) {
+		this.userPassword = userPassword;
 		this.userEmail = userEmail;
 	}
 
-	@Override
-	public String toString() {
-		return "Member [userId=" + userId + ", userPw=" + userPassword + ", userName=" + userName + ", userEmail="
-				+ userEmail + "]";
+	public void encryptPassword(String cryptPw) {
+		this.userPassword = cryptPw;
 	}
-	
-	
 }

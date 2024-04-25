@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.domain.member.mapper;
 
+import com.ssafy.enjoytrip.domain.member.controller.request.UpdateMemberDto;
 import com.ssafy.enjoytrip.domain.member.entity.Member;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -7,10 +8,13 @@ import java.sql.SQLException;
 
 @Mapper
 public interface MemberMapper {
-	int joinMember(Member memberDto) throws SQLException;
-	Member getMember(String userId, String userPassword)throws SQLException;
-	int deleteMember(String userId) throws SQLException;
-	int updateMemberInfo(Member memberDto) throws SQLException;
-	int updateMemberPassword(Member memberDto) throws SQLException;
-	String findPassword(String userId, String userName) throws SQLException;
+    void joinMember(Member member) throws SQLException;
+
+    Member findMemberById(String userId) throws SQLException;
+
+    void deleteMember(String userId) throws SQLException;
+
+    void updateMemberInfo(String id, UpdateMemberDto dto) throws SQLException;
+
+    void updateMemberPassword(String id,String password) throws SQLException;
 }
