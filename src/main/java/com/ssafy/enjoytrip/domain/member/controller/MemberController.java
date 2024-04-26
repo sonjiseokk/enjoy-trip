@@ -3,8 +3,6 @@ package com.ssafy.enjoytrip.domain.member.controller;
 import com.ssafy.enjoytrip.domain.member.controller.request.LoginMemberDto;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.service.MemberService;
-import com.ssafy.enjoytrip.global.util.CookieUtil;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -55,8 +53,9 @@ public class MemberController {
         MemberDto loginMemberDto = memberService.login(dto);
         session.setAttribute("userinfo", loginMemberDto);
 
-        if (saveId != null && memberService.rememberMe(saveId)) {
-            CookieUtil.logic(dto.getLoginId(), request, response);
+        if (memberService.rememberMe(saveId)) {
+            session.setAttribute("idck","ok");
+            session.setAttribute("saveid",loginMemberDto.getUserId());
         }
 
         return "index";
@@ -71,8 +70,8 @@ public class MemberController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.removeAttribute("userinfo");
-        session.invalidate();
-        return "/";
+
+        return "index";
     }
 
     /**
@@ -93,7 +92,7 @@ public class MemberController {
         session.removeAttribute("userinfo");
         session.setAttribute("userinfo", member);
 
-        return "/";
+        return "redirect:/";
     }
 
     @PostMapping("/update/password")
@@ -118,7 +117,7 @@ public class MemberController {
     public String updateMemberPasswordFind(@RequestParam("userId") String userId, @RequestParam("userName") String userName) throws Exception {
         String password = memberService.findPassword(userId, userName);
 
-        return "/";
+        return "redirect:/";
     }
 
     /**
@@ -132,6 +131,6 @@ public class MemberController {
     public String exit(HttpSession session) throws Exception {
         MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
         memberService.deleteMember(userinfo.getUserId());
-        return "/";
+        return "redirect:/";
     }
 }

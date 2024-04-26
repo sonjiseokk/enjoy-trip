@@ -110,7 +110,7 @@
 
                 <div class="col-md-6">
                     <!-- 검색 폼 -->
-                    <form action="${root}/board" method="get">
+                    <form action="${root}/board/search" method="get">
                         <div class="input-group">
                             <input type="hidden" name="action" value="search"/>
                             <input type="text" class="form-control" placeholder="검색어 입력"
@@ -141,7 +141,7 @@
                                 </th>
                             <td>제목
                                 </th>
-                            <td>내용
+                            <td>작성자
                                 </th>
                         </tr>
                         </thead>
@@ -152,7 +152,7 @@
                                 <tr>
                                     <td>${board.boardId}</td>
                                     <td>${board.subject}</td>
-                                    <td>${board.content}</td>
+                                    <td>${board.userId}</td>
                                 </tr>
                             </c:forEach>
                         </c:if>
@@ -214,7 +214,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('mvregister').addEventListener('click',
             function () {
-                location.href = "${root}/boardDto?action=mvregister";
+                location.href = "${root}/board/write";
             });
     });
 </script>

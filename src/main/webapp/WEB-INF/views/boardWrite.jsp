@@ -2,8 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page import="com.ssafy.enjoytrip.trip.SidoDto" %>
-<%@ page import="com.ssafy.enjoytrip.trip.GugunDto" %>
+<%--<%@ page import="com.ssafy.enjoytrip.trip.SidoDto" %>--%>
+<%--<%@ page import="com.ssafy.enjoytrip.trip.GugunDto" %>--%>
 <%@ page import="java.util.List" %>
 <%@ page import="org.json.JSONObject" %>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
