@@ -2,5 +2,50 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.enjoytrip.domain.trip.mapper.TripMapper">
+	<resultMap id = "tripResultMap" type = "tripDto">
+		<result column="content_id" property="contentId"/>
+        <result column="content_type_id" property="contentTypeId"/>
+        <result column="title" property="title"/>
+        <result column="address" property="address"/>
+        <result column="thumnail_image" property="thumnailImage"/>
+        <result column="readcount" property="readcount"/>
+        <result column="sido_code" property="sidoCode"/>
+        <result column="gugun_code" property="gugunCode"/>
+        <result column="latitude" property="latitude"/>
+        <result column="longitude" property="longitude"/>
+        <result column="mlevel" property="mlevel"/>
+	</resultMap>
 	
+	<resultMap id = "tripDescriptionResultMap" type = "tripDescriptionDto">
+		<result column="desc_id" property="descId"/>
+        <result column="overview" property="overview"/>
+	</resultMap>
+	
+	<select id = "searchTrip" parameterType = "tripSearchCondition" resultMap = "tripResultMap">
+		select *
+		from attraction_info
+		<where>		
+		    <if test="contentTypeId != 0">
+		        content_type_id = #{contentTypeId} 
+		    </if>
+		    <if test="contentTypeId != 0 and sidoCode != 0">
+		        and sido_code = #{sidoCode} 
+		    </if>
+		    <if test="contentTypeId == 0 and sidoCode != 0">
+		        sido_code = #{sidoCode} 
+		    </if>
+		    <if test="(contentTypeId != 0 or sidoCode != 0) and gugunCode != 0">
+		        and gugun_code = #{gugunCode} 
+		    </if>
+		    <if test="(contentTypeId == 0 and sidoCode == 0) and gugunCode != 0">
+		        gugun_code = #{gugunCode} 
+		    </if>
+		</where>
+	</select>
+	
+	<select id = "searchTripDescription" parameterType = "string" resultMap = "tripDescriptionResultMap">
+		select *
+		from attraction_description
+		where desc_id = #{contentId}
+	</select>
 </mapper>

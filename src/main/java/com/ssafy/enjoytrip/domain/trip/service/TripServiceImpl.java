@@ -8,9 +8,11 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.enjoytrip.domain.trip.controller.request.TripSearchCondition;
 import com.ssafy.enjoytrip.domain.trip.mapper.TripMapper;
 import com.ssafy.enjoytrip.domain.trip.model.GugunDto;
 import com.ssafy.enjoytrip.domain.trip.model.SidoDto;
+import com.ssafy.enjoytrip.domain.trip.model.TripDescriptionDto;
 import com.ssafy.enjoytrip.domain.trip.model.TripDto;
 
 @Service
@@ -28,65 +30,34 @@ public class TripServiceImpl implements TripService {
 	
 	// 기본 info list
 	@Override
-	public JSONObject searchTrip(String contentTypeId, int sidoCode, int gugunCode) throws Exception {
-		
-		List<TripDto> lists = tripMapper.searchTrip(contentTypeId, sidoCode, gugunCode);
-		
-		JSONObject json = new JSONObject();
-		
-		JSONArray jsonArray = new JSONArray();
-		for(TripDto list : lists) {
-			
-			JSONObject jsonObj = new JSONObject();
-			jsonObj.put("content_id", list.getContentId());
-			jsonObj.put("content_type_id", list.getContentTypeId());
-			jsonObj.put("title", list.getTitle());
-			jsonObj.put("addr1", list.getAddr1());
-			jsonObj.put("addr2", list.getAddr2());
-			jsonObj.put("zipcode", list.getZipcode());
-			jsonObj.put("tel", list.getTel());
-			jsonObj.put("first_image", list.getFirstImage());
-			jsonObj.put("first_image2", list.getFirstImage2());
-			jsonObj.put("readcount", list.getReadcount());
-			jsonObj.put("latitude", list.getLatitude());
-			jsonObj.put("longitude", list.getLongitude());
-			jsonObj.put("mlevel", list.getMlevel());
-			
-			jsonArray.put(jsonObj);
-		}
-		
-		json.put("body", jsonArray);
-		
-		return json;
+	public List<TripDto> searchTrip(TripSearchCondition con) throws Exception {
+		List<TripDto> lists = tripMapper.searchTrip(con);
+		return lists;
 	}
 
 	// 기본 info + overView
 	@Override
-	public TripDto searchTripDetail(String contentTypeId) throws Exception {
-		return tripMapper.searchTripDetail(contentTypeId);
+	public TripDescriptionDto searchTripDescription(String contentId) throws Exception {
+		return tripMapper.searchTripDescription(contentId);
 	}
 	
-	@Override
-	public JSONObject searchTripJSON(String contentTypeId) throws Exception {
-		TripDto tripDto =  tripMapper.searchTripDetail(contentTypeId);
-		
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("content_id", tripDto.getContentId());
-		jsonObj.put("content_type_id", tripDto.getContentTypeId());
-		jsonObj.put("title", tripDto.getTitle());
-		jsonObj.put("addr1", tripDto.getAddr1());
-		jsonObj.put("addr2", tripDto.getAddr2());
-		jsonObj.put("zipcode", tripDto.getZipcode());
-		jsonObj.put("tel", tripDto.getTel());
-		jsonObj.put("first_image", tripDto.getFirstImage());
-		jsonObj.put("first_image2", tripDto.getFirstImage2());
-		jsonObj.put("readcount", tripDto.getReadcount());
-		jsonObj.put("latitude", tripDto.getLatitude());
-		jsonObj.put("longitude", tripDto.getLongitude());
-		jsonObj.put("mlevel", tripDto.getMlevel());
-		
-		return jsonObj;
-	}
+//	@Override
+//	public JSONObject searchTripJSON(String contentTypeId) throws Exception {
+//		TripDto tripDto =  tripMapper.searchTripDetail(contentTypeId);
+//		
+//		JSONObject jsonObj = new JSONObject();
+//		jsonObj.put("contentId", tripDto.getContentId());
+//		jsonObj.put("contentTypeId", tripDto.getContentTypeId());
+//		jsonObj.put("title", tripDto.getTitle());
+//		jsonObj.put("addr", tripDto.getAddr());
+//		jsonObj.put("thumnailImage", tripDto.getThumnailImage());
+//		jsonObj.put("readcount", tripDto.getReadcount());
+//		jsonObj.put("latitude", tripDto.getLatitude());
+//		jsonObj.put("longitude", tripDto.getLongitude());
+//		jsonObj.put("mlevel", tripDto.getMlevel());
+//		
+//		return jsonObj;
+//	}
 
 	@Override
 	public JSONObject getSido() throws Exception {
@@ -131,37 +102,30 @@ public class TripServiceImpl implements TripService {
 		return json;
 	}
 
-	@Override
-	public JSONObject detailView(String contentId) throws Exception {
-		
-		TripDto trip = tripMapper.searchTripDetail(contentId);
-		String[] detail = tripMapper.searchOverview(contentId);
-		
-		trip.setOverView(detail[0]);
-		trip.setHomepage(detail[1]);
-		JSONObject json = new JSONObject();
-		
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("content_id", trip.getContentId());
-		jsonObj.put("content_type_id", trip.getContentTypeId());
-		jsonObj.put("title", trip.getTitle());
-		jsonObj.put("addr1", trip.getAddr1());
-		jsonObj.put("addr2", trip.getAddr2());
-		jsonObj.put("zipcode", trip.getZipcode());
-		jsonObj.put("tel", trip.getTel());
-		jsonObj.put("first_image", trip.getFirstImage());
-		jsonObj.put("first_image2", trip.getFirstImage2());
-		jsonObj.put("readcount", trip.getReadcount());
-		jsonObj.put("latitude", trip.getLatitude());
-		jsonObj.put("longitude", trip.getLongitude());
-		jsonObj.put("mlevel", trip.getMlevel());
-		jsonObj.put("overview", trip.getOverView());
-		jsonObj.put("hompage", trip.getHomepage());
-		
-		json.put("body", jsonObj);
-		
-		return json;
-	}
+//	@Override
+//	public JSONObject detailView(String contentId) throws Exception {
+//		
+//		TripDto tripDto = tripMapper.searchTripDetail(contentId);
+//		TripDescriptionDto tripDescriptionDto = tripMapper.searchOverview(contentId);
+//		
+//		JSONObject json = new JSONObject();
+//		
+//		JSONObject jsonObj = new JSONObject();
+//		jsonObj.put("contentId", tripDto.getContentId());
+//		jsonObj.put("contentTypeId", tripDto.getContentTypeId());
+//		jsonObj.put("title", tripDto.getTitle());
+//		jsonObj.put("addr", tripDto.getAddr());
+//		jsonObj.put("thumnailImage", tripDto.getThumnailImage());
+//		jsonObj.put("readcount", tripDto.getReadcount());
+//		jsonObj.put("latitude", tripDto.getLatitude());
+//		jsonObj.put("longitude", tripDto.getLongitude());
+//		jsonObj.put("mlevel", tripDto.getMlevel());
+//		jsonObj.put("overview", tripDescriptionDto.getOverview());
+//		
+//		json.put("body", jsonObj);
+//		
+//		return json;
+//	}
 	@Override
 	public JSONObject optimalDist(String contentId, List<TripDto> tripList) throws Exception {
 		int n = tripList.size();
@@ -240,4 +204,10 @@ public class TripServiceImpl implements TripService {
             }
         }
     }
+
+	@Override
+	public JSONObject detailView(String contentId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
