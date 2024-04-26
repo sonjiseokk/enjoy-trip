@@ -1,7 +1,6 @@
 package com.ssafy.enjoytrip.domain.member.service;
 
 import com.ssafy.enjoytrip.domain.member.controller.request.LoginMemberDto;
-import com.ssafy.enjoytrip.domain.member.controller.request.UpdateMemberDto;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 
 public interface MemberService {
@@ -11,7 +10,7 @@ public interface MemberService {
 
     void deleteMember(String userId) throws Exception;
 
-    void updateMemberInfo(String userId, UpdateMemberDto memberDto) throws Exception;
+    void updateMemberInfo(MemberDto memberDto) throws Exception;
 
     void updateMemberPassword(String userId, String newPw) throws Exception;
 

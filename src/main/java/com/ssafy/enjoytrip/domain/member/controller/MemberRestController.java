@@ -1,34 +1,30 @@
 package com.ssafy.enjoytrip.domain.member.controller;
 
 import com.ssafy.enjoytrip.domain.member.controller.request.LoginMemberDto;
-import com.ssafy.enjoytrip.domain.member.controller.request.UpdateMemberDto;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.service.MemberService;
-
 import jakarta.servlet.http.HttpSession;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.reflect.Member;
 
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 public class MemberRestController {
+    private static final Logger log = LoggerFactory.getLogger(MemberRestController.class);
     private final MemberService memberService;
 
     /**
      * 회원 정보를 입력받아 회원가입을 수행하는 메소드
      *
      * @param memberDto
-     * @param model
      * @return
      * @throws Exception
      */
@@ -40,18 +36,12 @@ public class MemberRestController {
     }
 
 
-    /**
-     * 아이디, 비밀번호를 입력받아 jwt 키를 발행해줌
-     *
-     * @param dto 아이디, 비밀번호를 받는 DTO
-     * @return jwt 키
-     * @throws Exception 회원가입 실패
-     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginMemberDto dto, HttpSession session) throws Exception {
         MemberDto loginMemberDto = memberService.login(dto);
         session.setAttribute("userinfo", loginMemberDto);
 
+        log.info(loginMemberDto.toString());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(HttpStatus.OK.value(), "성공적으로 로그인 되었습니다."));
     }
@@ -64,10 +54,11 @@ public class MemberRestController {
      * @throws Exception
      */
     @PatchMapping("/update/info")
-    public ResponseEntity<?> updateMember(@RequestBody UpdateMemberDto dto, HttpSession session) throws Exception {
+    public ResponseEntity<?> updateMember(@RequestBody MemberDto dto, HttpSession session) throws Exception {
         MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
-
-        memberService.updateMemberInfo(userinfo.getUserId(), dto);
+        dto.setUserId(userinfo.getUserId());
+        
+        memberService.updateMemberInfo(dto);
 
         session.removeAttribute("userinfo");
         MemberDto newUser = memberService.findMember(userinfo.getUserId());

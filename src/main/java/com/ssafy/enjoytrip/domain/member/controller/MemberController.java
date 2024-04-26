@@ -1,7 +1,6 @@
 package com.ssafy.enjoytrip.domain.member.controller;
 
 import com.ssafy.enjoytrip.domain.member.controller.request.LoginMemberDto;
-import com.ssafy.enjoytrip.domain.member.controller.request.UpdateMemberDto;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.service.MemberService;
 import com.ssafy.enjoytrip.global.util.CookieUtil;
@@ -85,10 +84,10 @@ public class MemberController {
      * @throws Exception
      */
     @PatchMapping("/update/info")
-    public String updateMember(@ModelAttribute UpdateMemberDto dto, HttpSession session) throws Exception {
+    public String updateMember(@ModelAttribute MemberDto dto, HttpSession session) throws Exception {
         MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
 
-        memberService.updateMemberInfo(userinfo.getUserId(), dto);
+        memberService.updateMemberInfo(dto);
 
         MemberDto member = memberService.findMember(userinfo.getUserId());
         session.removeAttribute("userinfo");

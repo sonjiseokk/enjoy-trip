@@ -17,10 +17,10 @@
         from members
         where user_id = #{userId};
     </delete>
-    <update id="updateMemberInfo" parameterType="updateMemberDto">
+    <update id="updateMemberInfo" parameterType="MemberDto">
         update members
         set user_email    = #{userEmail},
-            user_name=#{userName},
+            user_name= #{userName},
             user_password = #{userPassword}
         where user_id = #{userId};
     </update>

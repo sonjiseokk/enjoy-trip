@@ -2,9 +2,13 @@ package com.ssafy.enjoytrip.domain.member.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class MemberDto {
+	@Setter
 	private String userId;
 	private String userName;
 	private String userPassword;
@@ -21,4 +25,5 @@ public class MemberDto {
 	public void encryptPassword(String cryptPw) {
 		this.userPassword = cryptPw;
 	}
+
 }

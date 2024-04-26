@@ -1,9 +1,8 @@
 package com.ssafy.enjoytrip.domain.member.service;
 
 import com.ssafy.enjoytrip.domain.member.controller.request.LoginMemberDto;
-import com.ssafy.enjoytrip.domain.member.controller.request.UpdateMemberDto;
-import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.mapper.MemberMapper;
+import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.global.util.Encrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,10 +49,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void updateMemberInfo(String userId, UpdateMemberDto dto) throws Exception {
+    public void updateMemberInfo(MemberDto dto) throws Exception {
         try {
-            memberMapper.updateMemberInfo(userId,dto);
+            memberMapper.updateMemberInfo(dto);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("사용자를 업데이트하는데 실패했습니다.");
         }
     }
