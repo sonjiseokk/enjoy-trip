@@ -23,15 +23,15 @@
 				<form id="form-join" method="POST" action="">
 					<div class="mb-3">
 						<label for="join-name" class="col-form-label">이름:</label>
-						<input type="text" class="form-control" id="join-name" name="join-name" required />
+						<input type="text" class="form-control" id="join-name" name="userName" required />
 					</div>
 					<div class="mb-3">
 						<label for="join-id" class="col-form-label">ID:</label>
-						<input type="text" class="form-control" id="join-id" name="join-id" required />
+						<input type="text" class="form-control" id="join-id" name="userId" required />
 					</div>
 					<div class="mb-3">
 						<label for="join-pw" class="col-form-label">비밀번호:</label>
-						<input type="password" class="form-control" id="join-pw" name="join-pw" required />
+						<input type="password" class="form-control" id="join-pw" name="userPassword" required />
 					</div>
 					<div class="mb-3">
 						<label for="join-pw-confirm" class="col-form-label">비밀번호 확인:</label>
@@ -39,7 +39,7 @@
 					</div>
 					<div class="mb-3">
 						<label for="join-email" class="col-form-label">이메일:</label>
-						<input type="text" class="form-control" id="join-email" name="join-email" required />
+						<input type="text" class="form-control" id="join-email" name="userEmail" required />
 					</div>
 					<div class="modal-body ms-0 text-danger text-end d-none" id="join-msg">message</div>
 					<div class="modal-footer">
