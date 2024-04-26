@@ -14,7 +14,8 @@
 
 ## 5. 기능
 ##### 로그인
-
+![](https://i.imgur.com/JALhr0D.gif)
+![](https://i.imgur.com/7kcmKYB.png)
 
 ##### 로그아웃
 
@@ -28,18 +29,28 @@
 ![](https://i.imgur.com/PRMbk1T.png)
 ###### Rest
 ![](https://i.imgur.com/wSfdzqn.png)
+
+
+
+##### 여행지 검색
+![](https://i.imgur.com/k9BVkGV.png)
+![](https://i.imgur.com/glUH2vq.gif)
+
+##### 여행지 상세정보  출력
+![](https://i.imgur.com/SwJGg6O.png)
+![](https://i.imgur.com/CZhhM7V.gif)
+
+
 ##### 최단 경로 계산
+![](https://i.imgur.com/NTJ8FaU.png)
 ![](https://i.imgur.com/0tIQtQ2.gif)
 
 
 ##### 찜목록 출력
+![](https://i.imgur.com/yFtizxS.png)
 ![](https://i.imgur.com/YlzFwfT.gif)
 
 ##### 찜 등록
+![](https://i.imgur.com/dgWixVp.png)
 ![](https://i.imgur.com/FJedpDu.gif)
 
-##### 여행지 검색
-![](https://i.imgur.com/glUH2vq.gif)
-
-##### 여행지 상세정보  출력
-![](https://i.imgur.com/CZhhM7V.gif)
