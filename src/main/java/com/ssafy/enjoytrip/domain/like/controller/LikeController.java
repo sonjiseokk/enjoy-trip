@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ssafy.enjoytrip.domain.like.model.LikeDto;
 import com.ssafy.enjoytrip.domain.like.service.LikeService;
-import com.ssafy.enjoytrip.domain.trip.model.TripDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,8 +22,27 @@ public class LikeController {
 	private final LikeService likeService;
 	
 	@PostMapping(value = "/regist")
-	public ResponseEntity<?> tripList(@RequestParam("userId") String userId, @RequestParam("contentId") String contentId) throws Exception {
+	public ResponseEntity<?> registLike(@RequestParam("userId") String userId, @RequestParam("contentId") int contentId) throws Exception {
 		likeService.registLike(userId, contentId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@PostMapping(value = "/list")
+	public ResponseEntity<?> listLike(@RequestParam("userId") String userId) throws Exception {
+		List<LikeDto> likeList = likeService.listLike(userId);
+		if(likeList != null && !likeList.isEmpty()) {
+			return new ResponseEntity<>(likeList, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+		
+	}
+	
+	@PostMapping(value = "/delete")
+	public ResponseEntity<?> registLike(@RequestParam("userId") String userId) throws Exception {
+		likeService.deleteLike(userId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 }

@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LikeDto {
 	private String userId;
-	private String contentId;
+	private int contentId;
 	
-	public LikeDto(String userId, String contentId) {
+	public LikeDto(String userId, int contentId) {
 		this.userId = userId;
 		this.contentId = contentId;
 	}	

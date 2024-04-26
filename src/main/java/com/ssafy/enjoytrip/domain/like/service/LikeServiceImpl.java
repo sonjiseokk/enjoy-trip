@@ -1,5 +1,7 @@
 package com.ssafy.enjoytrip.domain.like.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,18 @@ public class LikeServiceImpl implements LikeService {
 	}
 	
 	@Override
-	public void registLike(String userId, String contentId) throws Exception {
+	public void registLike(String userId, int contentId) throws Exception {
 		LikeDto likeDto = new LikeDto(userId, contentId);
 		likeMapper.registLike(likeDto);
+	}
+
+	@Override
+	public List<LikeDto> listLike(String userId) throws Exception {
+		return likeMapper.listLike(userId);
+	}
+
+	@Override
+	public void deleteLike(String userId) throws Exception {
+		likeMapper.deleteLike(userId);
 	}
 }

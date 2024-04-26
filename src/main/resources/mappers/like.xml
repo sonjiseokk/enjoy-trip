@@ -4,11 +4,23 @@
 <mapper namespace="com.ssafy.enjoytrip.domain.like.mapper.LikeMapper">	
 	<resultMap id = "likeResultMap" type = "LikeDto">
 		<result column="user_id" property="userId"/>
-        <result column="cotent_id" property="contentId"/>
+        <result column="content_id" property="contentId"/>
 	</resultMap>
 	
 	<insert id = "registLike" parameterType = "likeDto">
 		insert into attraction_like (user_id, content_id)
 		values (#{userId}, #{contentId})
 	</insert>
+	
+	<select id = "listLike" parameterType = "string" resultMap = "likeResultMap">
+		select user_id, content_id
+		from attraction_like
+		where user_id = #{userId}
+	</select>
+	
+	<delete id = "deleteLike" parameterType = "string">
+		delete
+		from attraction_like
+		where user_id = #{userId}
+	</delete>
 </mapper>
