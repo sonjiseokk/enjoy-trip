@@ -48,4 +48,10 @@
 		from attraction_description
 		where desc_id = #{contentId}
 	</select>
+	
+	<select id = "getTrip" parameterType = "int" resultMap = "tripResultMap">
+		select *
+		from attraction_info
+		where content_id = #{contentId}
+	</select>
 </mapper>

@@ -22,4 +22,5 @@ public interface TripMapper {
 	
 	public List<GugunDto> getGugun(int sidoCode) throws Exception;
 	
+	public TripDto getTrip(int contentId) throws Exception;
 }
