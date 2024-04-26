@@ -14,7 +14,7 @@ public interface MemberMapper {
 
     void deleteMember(String userId) throws SQLException;
 
-    void updateMemberInfo(String id, UpdateMemberDto dto) throws SQLException;
+    void updateMemberInfo(String userId, UpdateMemberDto dto) throws SQLException;
 
     void updateMemberPassword(String id,String password) throws SQLException;
 }

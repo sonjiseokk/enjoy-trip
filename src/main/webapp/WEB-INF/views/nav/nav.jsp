@@ -72,12 +72,12 @@
 		              <label class="form-check-label" for="saveid"> 아이디저장 </label>
 		            </div>
 					<div class="mb-3">
-						<label for="login-id" class="col-form-label">ID:</label>
-						<input type="text" class="form-control" id="login-id" name="login-id" value = "${saveid}" required />
+						<label for="loginId" class="col-form-label">ID:</label>
+						<input type="text" class="form-control" id="loginId" name="loginId" value = "${saveid}" required />
 					</div>
 					<div class="mb-3">
-						<label for="login-pw" class="col-form-label">비밀번호:</label>
-						<input type="password" class="form-control" id="login-pw" name="login-pw" required />
+						<label for="loginPw" class="col-form-label">비밀번호:</label>
+						<input type="password" class="form-control" id="loginPw" name="loginPw" required />
 					</div>
 				</form>
 			</div>
@@ -99,14 +99,14 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form id="form-findpw" method="POST" action="">
+				<form id="form-findpw" method="post" action="">
 					<div class="mb-3">
 						<label for="join-id" class="col-form-label">ID:</label>
-						<input type="text" class="form-control" id="find-pw-id" name="find-pw-id" required />
+						<input type="text" class="form-control" id="find-pw-id" name="userId" required />
 					</div>
 					<div class="mb-3">
 						<label for="join-pw" class="col-form-label">이름:</label>
-						<input type="text" class="form-control" id="find-pw-name" name="find-pw-name" required />
+						<input type="text" class="form-control" id="find-pw-name" name="userName" required />
 					</div>
 				</form>
 			</div>
@@ -348,7 +348,7 @@
 	  if(pwChangeCommitElement != null){			  
 	  pwChangeCommitElement.addEventListener("click", function () {
 		  let form = document.querySelector("#form-pwchange");
-        form.setAttribute("action", "${root}/member//update/password");
+        form.setAttribute("action", "${root}/member/update/password");
         if(form.checkValidity()){	        	  
         	form.submit();
         }

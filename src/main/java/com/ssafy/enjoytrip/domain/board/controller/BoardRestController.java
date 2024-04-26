@@ -3,16 +3,11 @@ package com.ssafy.enjoytrip.domain.board.controller;
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 import com.ssafy.enjoytrip.domain.board.service.BoardService;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,14 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
 @Slf4j
-public class BoardController {
+public class BoardRestController {
     private final BoardService boardService;
 
     /**

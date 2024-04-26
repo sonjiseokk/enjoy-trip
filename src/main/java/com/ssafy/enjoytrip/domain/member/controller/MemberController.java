@@ -50,16 +50,17 @@ public class MemberController {
     public String login(@ModelAttribute LoginMemberDto dto,
                         @RequestParam(value = "saveid", required = false) String saveId,
                         HttpServletRequest request, HttpServletResponse response,
+                        HttpSession session,
                         Model model) throws Exception {
 
         MemberDto loginMemberDto = memberService.login(dto);
-        model.addAttribute("userinfo", loginMemberDto);
+        session.setAttribute("userinfo", loginMemberDto);
 
-        if (memberService.rememberMe(saveId)) {
-            CookieUtil.logic(saveId, request, response);
+        if (saveId != null && memberService.rememberMe(saveId)) {
+            CookieUtil.logic(dto.getLoginId(), request, response);
         }
 
-        return "/";
+        return "index";
     }
 
     /**
@@ -87,9 +88,11 @@ public class MemberController {
     public String updateMember(@ModelAttribute UpdateMemberDto dto, HttpSession session) throws Exception {
         MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
 
-        MemberDto updatedMemberDto = memberService.updateMemberInfo(userinfo.getUserId(), dto);
+        memberService.updateMemberInfo(userinfo.getUserId(), dto);
+
+        MemberDto member = memberService.findMember(userinfo.getUserId());
         session.removeAttribute("userinfo");
-        session.setAttribute("userinfo", updatedMemberDto);
+        session.setAttribute("userinfo", member);
 
         return "/";
     }
@@ -111,14 +114,16 @@ public class MemberController {
      * @return
      * @throws Exception
      */
-        @PostMapping("/update/password/find")
+    @PostMapping("/update/password/find")
     public String updateMemberPasswordFind(@RequestParam("userId") String userId, @RequestParam("userName") String userName) throws Exception {
-        memberService.findPassword(userId, userName);
+        String password = memberService.findPassword(userId, userName);
+
         return "/";
     }
 
     /**
      * 회원 탈퇴 로직을 수행하는 메소드
+     *
      * @param session
      * @return
      * @throws Exception

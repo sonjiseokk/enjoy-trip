@@ -50,10 +50,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto updateMemberInfo(final String id, UpdateMemberDto dto) throws Exception {
+    public void updateMemberInfo(String userId, UpdateMemberDto dto) throws Exception {
         try {
-            memberMapper.updateMemberInfo(id, dto);
-            return memberMapper.findMemberById(id);
+            memberMapper.updateMemberInfo(userId,dto);
         } catch (Exception e) {
             throw new Exception("사용자를 업데이트하는데 실패했습니다.");
         }
@@ -84,7 +83,17 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean rememberMe(final String saveId) {
-        return saveId.equals("saveid");
+        return saveId.equals("ok");
+    }
+
+    @Override
+    public MemberDto findMember(final String userId) throws Exception {
+        try {
+            return memberMapper.findMemberById(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("사용자를 찾을 수 없습니다.");
+        }
     }
 
     public String hashing(String word) {

@@ -11,11 +11,13 @@ public interface MemberService {
 
     void deleteMember(String userId) throws Exception;
 
-    MemberDto updateMemberInfo(final String id, UpdateMemberDto memberDto) throws Exception;
+    void updateMemberInfo(String userId, UpdateMemberDto memberDto) throws Exception;
 
     void updateMemberPassword(String userId, String newPw) throws Exception;
 
     String findPassword(String userId, String userName) throws Exception;
 
     boolean rememberMe(String saveId);
+
+    MemberDto findMember(String userId) throws Exception;
 }
