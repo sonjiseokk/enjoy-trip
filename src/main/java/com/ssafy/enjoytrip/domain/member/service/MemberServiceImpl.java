@@ -74,11 +74,16 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String findPassword(String userId, String userName) throws Exception {
-        MemberDto memberDto = memberMapper.findMemberById(userId);
-        if (memberDto.getUserId().equals(userId) && memberDto.getUserName().equals(userName)) {
-            return memberDto.getUserPassword();
+        try {
+            MemberDto memberDto = memberMapper.findMemberById(userId);
+            if (memberDto.getUserId().equals(userId) && memberDto.getUserName().equals(userName)) {
+                return memberDto.getUserPassword();
+            }
+            throw new Exception("아이디와 이름이 일치하지 않습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("비밀번호 찾기에 실패했습니다.");
         }
-        throw new Exception("비밀번호 찾기에 실패했습니다.");
     }
 
     @Override

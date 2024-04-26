@@ -97,11 +97,12 @@ public class MemberController {
     }
 
     @PostMapping("/update/password")
-    public String updateMemberPassword(@RequestParam("password") String password, HttpSession session, Model model) throws Exception {
+    public String updateMemberPassword(@RequestParam("newPw") String newPw,
+                                       HttpSession session, Model model) throws Exception {
         MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
 
-        memberService.updateMemberPassword(userinfo.getUserId(), password);
-        return "/";
+        memberService.updateMemberPassword(userinfo.getUserId(), newPw);
+        return "redirect:/";
     }
 
     /**

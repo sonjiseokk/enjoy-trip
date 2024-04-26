@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.domain.member.controller;
 
 import com.ssafy.enjoytrip.domain.member.controller.request.LoginMemberDto;
+import com.ssafy.enjoytrip.domain.member.controller.request.PasswordFindRequest;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -57,7 +58,7 @@ public class MemberRestController {
     public ResponseEntity<?> updateMember(@RequestBody MemberDto dto, HttpSession session) throws Exception {
         MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
         dto.setUserId(userinfo.getUserId());
-        
+
         memberService.updateMemberInfo(dto);
 
         session.removeAttribute("userinfo");
@@ -85,8 +86,9 @@ public class MemberRestController {
      * @throws Exception
      */
     @PostMapping("/update/password/find")
-    public ResponseEntity<?> updateMemberPasswordFind(@RequestParam("userId") String userId, @RequestParam("userName") String userName) throws Exception {
-        String password = memberService.findPassword(userId, userName);
+    public ResponseEntity<?> updateMemberPasswordFind(
+            @RequestBody PasswordFindRequest request) throws Exception {
+        String password = memberService.findPassword(request.getUserId(), request.getUserName());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(HttpStatus.OK.value(), password));

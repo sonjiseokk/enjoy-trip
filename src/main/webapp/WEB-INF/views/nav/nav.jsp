@@ -161,11 +161,11 @@
 				<form id="form-pwchange" method="POST" action="">
 					<div class="mb-3">
 						<label for="join-id" class="col-form-label">현재 비밀번호:</label>
-						<input type="password" class="form-control" id="pw-change-cur-pw" name="pw-change-cur-pw" required />
+						<input type="password" class="form-control" id="pw-change-cur-pw" name="orgPw" required />
 					</div>
 					<div class="mb-3">
 						<label for="join-pw" class="col-form-label">새 비밀번호:</label>
-						<input type="password" class="form-control" id="pw-change-new-pw" name="pw-change-new-pw" required />
+						<input type="password" class="form-control" id="pw-change-new-pw" name="newPw" required />
 					</div>
 					<input type="hidden" class="form-control" id="pw-change-new-id" name="pw-change-id" value = "${userinfo.userId}" required />
 				</form>
