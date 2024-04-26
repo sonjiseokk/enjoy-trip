@@ -40,24 +40,6 @@ public class TripServiceImpl implements TripService {
 	public TripDescriptionDto searchTripDescription(String contentId) throws Exception {
 		return tripMapper.searchTripDescription(contentId);
 	}
-	
-//	@Override
-//	public JSONObject searchTripJSON(String contentTypeId) throws Exception {
-//		TripDto tripDto =  tripMapper.searchTripDetail(contentTypeId);
-//		
-//		JSONObject jsonObj = new JSONObject();
-//		jsonObj.put("contentId", tripDto.getContentId());
-//		jsonObj.put("contentTypeId", tripDto.getContentTypeId());
-//		jsonObj.put("title", tripDto.getTitle());
-//		jsonObj.put("addr", tripDto.getAddr());
-//		jsonObj.put("thumnailImage", tripDto.getThumnailImage());
-//		jsonObj.put("readcount", tripDto.getReadcount());
-//		jsonObj.put("latitude", tripDto.getLatitude());
-//		jsonObj.put("longitude", tripDto.getLongitude());
-//		jsonObj.put("mlevel", tripDto.getMlevel());
-//		
-//		return jsonObj;
-//	}
 
 	@Override
 	public JSONObject getSido() throws Exception {
@@ -102,30 +84,6 @@ public class TripServiceImpl implements TripService {
 		return json;
 	}
 
-//	@Override
-//	public JSONObject detailView(String contentId) throws Exception {
-//		
-//		TripDto tripDto = tripMapper.searchTripDetail(contentId);
-//		TripDescriptionDto tripDescriptionDto = tripMapper.searchOverview(contentId);
-//		
-//		JSONObject json = new JSONObject();
-//		
-//		JSONObject jsonObj = new JSONObject();
-//		jsonObj.put("contentId", tripDto.getContentId());
-//		jsonObj.put("contentTypeId", tripDto.getContentTypeId());
-//		jsonObj.put("title", tripDto.getTitle());
-//		jsonObj.put("addr", tripDto.getAddr());
-//		jsonObj.put("thumnailImage", tripDto.getThumnailImage());
-//		jsonObj.put("readcount", tripDto.getReadcount());
-//		jsonObj.put("latitude", tripDto.getLatitude());
-//		jsonObj.put("longitude", tripDto.getLongitude());
-//		jsonObj.put("mlevel", tripDto.getMlevel());
-//		jsonObj.put("overview", tripDescriptionDto.getOverview());
-//		
-//		json.put("body", jsonObj);
-//		
-//		return json;
-//	}
 	@Override
 	public JSONObject optimalDist(String contentId, List<TripDto> tripList) throws Exception {
 		int n = tripList.size();
@@ -204,10 +162,4 @@ public class TripServiceImpl implements TripService {
             }
         }
     }
-
-	@Override
-	public JSONObject detailView(String contentId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

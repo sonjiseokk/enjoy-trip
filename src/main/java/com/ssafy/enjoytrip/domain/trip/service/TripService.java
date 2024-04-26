@@ -17,9 +17,5 @@ public interface TripService {
 	
 	public JSONObject getGugun(int sidoCode) throws Exception;
 	
-	public JSONObject detailView(String contentId) throws Exception;
-
-//	public JSONObject searchTripJSON(String contentTypeId) throws Exception;
-	
 	public JSONObject optimalDist(String contentId, List<TripDto> tripList) throws Exception;
 }

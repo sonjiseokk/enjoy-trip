@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssafy.enjoytrip.domain.trip.controller.request.TripSearchCondition;
 import com.ssafy.enjoytrip.domain.trip.model.TripDescriptionDto;
@@ -24,33 +25,22 @@ public class TripController {
 	private final TripService tripService;
 	
 	@PostMapping(value = "/search")
-	public ResponseEntity<?> tripList(@RequestBody TripSearchCondition con) {
-		try {
-			List<TripDto> list = tripService.searchTrip(con);
-			if(list != null && !list.isEmpty()) {
-				return new ResponseEntity<List<TripDto>>(list, HttpStatus.OK);
-			} else {
-				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		
+	public ResponseEntity<?> tripList(@RequestBody TripSearchCondition con) throws Exception {
+		List<TripDto> list = tripService.searchTrip(con);
+		if(list != null && !list.isEmpty()) {
+			return new ResponseEntity<List<TripDto>>(list, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}		
 	}
 	
 	@PostMapping(value = "/view")
-	public ResponseEntity<?> tripDescription(@RequestParam(value = "contentId") String contentId) {
-		try {
-			TripDescriptionDto tripDescriptionDto = tripService.searchTripDescription(contentId);
-			if(tripDescriptionDto != null) {
-				return new ResponseEntity<TripDescriptionDto>(tripDescriptionDto, HttpStatus.OK);
-			} else {
-				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-			}
-		} catch (Exception e) {
-			return null;
+	public ResponseEntity<?> tripDescription(@RequestParam(value = "contentId") String contentId) throws Exception {
+		TripDescriptionDto tripDescriptionDto = tripService.searchTripDescription(contentId);
+		if(tripDescriptionDto != null) {
+			return new ResponseEntity<TripDescriptionDto>(tripDescriptionDto, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
-		
 	}
 }
