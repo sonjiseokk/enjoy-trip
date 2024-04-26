@@ -21,6 +21,7 @@ public class MemberServiceImpl implements MemberService {
         try {
             memberMapper.joinMember(memberDto);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("회원가입에 실패하였습니다.");
         }
     }
