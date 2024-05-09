@@ -2,26 +2,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.enjoytrip.domain.trip.mapper.TripMapper">
-	<resultMap id = "tripResultMap" type = "tripDto">
-		<result column="content_id" property="contentId"/>
-        <result column="content_type_id" property="contentTypeId"/>
-        <result column="title" property="title"/>
-        <result column="address" property="address"/>
-        <result column="thumnail_image" property="thumnailImage"/>
-        <result column="readcount" property="readcount"/>
-        <result column="sido_code" property="sidoCode"/>
-        <result column="gugun_code" property="gugunCode"/>
-        <result column="latitude" property="latitude"/>
-        <result column="longitude" property="longitude"/>
-        <result column="mlevel" property="mlevel"/>
-	</resultMap>
 	
 	<resultMap id = "tripDescriptionResultMap" type = "tripDescriptionDto">
 		<result column="desc_id" property="descId"/>
         <result column="overview" property="overview"/>
 	</resultMap>
 	
-	<select id = "searchTrip" parameterType = "tripSearchCondition" resultMap = "tripResultMap">
+	<select id = "searchTrip" parameterType = "tripSearchCondition" resultType="TripDto">
 		select *
 		from attraction_info
 		<where>		
@@ -49,9 +36,24 @@
 		where desc_id = #{contentId}
 	</select>
 	
-	<select id = "getTrip" parameterType = "int" resultMap = "tripResultMap">
+	<select id = "getTrip" parameterType = "int" resultType="TripDto">
 		select *
 		from attraction_info
 		where content_id = #{contentId}
+	</select>
+	<select id="getSido" resultType="SidoDto">
+		select *
+		from sido;
+	</select>
+
+	<select id="getGugun" parameterType="int" resultType="GugunDto">
+		select *
+		from gugun
+		where sido_code = #{sidoCode}
+	</select>
+
+	<select id="getContentTypes">
+		select *
+		from content_type;
 	</select>
 </mapper>
