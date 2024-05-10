@@ -10,5 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface BoardMapper {
 	void writeArticle(BoardDto boardDto) throws SQLException;
 	List<BoardDto> listArticle() throws SQLException;
+	BoardDto findById(int id) throws SQLException;
 
+	void viewCount(int id) throws SQLException;
 }

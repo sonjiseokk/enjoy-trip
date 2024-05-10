@@ -11,4 +11,6 @@ public interface BoardService {
 
     List<BoardDto> search(String keyword) throws Exception;
 
+    BoardDto detailArticle(int id) throws Exception;
+
 }

@@ -15,13 +15,15 @@ public class BoardDto {
 
 	// 외래키라도 DTO 필드에 넣어두는 게 일반적이라고 함
 	private String userId;
+	private int viewCount;
 
 	@Builder
-	public BoardDto(final int boardId, final String subject, final String content, final String createDate, final String userId) {
+	public BoardDto(final int boardId, final String subject, final String content, final String createDate, final String userId, final int viewCount) {
 		this.boardId = boardId;
 		this.subject = subject;
 		this.content = content;
 		this.createDate = createDate;
 		this.userId = userId;
+		this.viewCount = viewCount;
 	}
 }
