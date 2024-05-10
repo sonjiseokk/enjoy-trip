@@ -30,6 +30,7 @@ public class MemberRestController {
      * @throws Exception
      */
     @PostMapping("/join")
+    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<?> join(@RequestBody MemberDto memberDto) throws Exception {
         memberService.joinMember(memberDto);
         return ResponseEntity.status(HttpStatus.OK)
@@ -38,6 +39,7 @@ public class MemberRestController {
 
 
     @PostMapping("/login")
+    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<?> login(@RequestBody LoginMemberDto dto, HttpSession session) throws Exception {
         MemberDto loginMemberDto = memberService.login(dto);
         session.setAttribute("userinfo", loginMemberDto);
