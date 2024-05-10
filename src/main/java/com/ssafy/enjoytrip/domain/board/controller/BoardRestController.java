@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.domain.board.controller;
 
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
+import com.ssafy.enjoytrip.domain.board.model.BoardWriteRequest;
 import com.ssafy.enjoytrip.domain.board.service.BoardService;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.trip.controller.TripController;
@@ -25,8 +26,8 @@ public class BoardRestController {
     private final BoardService boardService;
 
     @GetMapping
-    public ResponseEntity<?> list(@RequestParam(value = "keyword", required = false) String keyword) throws Exception {
-        List<BoardDto> list = boardService.listArticle(keyword);
+    public ResponseEntity<?> list(@RequestParam("boardType") int boardType,@RequestParam(value = "keyword", required = false) String keyword) throws Exception {
+        List<BoardDto> list = boardService.listArticle(boardType,keyword);
         if (!list.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Result<>(HttpStatus.OK.value(), list));
@@ -48,42 +49,29 @@ public class BoardRestController {
         }
     }
 
-    /**
-     * 글 작성을 진행하는 메소드
-     * 세션에서 회원 정보를 가져온다
-     *
-     * @param subject 글 제목
-     * @param content 글 내용
-     * @param session 세션
-     * @return 작성된 글이 있는 리스트
-     * @throws Exception 서비스 예외 내용
-     */
     @PostMapping("/write")
-    public ResponseEntity<?> write(@RequestParam("subject") String subject,
-                                   @RequestParam("content") String content,
-                                   HttpSession session) throws Exception {
-        MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
-        boardService.writeArticle(subject, content, userinfo.getUserId());
+    public ResponseEntity<?> write(@RequestBody BoardWriteRequest request) throws Exception {
+        boardService.writeArticle(request);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(HttpStatus.OK.value(), "글 작성이 완료되었습니다."));
     }
 
 
-    /**
-     * 게시물 검색을 실행하는 메소드
-     * keyword를 파라미터로 받는다
-     *
-     * @param keyword
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/search")
-    public String search(@RequestParam(value = "keyword", required = false) String keyword, Model model) throws Exception {
-        List<BoardDto> boardDtoList = boardService.listArticle(keyword);
-        model.addAttribute("boardList", boardDtoList);
-        return "board";
-    }
+//    /**
+//     * 게시물 검색을 실행하는 메소드
+//     * keyword를 파라미터로 받는다
+//     *
+//     * @param keyword
+//     * @param model
+//     * @return
+//     * @throws Exception
+//     */
+//    @GetMapping("/search")
+//    public String search(@RequestParam(value = "keyword", required = false) String keyword, Model model) throws Exception {
+//        List<BoardDto> boardDtoList = boardService.listArticle(keyword);
+//        model.addAttribute("boardList", boardDtoList);
+//        return "board";
+//    }
 
     @Data
     @Builder

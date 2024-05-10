@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface BoardMapper {
 	void writeArticle(BoardDto boardDto) throws SQLException;
-	List<BoardDto> listArticle() throws SQLException;
+	List<BoardDto> listArticle(int boardType) throws SQLException;
 	BoardDto findById(int id) throws SQLException;
 
 	void viewCount(int id) throws SQLException;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 import com.ssafy.enjoytrip.domain.board.mapper.BoardMapper;
+import com.ssafy.enjoytrip.domain.board.model.BoardWriteRequest;
 import com.ssafy.enjoytrip.global.util.Kmp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +20,14 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
 
     @Override
-    public void writeArticle(String subject, String content, String userId) throws Exception {
+    public void writeArticle(BoardWriteRequest request) throws Exception {
         BoardDto boardDto = BoardDto.builder()
-                .subject(subject)
-                .content(content)
+                .subject(request.getSubject())
+                .content(request.getContent())
                 .createDate(LocalDateTime.now().toString())
                 .viewCount(0)
-                .userId(userId)  // 사용자 ID 설정
+                .userId(request.getUserId())  // 사용자 ID 설정
+                .boardTypeId(request.getBoardTypeId())
                 .build();
         try {
             boardMapper.writeArticle(boardDto);
@@ -35,13 +37,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardDto> listArticle(String keyword) throws Exception {
+    public List<BoardDto> listArticle(int boardType,String keyword) throws Exception {
         try {
             log.info("keyword = {}",keyword);
             if (!StringUtils.hasText(keyword)) {
-                return boardMapper.listArticle();
+                return boardMapper.listArticle(boardType);
             }
-            return search(keyword);
+            return search(boardType,keyword);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("게시물 리스트 조회중에 오류가 발생했습니다.");
@@ -49,9 +51,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardDto> search(String keyword) throws Exception {
+    public List<BoardDto> search(int boardType,String keyword) throws Exception {
         String[] keywords = keyword.split(" ");
-        return Kmp.multiKmp(boardMapper.listArticle(), keywords);
+        return Kmp.multiKmp(boardMapper.listArticle(boardType), keywords);
     }
 
     @Override
