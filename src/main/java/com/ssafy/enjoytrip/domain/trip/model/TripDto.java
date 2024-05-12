@@ -7,29 +7,37 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TripDto {
 	private int contentId;
-	private int contentTypeId;
 	private String title;
 	private String address;
 	private String thumnailImage;
 	private int readcount;
-	private int sidoCode;
-	private int gugunCode;
 	private double latitude;
 	private double longitude;
 	private String mlevel;
-	
-	public TripDto(int contentId, int contentTypeId, String title, String addr, String thumnailImage, int readcount,
-			int sidoCode, int gugunCode, double latitude, double longitude, String mlevel) {
+	// 외래키
+	private int gugunCode;
+	private int sidoCode;
+	private int descId;
+	private int contentTypeId;
+	private int embeddingId;
+
+	public TripDto(final int contentId, final String title, final String address,
+				   final String thumnailImage, final int readcount,
+				   final double latitude, final double longitude,
+				   final String mlevel, final int gugunCode,
+				   final int sidoCode, final int descId, final int contentTypeId, final int embeddingId) {
 		this.contentId = contentId;
-		this.contentTypeId = contentTypeId;
 		this.title = title;
-		this.address = addr;
+		this.address = address;
 		this.thumnailImage = thumnailImage;
 		this.readcount = readcount;
-		this.sidoCode = sidoCode;
-		this.gugunCode = gugunCode;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.mlevel = mlevel;
+		this.gugunCode = gugunCode;
+		this.sidoCode = sidoCode;
+		this.descId = descId;
+		this.contentTypeId = contentTypeId;
+		this.embeddingId = embeddingId;
 	}
 }
