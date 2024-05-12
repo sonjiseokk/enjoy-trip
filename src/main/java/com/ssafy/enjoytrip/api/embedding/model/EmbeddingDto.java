@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.domain.trip.model;
+package com.ssafy.enjoytrip.api.embedding.model;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 public class EmbeddingDto {
     private int embeddingId;
     private String embeddingName;
-    private String vector;
+    private double[] vector;
 
-    public EmbeddingDto(final int embeddingId, final String embeddingName, final String vector) {
+    @Builder
+    public EmbeddingDto(final int embeddingId, final String embeddingName, final double[] vector) {
         this.embeddingId = embeddingId;
         this.embeddingName = embeddingName;
         this.vector = vector;
