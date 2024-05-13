@@ -33,7 +33,9 @@ public class MemberService {
         String newUserPassword = hashing(dto.getLoginPw());
 
         MemberDto findMemberDto = memberMapper.findMemberById(dto.getLoginId());
-        if (findMemberDto.getUserId().equals(dto.getLoginId()) && findMemberDto.getUserPassword().equals(newUserPassword)) {
+        if (findMemberDto != null
+                || findMemberDto.getUserId().equals(dto.getLoginId())
+                        && findMemberDto.getUserPassword().equals(newUserPassword)) {
             return jwtUtil.getJwtDto(new Date(System.currentTimeMillis()), findMemberDto);
         } else {
             throw new Exception("로그인에 실패했습니다.");

@@ -140,7 +140,7 @@ public class MemberRestController {
     public ResponseEntity<?> find(String memberId) throws Exception {
         MemberDto memberDto = memberService.findMember(memberId);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(HttpStatus.OK.value(), memberDto));
+                .body(new Result<>(true,HttpStatus.OK.value(), memberDto));
     }
 
     @Data
