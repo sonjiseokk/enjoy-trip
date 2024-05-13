@@ -13,6 +13,8 @@ public class MemberDto {
 	private String userName;
 	private String userPassword;
 	private String userEmail;
+	@Setter
+	private String role;
 
 	@Builder
 	public MemberDto(final String userId, final String userName, final String userPassword, final String userEmail) {
@@ -22,8 +24,13 @@ public class MemberDto {
 		this.userEmail = userEmail;
 	}
 
+
+
 	public void encryptPassword(String cryptPw) {
 		this.userPassword = cryptPw;
 	}
 
+	public void defaultRole() {
+		this.role = "USER";
+	}
 }
