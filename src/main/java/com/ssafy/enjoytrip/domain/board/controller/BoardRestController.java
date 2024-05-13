@@ -30,10 +30,10 @@ public class BoardRestController {
         List<BoardDto> list = boardService.listArticle(boardType,keyword);
         if (!list.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Result<>(HttpStatus.OK.value(), list));
+                    .body(new Result<>(true,HttpStatus.OK.value(), list));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new Result<>(HttpStatus.NOT_FOUND.value(), "등록된 게시물이 없습니다."));
+                    .body(new Result<>(false,HttpStatus.NOT_FOUND.value(), "등록된 게시물이 없습니다."));
         }
     }
 
@@ -42,10 +42,10 @@ public class BoardRestController {
         BoardDto boardDto = boardService.detailArticle(id);
         if (boardDto != null) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Result<>(HttpStatus.OK.value(), boardDto));
+                    .body(new Result<>(true,HttpStatus.OK.value(), boardDto));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new Result<>(HttpStatus.NOT_FOUND.value(), "해당 게시물이 없습니다."));
+                    .body(new Result<>(false,HttpStatus.NOT_FOUND.value(), "해당 게시물이 없습니다."));
         }
     }
 
@@ -53,7 +53,7 @@ public class BoardRestController {
     public ResponseEntity<?> write(@RequestBody BoardWriteRequest request) throws Exception {
         boardService.writeArticle(request);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(HttpStatus.OK.value(), "글 작성이 완료되었습니다."));
+                .body(new Result<>(true,HttpStatus.OK.value(), "글 작성이 완료되었습니다."));
     }
 
 
@@ -76,6 +76,7 @@ public class BoardRestController {
     @Data
     @Builder
     static class Result<T> {
+        boolean success;
         int status;
         T data;
     }

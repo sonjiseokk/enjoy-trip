@@ -32,6 +32,7 @@ public class BoardServiceImpl implements BoardService {
         try {
             boardMapper.writeArticle(boardDto);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("게시물 작성중에 오류가 발생했습니다.");
         }
     }
