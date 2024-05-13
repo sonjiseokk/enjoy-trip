@@ -1,12 +1,10 @@
-package com.ssafy.enjoytrip.domain.board.controller;
+package com.ssafy.enjoytrip.domain.board.service;
 
-import com.ssafy.enjoytrip.domain.board.mapper.BoardMapper;
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 import com.ssafy.enjoytrip.domain.board.model.BoardWriteRequest;
-import com.ssafy.enjoytrip.domain.board.service.BoardService;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.service.MemberService;
-import org.assertj.core.api.Assertions;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,11 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class BoardRestControllerTest {
+@Transactional
+@Slf4j
+class BoardServiceTest {
     @Autowired
     private MemberService memberService;
     @Autowired
@@ -37,14 +36,15 @@ class BoardRestControllerTest {
         memberDto.defaultRole();
         memberService.joinMember(memberDto);
     }
+
     @Test
-    @DisplayName("글 작성 테스트")
-    @Transactional
-    void 글_작성_테스트() throws Exception {
+    @DisplayName("글 작성 및 조회 테스트")
+    void 글_작성_및_조회_테스트() throws Exception {
         //given
         BoardWriteRequest request = new BoardWriteRequest("제목", "내용", "ssafy", 1);
         //when
-        boardService.writeArticle(request);
+        int id = boardService.writeArticle(request);
+        log.info("id = {}",id);
         List<BoardDto> list = boardService.listArticle(1, "");
 
         //then
@@ -52,5 +52,17 @@ class BoardRestControllerTest {
         assertThat(list.get(0).getSubject()).isEqualTo(request.getSubject());
     }
 
+    @Test
+    @DisplayName("글 상세조회 테스트")
+    void 글_상세조회_테스트() throws Exception {
+        //given
+        BoardWriteRequest request = new BoardWriteRequest("제목", "내용", "ssafy", 1);
+        int id = boardService.writeArticle(request);
+        //when
 
+        BoardDto boardDto = boardService.detailArticle(id);
+        //then
+        assertThat(boardDto.getSubject()).isEqualTo(request.getSubject());
+
+    }
 }

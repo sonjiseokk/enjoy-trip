@@ -33,8 +33,10 @@ public class MemberService {
         String newUserPassword = hashing(dto.getLoginPw());
 
         MemberDto findMemberDto = memberMapper.findMemberById(dto.getLoginId());
-        if (findMemberDto != null
-                || findMemberDto.getUserId().equals(dto.getLoginId())
+        if (findMemberDto == null) {
+            throw new Exception("아이디 또는 비밀번호가 일치하지 않습니다.");
+        }
+        if (findMemberDto.getUserId().equals(dto.getLoginId())
                         && findMemberDto.getUserPassword().equals(newUserPassword)) {
             return jwtUtil.getJwtDto(new Date(System.currentTimeMillis()), findMemberDto);
         } else {
