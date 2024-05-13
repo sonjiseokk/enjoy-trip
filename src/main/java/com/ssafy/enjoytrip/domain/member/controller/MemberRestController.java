@@ -113,6 +113,35 @@ public class MemberRestController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(true, HttpStatus.OK.value(), "회원 데이터가 삭제되었습니다."));
     }
+    
+    
+    /**
+     * 로그아웃 메소드
+     *
+     * @param session
+     * @return
+     */
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("userinfo");
+
+        return "index";
+    }
+    
+    /**
+     * 아이디를 입력받아 회원을 찾는 메소드
+     *
+     * @param memberID
+     * @return memberDto
+     * @throws Exception
+     */
+    @PostMapping("/find")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public ResponseEntity<?> find(String memberId) throws Exception {
+        MemberDto memberDto = memberService.findMember(memberId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Result<>(HttpStatus.OK.value(), memberDto));
+    }
 
     @Data
     @Builder
