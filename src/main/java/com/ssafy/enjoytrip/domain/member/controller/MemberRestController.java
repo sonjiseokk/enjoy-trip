@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.domain.member.controller;
 
 import com.ssafy.enjoytrip.domain.member.controller.request.LoginMemberDto;
 import com.ssafy.enjoytrip.domain.member.controller.request.PasswordFindRequest;
+import com.ssafy.enjoytrip.domain.member.model.JwtDto;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -32,21 +33,23 @@ public class MemberRestController {
     @PostMapping("/join")
     @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<?> join(@RequestBody MemberDto memberDto) throws Exception {
+        memberDto.defaultRole();
         memberService.joinMember(memberDto);
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(HttpStatus.OK.value(), "회원가입 성공"));
+                .body(new Result<>(true,HttpStatus.OK.value(), "회원가입 성공"));
     }
 
 
     @PostMapping("/login")
-    @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseEntity<?> login(@RequestBody LoginMemberDto dto, HttpSession session) throws Exception {
-        MemberDto loginMemberDto = memberService.login(dto);
-        session.setAttribute("userinfo", loginMemberDto);
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<?> login(@RequestBody LoginMemberDto dto) throws Exception {
+        log.info("dto = {}, {}",dto.getLoginId(),dto.getLoginPw());
+        JwtDto jwtDto = memberService.login(dto);
 
-        log.info(loginMemberDto.toString());
+        log.info(jwtDto.toString());
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(HttpStatus.OK.value(), "성공적으로 로그인 되었습니다."));
+                .body(new Result<>(true,HttpStatus.OK.value(), jwtDto));
     }
 
     /**
@@ -68,14 +71,14 @@ public class MemberRestController {
         session.setAttribute("userinfo", newUser);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(HttpStatus.OK.value(), userinfo));
+                .body(new Result<>(true,HttpStatus.OK.value(), userinfo));
     }
 
     @PostMapping("/update/password")
     public ResponseEntity<?> updateMemberPassword(@RequestParam("userId") String userId, @RequestParam("userPassword") String userPassword) throws Exception {
         memberService.updateMemberPassword(userId, userPassword);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(HttpStatus.OK.value(), "비밀번호가 변경되었습니다."));
+                .body(new Result<>(true,HttpStatus.OK.value(), "비밀번호가 변경되었습니다."));
     }
 
     /**
@@ -93,7 +96,7 @@ public class MemberRestController {
         String password = memberService.findPassword(request.getUserId(), request.getUserName());
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(HttpStatus.OK.value(), password));
+                .body(new Result<>(true,HttpStatus.OK.value(), password));
     }
 
 
@@ -108,12 +111,13 @@ public class MemberRestController {
     public ResponseEntity<?> exit(@RequestParam("userId") String userId) throws Exception {
         memberService.deleteMember(userId);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(HttpStatus.OK.value(), "회원 데이터가 삭제되었습니다."));
+                .body(new Result<>(true, HttpStatus.OK.value(), "회원 데이터가 삭제되었습니다."));
     }
 
     @Data
     @Builder
     static class Result<T> {
+        boolean success;
         int status;
         T data;
     }
