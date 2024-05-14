@@ -29,7 +29,10 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        return (web) -> web.ignoring()
+                .requestMatchers(PathRequest.toStaticResources()
+                        .atCommonLocations())
+                .anyRequest(); // 테스트 이후에는 꼭 지우세요
     }
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -78,7 +81,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/member/join", "/", "/api/member/login").permitAll()
+                        .requestMatchers("/api/member/join", "/", "/api/member/login" ,"/add/data").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());

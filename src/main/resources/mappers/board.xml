@@ -20,8 +20,21 @@
     </select>
 
     <update id="viewCount" parameterType="int">
-	    update board
-	    set view_count = view_count+1
+        update board
+        set view_count = view_count + 1
         where board_id = #{id}
+    </update>
+
+    <update id="update" parameterType="updateBoardDto">
+        update board
+        set subject = #{subject},
+            content = #{content}
+        where board_id = #{boardId}
+    </update>
+
+    <update id="delete" parameterType="int">
+        delete
+        from board
+        where board_id = #{id};
     </update>
 </mapper>

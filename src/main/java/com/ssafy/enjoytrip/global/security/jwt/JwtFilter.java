@@ -33,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // /api/member/join 경로인 경우 필터를 적용하지 않고 바로 다음 필터로 넘깁니다.
-        if (path.startsWith("/api/member/join") || path.startsWith("/api/member/login")) {
+        if (path.startsWith("/api/member/join") || path.startsWith("/api/member/login") || path.startsWith("/add/data")) {
             filterChain.doFilter(request, response);
             return;
         }

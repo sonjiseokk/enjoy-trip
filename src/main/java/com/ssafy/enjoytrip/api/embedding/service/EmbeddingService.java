@@ -17,7 +17,7 @@ public class EmbeddingService {
     private final EmbeddingMapper embeddingMapper;
     private final InternalSearchService internalSearchService;
     private final EmbeddingClient embeddingClient;
-    public void join(String name) throws Exception{
+    public int join(String name) throws Exception{
         try {
             if (embeddingMapper.findByName(name) != null) throw new DuplicateNameException("이미 존재하는 임베딩 데이터입니다.");
 
@@ -30,6 +30,8 @@ public class EmbeddingService {
                     .vector(vector)
                     .build();
             embeddingMapper.save(embeddingDto);
+            return embeddingDto.getContentId();
+
         } catch (DuplicateNameException e) {
             e.printStackTrace();
             throw new Exception(e.getMessage());

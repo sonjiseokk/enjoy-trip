@@ -1,9 +1,11 @@
-package com.ssafy.enjoytrip.api.embedding.controller;
+package com.ssafy.enjoytrip.api.controller;
 
+import com.ssafy.enjoytrip.api.datago.service.DataGoInfoService;
 import com.ssafy.enjoytrip.api.embedding.model.EmbeddingDto;
 import com.ssafy.enjoytrip.api.embedding.service.EmbeddingService;
 import com.ssafy.enjoytrip.api.moderation.model.response.ModerationResponse;
 import com.ssafy.enjoytrip.api.moderation.service.ModerationService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import java.util.Map;
 public class TestController {
     private final EmbeddingService embeddingService;
     private final ModerationService moderationService;
+    private final DataGoInfoService dataGoInfoService;
 
     @GetMapping("/ai/embedding/add")
     public Map embed(@RequestParam(value = "message", defaultValue = "Tell me a joke") String message) throws Exception {
@@ -37,10 +40,16 @@ public class TestController {
         List<EmbeddingDto> all = embeddingService.findAll();
         return Map.of("result", all);
     }
+
     @GetMapping("/moderation/test")
-    public Map moderation(@RequestParam("message") String message) throws Exception{
+    public Map moderation(@RequestParam("message") String message) throws Exception {
         List<ModerationResponse> responses = moderationService.calculateModeration(message);
         return Map.of("result", responses);
+    }
 
+    @GetMapping("/add/data")
+    public void addData() throws Exception {
+
+        dataGoInfoService.getAreaBasedList(1, 1000);
     }
 }

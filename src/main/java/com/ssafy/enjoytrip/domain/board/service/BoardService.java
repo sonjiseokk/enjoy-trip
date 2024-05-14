@@ -7,6 +7,7 @@ import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 import com.ssafy.enjoytrip.domain.board.mapper.BoardMapper;
 import com.ssafy.enjoytrip.domain.board.model.BoardWriteRequest;
 import com.ssafy.enjoytrip.domain.board.model.UpdateBoardDto;
+import com.ssafy.enjoytrip.global.exception.NotFoundArticleException;
 import com.ssafy.enjoytrip.global.util.Kmp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -90,23 +91,31 @@ public class BoardService {
     public BoardDto detailArticle(final int id) throws Exception {
         try {
             BoardDto boardDto = boardMapper.findById(id);
+            if (boardDto == null) {
+                throw new NotFoundArticleException();
+            }
             boardMapper.viewCount(id);
             return boardDto;
+        } catch (NotFoundArticleException e) {
+            e.fillInStackTrace();
+            throw new NotFoundArticleException("해당 게시물이 없습니다.");
         } catch (Exception e) {
             e.fillInStackTrace();
             throw new Exception("게시물 상세 조회중에 오류가 발생했습니다.");
         }
     }
 
-    public void updateArticle(int id, UpdateBoardDto boardDto) throws Exception {
+    @Transactional
+    public void updateArticle(UpdateBoardDto boardDto) throws Exception {
         try {
             boardMapper.update(boardDto);
         } catch (Exception e) {
-            e.fillInStackTrace();
+            e.printStackTrace();
             throw new Exception("게시물 업데이트 중 오류가 발생했습니다.");
         }
     }
 
+    @Transactional
     public void deleteArticle(int id) throws Exception {
         try {
             boardMapper.delete(id);

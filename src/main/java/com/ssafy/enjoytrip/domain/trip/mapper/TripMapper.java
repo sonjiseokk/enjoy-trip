@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.domain.trip.mapper;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.ssafy.enjoytrip.domain.trip.model.*;
@@ -16,4 +17,5 @@ public interface TripMapper {
 	List<GugunDto> getGugun(int sidoCode) throws Exception;
 	TripDto getTrip(int contentId) throws Exception;
 	List<ContentTypeDto> getContentTypes() throws Exception;
+    void save(TripDto dto) throws SQLException;
 }

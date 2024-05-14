@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.domain.trip.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -17,15 +18,14 @@ public class TripDto {
 	// 외래키
 	private int gugunCode;
 	private int sidoCode;
-	private int descId;
+	@Setter
 	private int contentTypeId;
-	private int embeddingId;
 
 	public TripDto(final int contentId, final String title, final String address,
 				   final String thumnailImage, final int readcount,
 				   final double latitude, final double longitude,
 				   final String mlevel, final int gugunCode,
-				   final int sidoCode, final int descId, final int contentTypeId, final int embeddingId) {
+				   final int sidoCode, final int contentTypeId) {
 		this.contentId = contentId;
 		this.title = title;
 		this.address = address;
@@ -36,8 +36,6 @@ public class TripDto {
 		this.mlevel = mlevel;
 		this.gugunCode = gugunCode;
 		this.sidoCode = sidoCode;
-		this.descId = descId;
 		this.contentTypeId = contentTypeId;
-		this.embeddingId = embeddingId;
 	}
 }

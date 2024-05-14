@@ -6,17 +6,17 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class TripDescriptionDto {
-	private String descId;
+	private int contentId;
 	private String overview;
 	
-	public TripDescriptionDto(String descId, String overview) {
-		this.descId = descId;
+	public TripDescriptionDto(int contentId, String overview) {
+		this.contentId = contentId;
 		this.overview = overview;
 	}
 
 	@Override
 	public String toString() {
-		return "TripDescriptionDto [descId=" + descId + ", overview=" + overview + "]";
+		return "TripDescriptionDto [descId=" + contentId + ", overview=" + overview + "]";
 	}
 
 }
