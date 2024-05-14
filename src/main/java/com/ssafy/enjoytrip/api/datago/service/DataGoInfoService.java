@@ -1,54 +1,36 @@
 package com.ssafy.enjoytrip.api.datago.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.api.datago.model.TripItemDto;
-import com.ssafy.enjoytrip.api.datago.model.request.ApiResponse;
-import com.ssafy.enjoytrip.api.embedding.service.EmbeddingService;
-import com.ssafy.enjoytrip.domain.trip.mapper.TripMapper;
-import com.ssafy.enjoytrip.domain.trip.model.TripDto;
+import com.ssafy.enjoytrip.api.datago.model.response.InfoApiResponse;
+import com.ssafy.enjoytrip.domain.trip.mapper.AttractionInfoMapper;
+import com.ssafy.enjoytrip.domain.trip.model.AttractionInfoDto;
 import com.ssafy.enjoytrip.domain.trip.service.AttractionDescriptionService;
-import com.ssafy.enjoytrip.domain.trip.service.TripService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class DataGoInfoService {
-
-    @Value("${api.service.key}")
-    private String serviceKey;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private final JdbcTemplate jdbcTemplate;
-    private final TripMapper tripMapper;
-    private final EmbeddingService embeddingService;
+    private final AttractionInfoMapper attractionInfoMapper;
     private final AttractionDescriptionService attractionDescriptionService;
 
 
     public void getAreaBasedList(int pageNo, int numOfRows) throws Exception {
         // 하드코딩된 URL
-        String url = "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=wcRHiVOvmjix4S7zSPQtgL%2F21iI0rhaUP9h1tpm0o2Daihy8Loue%2F0zyveUmedwhOcsE9%2Bcui3hkEudEAQiyuA%3D%3D&numOfRows=1000&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A";
+//        String url = "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=wcRHiVOvmjix4S7zSPQtgL%2F21iI0rhaUP9h1tpm0o2Daihy8Loue%2F0zyveUmedwhOcsE9%2Bcui3hkEudEAQiyuA%3D%3D&numOfRows=1000&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A";
+        String url = "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=wcRHiVOvmjix4S7zSPQtgL%2F21iI0rhaUP9h1tpm0o2Daihy8Loue%2F0zyveUmedwhOcsE9%2Bcui3hkEudEAQiyuA%3D%3D&numOfRows=10000&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=Q";
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -63,23 +45,23 @@ public class DataGoInfoService {
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             String responseBody = responseEntity.getBody();
-            ApiResponse apiResponse = objectMapper.readValue(responseBody, ApiResponse.class);
-            List<TripItemDto> items = apiResponse.getResponse().getBody().getItems().getItem();
+            InfoApiResponse infoApiResponse = objectMapper.readValue(responseBody, InfoApiResponse.class);
+            List<TripItemDto> items = infoApiResponse.getResponse().getBody().getItems().getItem();
 
             for (TripItemDto item : items) {
-                TripDto tripDto = toTripDto(item);
-                String title = tripDto.getTitle();
+                AttractionInfoDto attractionInfoDto = toTripDto(item);
+                String title = attractionInfoDto.getTitle();
                 System.out.println(title);
 
-                tripMapper.save(tripDto);
+                attractionInfoMapper.save(attractionInfoDto);
             }
         } else {
             throw new Exception("API 요청에 실패했습니다.");
         }
     }
 
-    private TripDto toTripDto(TripItemDto item) {
-        return new TripDto(
+    private AttractionInfoDto toTripDto(TripItemDto item) {
+        return new AttractionInfoDto(
                 item.getContentId(),
                 item.getTitle(),
                 item.getAddress(),
