@@ -1,19 +1,14 @@
 package com.ssafy.enjoytrip.domain.board.controller;
 
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
-import com.ssafy.enjoytrip.domain.board.model.BoardWriteRequest;
+import com.ssafy.enjoytrip.domain.board.controller.request.BoardWriteRequest;
 import com.ssafy.enjoytrip.domain.board.service.BoardService;
-import com.ssafy.enjoytrip.domain.member.model.MemberDto;
-import com.ssafy.enjoytrip.domain.trip.controller.TripController;
-import com.ssafy.enjoytrip.domain.trip.model.TripDescriptionDto;
-import jakarta.servlet.http.HttpSession;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

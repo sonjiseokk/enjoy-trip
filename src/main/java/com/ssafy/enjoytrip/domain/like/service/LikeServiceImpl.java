@@ -4,27 +4,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.domain.like.mapper.LikeMapper;
 import com.ssafy.enjoytrip.domain.like.model.LikeDto;
-import com.ssafy.enjoytrip.domain.trip.mapper.TripMapper;
-import com.ssafy.enjoytrip.domain.trip.model.TripDto;
+import com.ssafy.enjoytrip.domain.trip.mapper.AttractionInfoMapper;
+import com.ssafy.enjoytrip.domain.trip.model.AttractionInfoDto;
 
 @Service
 public class LikeServiceImpl implements LikeService {
 	private LikeMapper likeMapper;
-	private TripMapper tripMapper;
+	private AttractionInfoMapper attractionInfoMapper;
 	
 	Double minDistance;
 	int[] shortestPath;
 	
 	@Autowired
-	private LikeServiceImpl(LikeMapper likeMapper, TripMapper tripMapper) {	
+	private LikeServiceImpl(LikeMapper likeMapper, AttractionInfoMapper attractionInfoMapper) {
 		this.likeMapper = likeMapper;
-		this.tripMapper = tripMapper;
+		this.attractionInfoMapper = attractionInfoMapper;
 	}
 	
 	@Override
@@ -44,12 +43,12 @@ public class LikeServiceImpl implements LikeService {
 	}
 
 	@Override
-	public List<TripDto> optimalPath(String userId, int contentId) throws Exception {
+	public List<AttractionInfoDto> optimalPath(String userId, int contentId) throws Exception {
 		List<LikeDto> likeList = likeMapper.listLike(userId);
-		List<TripDto> tripList = new ArrayList<>(); 
+		List<AttractionInfoDto> tripList = new ArrayList<>();
 		
 		for(LikeDto likeDto : likeList) {
-			tripList.add(tripMapper.getTrip(likeDto.getContentId()));
+			tripList.add(attractionInfoMapper.getTrip(likeDto.getContentId()));
 		}
 		
 		int n = tripList.size();
@@ -84,7 +83,7 @@ public class LikeServiceImpl implements LikeService {
 		
 		dfs(distance, visited, startIndex, 0, 1, n, path);
 		
-		List<TripDto> sortedTripList = new ArrayList<>();
+		List<AttractionInfoDto> sortedTripList = new ArrayList<>();
 		for(int i : shortestPath){
 			sortedTripList.add(tripList.get(i));
 		}

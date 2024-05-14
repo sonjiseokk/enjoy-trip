@@ -3,7 +3,7 @@ package com.ssafy.enjoytrip.domain.like.service;
 import java.util.List;
 
 import com.ssafy.enjoytrip.domain.like.model.LikeDto;
-import com.ssafy.enjoytrip.domain.trip.model.TripDto;
+import com.ssafy.enjoytrip.domain.trip.model.AttractionInfoDto;
 
 public interface LikeService {
 	void registLike(String userId, int contentId) throws Exception;
@@ -12,5 +12,5 @@ public interface LikeService {
 	
 	void deleteLike(String userId) throws Exception;
 	
-	List<TripDto> optimalPath(String userId, int contentId) throws Exception;
+	List<AttractionInfoDto> optimalPath(String userId, int contentId) throws Exception;
 }

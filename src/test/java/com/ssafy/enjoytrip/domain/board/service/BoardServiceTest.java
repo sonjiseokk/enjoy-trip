@@ -2,8 +2,8 @@ package com.ssafy.enjoytrip.domain.board.service;
 
 import com.ssafy.enjoytrip.domain.board.mapper.BoardMapper;
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
-import com.ssafy.enjoytrip.domain.board.model.BoardWriteRequest;
-import com.ssafy.enjoytrip.domain.board.model.UpdateBoardDto;
+import com.ssafy.enjoytrip.domain.board.controller.request.BoardWriteRequest;
+import com.ssafy.enjoytrip.domain.board.controller.request.UpdateBoardDto;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.service.MemberService;
 import com.ssafy.enjoytrip.global.exception.NotFoundArticleException;

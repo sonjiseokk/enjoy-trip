@@ -4,19 +4,19 @@
 <mapper namespace="com.ssafy.enjoytrip.api.embedding.mapper.EmbeddingMapper">
     <!-- 결과 매핑 정의 -->
     <resultMap id="embeddingMap" type="EmbeddingDto">
-        <result column="embedding_id" property="embeddingId"/>
+        <result column="content_id" property="contentId"/>
         <result column="embedding_name" property="embeddingName"/>
         <result column="vector" property="vector"
                 typeHandler="com.ssafy.enjoytrip.global.handler.JsonDoubleArrayTypeHandler"/>
     </resultMap>
 
-    <insert id="save" parameterType="EmbeddingDto" useGeneratedKeys="true" keyProperty="embeddingId">
+    <insert id="save" parameterType="EmbeddingDto">
         insert into attraction_embedding (embedding_name, vector)
         values (#{embeddingName}, #{vector, typeHandler=com.ssafy.enjoytrip.global.handler.JsonDoubleArrayTypeHandler})
     </insert>
 
     <select id="findAll" resultMap="embeddingMap">
-        SELECT embedding_id, embedding_name, vector
+        SELECT *
         FROM attraction_embedding
     </select>
 

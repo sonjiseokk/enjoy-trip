@@ -5,13 +5,12 @@ import java.util.List;
 
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 import com.ssafy.enjoytrip.domain.board.mapper.BoardMapper;
-import com.ssafy.enjoytrip.domain.board.model.BoardWriteRequest;
-import com.ssafy.enjoytrip.domain.board.model.UpdateBoardDto;
+import com.ssafy.enjoytrip.domain.board.controller.request.BoardWriteRequest;
+import com.ssafy.enjoytrip.domain.board.controller.request.UpdateBoardDto;
 import com.ssafy.enjoytrip.global.exception.NotFoundArticleException;
 import com.ssafy.enjoytrip.global.util.Kmp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.util.StringUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;

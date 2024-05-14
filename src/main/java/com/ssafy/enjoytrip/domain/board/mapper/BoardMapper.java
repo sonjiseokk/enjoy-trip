@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
-import com.ssafy.enjoytrip.domain.board.model.UpdateBoardDto;
+import com.ssafy.enjoytrip.domain.board.controller.request.UpdateBoardDto;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

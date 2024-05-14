@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ssafy.enjoytrip.domain.like.model.LikeDto;
 import com.ssafy.enjoytrip.domain.like.service.LikeService;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
-import com.ssafy.enjoytrip.domain.trip.model.TripDto;
+import com.ssafy.enjoytrip.domain.trip.model.AttractionInfoDto;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ public class LikeController {
 		if((MemberDto) session.getAttribute("userinfo") == null) System.out.println("dhkdl");
 		
 		String userId = ((MemberDto) session.getAttribute("userinfo")).getUserId();
-		List<TripDto> path = likeService.optimalPath(userId, contentId);
+		List<AttractionInfoDto> path = likeService.optimalPath(userId, contentId);
 		if(path != null && !path.isEmpty()) {
 			return new ResponseEntity<>(path, HttpStatus.OK);
 		}
