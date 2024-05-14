@@ -73,6 +73,10 @@ public class JwtUtil {
         String refreshToken = createRefreshToken(findMemberDto.getUserId(), findMemberDto.getRole(), createdTime);
 
         return JwtDto.builder()
+                .userId(findMemberDto.getUserId())
+                .userName(findMemberDto.getUserName())
+                .userEmail(findMemberDto.getUserEmail())
+                .role(findMemberDto.getRole())
                 .createdTime(createdTime)
                 .expiredTime(new Date(createdTime.getTime() + 1000L * 60 * 60 * 2))
                 .accessToken(accessToken)

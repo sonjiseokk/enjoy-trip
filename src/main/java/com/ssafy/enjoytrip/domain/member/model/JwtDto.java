@@ -9,13 +9,22 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 public class JwtDto {
+    private String userId;
+    private String userName;
+    private String userEmail;
+    private String role;
     private Date createdTime;
     private Date expiredTime;
     private String accessToken;
     private String refreshToken;
 
     @Builder
-    public JwtDto(final Date createdTime, final Date expiredTime, final String accessToken, final String refreshToken) {
+
+    public JwtDto(final String userId, final String userName, final String userEmail, final String role, final Date createdTime, final Date expiredTime, final String accessToken, final String refreshToken) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.role = role;
         this.createdTime = createdTime;
         this.expiredTime = expiredTime;
         this.accessToken = accessToken;
