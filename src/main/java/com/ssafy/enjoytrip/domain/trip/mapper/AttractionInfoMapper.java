@@ -9,13 +9,15 @@ import org.apache.ibatis.annotations.Mapper;
 import com.ssafy.enjoytrip.domain.trip.controller.request.TripSearchCondition;
 
 @Mapper
-public interface TripMapper {
-	List<TripDto> searchTrip(TripSearchCondition con) throws Exception;
-	TripDescriptionDto searchTripDescription(String contentId) throws Exception;
-	TripDescriptionDto searchOverview(String contentId) throws Exception;
+public interface AttractionInfoMapper {
+	List<AttractionInfoDto> searchTrip(TripSearchCondition con) throws Exception;
+	AttractionDescDto searchTripDescription(String contentId) throws Exception;
+	AttractionDescDto searchOverview(String contentId) throws Exception;
 	List<SidoDto> getSido() throws Exception;
 	List<GugunDto> getGugun(int sidoCode) throws Exception;
-	TripDto getTrip(int contentId) throws Exception;
+	AttractionInfoDto getTrip(int contentId) throws Exception;
 	List<ContentTypeDto> getContentTypes() throws Exception;
-    void save(TripDto dto) throws SQLException;
+    void save(AttractionInfoDto dto) throws SQLException;
+
+	List<AttractionInfoDto> findAll() throws SQLException;
 }

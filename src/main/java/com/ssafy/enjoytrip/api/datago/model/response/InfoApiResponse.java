@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.api.datago.model.request;
+package com.ssafy.enjoytrip.api.datago.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.enjoytrip.api.datago.model.TripItemDto;
@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ApiResponse {
+public class InfoApiResponse {
     @JsonProperty("response")
     private Response response;
 

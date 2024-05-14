@@ -1,14 +1,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.enjoytrip.domain.trip.mapper.TripMapper">
+<mapper namespace="com.ssafy.enjoytrip.domain.trip.mapper.AttractionInfoMapper">
 
-    <resultMap id="tripDescriptionResultMap" type="tripDescriptionDto">
-        <result column="desc_id" property="descId"/>
-        <result column="overview" property="overview"/>
-    </resultMap>
-
-    <select id="searchTrip" parameterType="tripSearchCondition" resultType="TripDto">
+    <select id="searchTrip" parameterType="tripSearchCondition" resultType="AttractionInfoDto">
         select *
         from attraction_info
         <where>
@@ -30,13 +25,7 @@
         </where>
     </select>
 
-    <select id="searchTripDescription" parameterType="string" resultMap="tripDescriptionResultMap">
-        select *
-        from attraction_description
-        where desc_id = #{contentId}
-    </select>
-
-    <select id="getTrip" parameterType="int" resultType="TripDto">
+    <select id="getTrip" parameterType="int" resultType="AttractionInfoDto">
         select *
         from attraction_info
         where content_id = #{contentId}
@@ -57,7 +46,7 @@
         from content_type;
     </select>
 
-    <insert id="save" parameterType="TripDto" >
+    <insert id="save" parameterType="AttractionInfoDto" >
         insert into attraction_info(content_id, title, address, thumnail_image, readcount,
                                     latitude, longitude, mlevel, gugun_code, sido_code,
                                      content_type_id)
@@ -66,4 +55,8 @@
                  #{contentTypeId});
     </insert>
 
+    <select id="findAll" resultType="AttractionInfoDto">
+        select *
+        from attraction_info;
+    </select>
 </mapper>

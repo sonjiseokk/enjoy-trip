@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class TripDescriptionDto {
+public class AttractionDescDto {
 	private int contentId;
 	private String overview;
 	
-	public TripDescriptionDto(int contentId, String overview) {
+	public AttractionDescDto(int contentId, String overview) {
 		this.contentId = contentId;
 		this.overview = overview;
 	}

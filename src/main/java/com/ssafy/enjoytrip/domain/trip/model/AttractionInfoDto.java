@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
-public class TripDto {
+public class AttractionInfoDto {
 	private int contentId;
 	private String title;
 	private String address;
@@ -21,11 +21,11 @@ public class TripDto {
 	@Setter
 	private int contentTypeId;
 
-	public TripDto(final int contentId, final String title, final String address,
-				   final String thumnailImage, final int readcount,
-				   final double latitude, final double longitude,
-				   final String mlevel, final int gugunCode,
-				   final int sidoCode, final int contentTypeId) {
+	public AttractionInfoDto(final int contentId, final String title, final String address,
+							 final String thumnailImage, final int readcount,
+							 final double latitude, final double longitude,
+							 final String mlevel, final int gugunCode,
+							 final int sidoCode, final int contentTypeId) {
 		this.contentId = contentId;
 		this.title = title;
 		this.address = address;

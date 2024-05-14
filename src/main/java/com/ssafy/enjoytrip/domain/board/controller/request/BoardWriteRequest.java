@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.domain.board.model;
+package com.ssafy.enjoytrip.domain.board.controller.request;
 
 import lombok.Builder;
 import lombok.Getter;
