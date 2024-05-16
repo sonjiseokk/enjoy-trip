@@ -18,11 +18,11 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/trip")
+@CrossOrigin(origins = "*")
 public class TripController {
     private final AttractionInfoService attractionInfoService;
 
     @PostMapping(value = "/search")
-    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<?> tripList(@RequestBody TripSearchCondition con) throws Exception {
         List<AttractionInfoDto> list = attractionInfoService.searchTrip(con);
         if (list != null && !list.isEmpty()) {

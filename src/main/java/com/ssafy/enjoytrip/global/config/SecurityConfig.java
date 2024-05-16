@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.global.security;
+package com.ssafy.enjoytrip.global.config;
 
 
 import com.ssafy.enjoytrip.global.security.jwt.JwtFilter;
@@ -31,6 +31,12 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
+                .requestMatchers("/api/member/join",
+                                 "/api/member/login",
+                                 "/add/data",
+                                 "/api/auth/refresh",
+                                 "/api/trip/**",
+                                 "/images/**")
                 .requestMatchers(PathRequest.toStaticResources()
                         .atCommonLocations());
     }
@@ -54,6 +60,8 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // CORS 세팅
@@ -70,13 +78,8 @@ public class SecurityConfig {
         http.httpBasic((auth) -> auth.disable());
 
         // 로그인, 메인, 회원가입 제외하곤 전부 인증
-
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/member/join", "/", "/api/member/login", "/add/data").permitAll()
-                        .requestMatchers("/api/trip/**").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
