@@ -12,6 +12,7 @@ public class MemberInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
         MemberDto userinfo = (MemberDto) request.getSession().getAttribute("userinfo");
+        System.out.println(userinfo);
         if (userinfo == null) {
             // Set the response status and content type
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 status code
@@ -20,7 +21,7 @@ public class MemberInterceptor implements HandlerInterceptor {
             // Create the response body
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("status", 401);
-            responseData.put("data", "User not authenticated");
+            responseData.put("data", "User not authenticated 1111");
 
             // Convert map to JSON
             ObjectMapper mapper = new ObjectMapper();

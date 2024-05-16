@@ -62,18 +62,17 @@ public class MemberRestController {
      */
     @PatchMapping("/update/info")
     public ResponseEntity<?> updateMember(@RequestBody MemberDto dto, HttpSession session) throws Exception {
-    	System.out.println("오냐고");
-        MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
-        dto.setUserId(userinfo.getUserId());
-
-        memberService.updateMemberInfo(dto);
-
-        session.removeAttribute("userinfo");
-        MemberDto newUser = memberService.findMember(userinfo.getUserId());
-        session.setAttribute("userinfo", newUser);
+        MemberDto userinfo = dto;
+        
+        MemberDto oldUser = memberService.findMember(userinfo.getUserId());
+        
+        oldUser.setUserName(userinfo.getUserName());
+        oldUser.setUserEmail(userinfo.getUserEmail());
+        
+        memberService.updateMemberInfo(oldUser);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(true,HttpStatus.OK.value(), userinfo));
+                .body(new Result<>(true,HttpStatus.OK.value(), oldUser));
     }
 
     @PostMapping("/update/password")

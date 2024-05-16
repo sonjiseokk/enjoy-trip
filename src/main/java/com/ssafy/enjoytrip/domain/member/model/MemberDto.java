@@ -10,8 +10,10 @@ import lombok.ToString;
 public class MemberDto {
 	@Setter
 	private String userId;
+	@Setter
 	private String userName;
 	private String userPassword;
+	@Setter
 	private String userEmail;
 	@Setter
 	private String role;
