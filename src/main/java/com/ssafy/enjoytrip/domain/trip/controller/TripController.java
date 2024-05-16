@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/api/trip")
-@CrossOrigin(origins = "*")
 public class TripController {
     private final AttractionInfoService attractionInfoService;
 

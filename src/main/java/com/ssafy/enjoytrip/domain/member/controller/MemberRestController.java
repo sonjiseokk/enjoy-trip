@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/api/member")
 public class MemberRestController {
     private static final Logger log = LoggerFactory.getLogger(MemberRestController.class);
@@ -61,6 +62,7 @@ public class MemberRestController {
      */
     @PatchMapping("/update/info")
     public ResponseEntity<?> updateMember(@RequestBody MemberDto dto, HttpSession session) throws Exception {
+    	System.out.println("오냐고");
         MemberDto userinfo = (MemberDto) session.getAttribute("userinfo");
         dto.setUserId(userinfo.getUserId());
 
