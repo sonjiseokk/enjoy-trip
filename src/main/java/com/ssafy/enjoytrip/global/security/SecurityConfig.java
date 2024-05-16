@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
@@ -31,9 +32,9 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources()
-                        .atCommonLocations())
-                .anyRequest(); // 테스트 이후에는 꼭 지우세요
+                        .atCommonLocations());
     }
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -57,17 +58,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // CORS 세팅
         http.cors(cors -> cors
-                .configurationSource(request -> {
-                    CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.addAllowedOriginPattern("*");
-                    configuration.addAllowedHeader("*");
-                    configuration.addAllowedMethod("*");
-                    configuration.addExposedHeader("*");
-                    configuration.setAllowCredentials(true);
-                    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-                    source.registerCorsConfiguration("/**", configuration);
-                    return configuration;
-                }));
+                .configurationSource(corsConfigurationSource())
+        );
         // csrf disable -> JWT를 사용할 건데 JWT는 비동기라 csrf 공격 무의미
         http.csrf((auth) -> auth.disable());
 
@@ -81,7 +73,9 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/member/join", "/", "/api/member/login" ,"/add/data").permitAll()
+                        .requestMatchers("/api/member/join", "/", "/api/member/login", "/add/data").permitAll()
+                        .requestMatchers("/api/trip/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
@@ -93,5 +87,20 @@ public class SecurityConfig {
         http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         // 필터를 대체하는 메소드
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.addExposedHeader("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 }

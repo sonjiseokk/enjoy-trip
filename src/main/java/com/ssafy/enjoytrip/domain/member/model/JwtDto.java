@@ -3,11 +3,13 @@ package com.ssafy.enjoytrip.domain.member.model;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Date;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class JwtDto {
     private String userId;
     private String userName;

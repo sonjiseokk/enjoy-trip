@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/trip")
+@RequestMapping("/api/trip")
 public class TripController {
     private final AttractionInfoService attractionInfoService;
 
