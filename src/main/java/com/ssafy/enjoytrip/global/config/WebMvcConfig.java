@@ -14,7 +14,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/member/**","/api/member/**")
                 .excludePathPatterns("/member/login", "/member/join")
                 .excludePathPatterns("/member/update/password/find")
-                .excludePathPatterns("/api/member/login", "/api/member/join", "/api/member/update/info");
+                .excludePathPatterns("/api/member/login", "/api/member/join", "/api/member/update/info", "/api/member/check/duplication/*");
 
         registry.addInterceptor(new BoardInterceptor())
                 .addPathPatterns("/board/write")

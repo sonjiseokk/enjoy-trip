@@ -33,7 +33,7 @@ public class SecurityConfig {
         return (web) -> web.ignoring()
                 .requestMatchers("/api/member/join",
                                  "/api/member/login",
-//                                 "/api/member/update/info",
+                                 "/api/member/check/duplication/*",
                                  "/add/data",
                                  "/api/auth/refresh",
                                  "/api/trip/**",

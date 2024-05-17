@@ -28,6 +28,19 @@ public class MemberService {
             throw new Exception("회원가입에 실패하였습니다.");
         }
     }
+    
+    public String checkDuplication(String userId) throws Exception {
+        try {
+            MemberDto memberDto =  memberMapper.findMemberById(userId);
+            if(memberDto == null) {
+            	return "success";
+            }
+            else return "fail";
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("중복 확인에서 오류가 발생했습니다.");
+        }
+    }
 
     public JwtDto login(LoginMemberDto dto) throws Exception {
         String newUserPassword = hashing(dto.getLoginPw());

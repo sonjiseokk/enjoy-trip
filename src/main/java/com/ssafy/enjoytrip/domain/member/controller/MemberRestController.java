@@ -40,6 +40,22 @@ public class MemberRestController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(true,HttpStatus.OK.value(), "회원가입 성공"));
     }
+    
+    /**
+     * 회원 아이디를 받아서 이미 존재하는지 확인하는 함수
+     *
+     * @param userId
+     * @return boolean
+     * @throws Exception
+     */
+    @GetMapping("/check/duplication/{userId}")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public ResponseEntity<?> checkDuplication(@PathVariable String userId) throws Exception {
+        String ret = memberService.checkDuplication(userId);
+        
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Result<>(true,HttpStatus.OK.value(), ret));
+    }
 
 
     @PostMapping("/login")
@@ -60,7 +76,7 @@ public class MemberRestController {
      * @return
      * @throws Exception
      */
-    @PatchMapping("/update/info")
+    @PostMapping("/update/info")
     public ResponseEntity<?> updateMember(@RequestBody MemberDto dto, HttpSession session) throws Exception {
         MemberDto userinfo = dto;
         
