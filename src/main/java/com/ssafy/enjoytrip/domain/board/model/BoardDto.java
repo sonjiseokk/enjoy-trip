@@ -17,9 +17,10 @@ public class BoardDto {
 	private String userId;
 	private int viewCount;
 	private int boardTypeId;
+	private int contentId;
 
 	@Builder
-	public BoardDto(final int boardId, final String subject, final String content, final String createDate, final String userId, final int viewCount, final int boardTypeId) {
+	public BoardDto(final int boardId, final String subject, final String content, final String createDate, final String userId, final int viewCount, final int boardTypeId, final int contentId) {
 		this.boardId = boardId;
 		this.subject = subject;
 		this.content = content;
@@ -27,5 +28,6 @@ public class BoardDto {
 		this.userId = userId;
 		this.viewCount = viewCount;
 		this.boardTypeId = boardTypeId;
+		this.contentId = contentId;
 	}
 }

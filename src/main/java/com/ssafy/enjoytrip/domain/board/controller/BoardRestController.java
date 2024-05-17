@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.domain.board.controller;
 
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 import com.ssafy.enjoytrip.domain.board.controller.request.BoardWriteRequest;
+import com.ssafy.enjoytrip.domain.board.controller.request.UpdateBoardDto;
 import com.ssafy.enjoytrip.domain.board.service.BoardService;
 import lombok.Builder;
 import lombok.Data;
@@ -46,11 +47,24 @@ public class BoardRestController {
 
     @PostMapping("/write")
     public ResponseEntity<?> write(@RequestBody BoardWriteRequest request) throws Exception {
-        boardService.writeArticle(request);
+    	boardService.writeArticle(request);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(true,HttpStatus.OK.value(), "글 작성이 완료되었습니다."));
     }
+    
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") int id) throws Exception {
+        boardService.deleteArticle(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Result<>(true,HttpStatus.OK.value(), "글 삭제가 완료되었습니다."));
+    }
 
+    @PostMapping("/modify")
+    public ResponseEntity<?> modify(@RequestBody UpdateBoardDto request) throws Exception {
+    	boardService.updateArticle(request);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Result<>(true,HttpStatus.OK.value(), "글 작성이 완료되었습니다."));
+    }
 
 //    /**
 //     * 게시물 검색을 실행하는 메소드

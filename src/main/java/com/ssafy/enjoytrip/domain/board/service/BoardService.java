@@ -36,6 +36,7 @@ public class BoardService {
                 .viewCount(0)
                 .userId(request.getUserId())  // 사용자 ID 설정
                 .boardTypeId(request.getBoardTypeId())
+                .contentId(request.getContentId())
                 .build();
         try {
             boardMapper.writeArticle(boardDto);
@@ -58,7 +59,7 @@ public class BoardService {
     public List<BoardDto> listArticle(int boardType,String keyword) throws Exception {
         try {
             log.info("keyword = {}",keyword);
-            if (!StringUtils.hasText(keyword)) {
+            if (keyword == null) {
                 return boardMapper.listArticle(boardType);
             }
             return search(boardType,keyword);
@@ -106,7 +107,7 @@ public class BoardService {
 
     @Transactional
     public void updateArticle(UpdateBoardDto boardDto) throws Exception {
-        try {
+    	try {
             boardMapper.update(boardDto);
         } catch (Exception e) {
             e.printStackTrace();

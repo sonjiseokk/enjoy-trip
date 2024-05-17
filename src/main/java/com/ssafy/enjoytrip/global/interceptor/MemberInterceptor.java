@@ -21,7 +21,7 @@ public class MemberInterceptor implements HandlerInterceptor {
             // Create the response body
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("status", 401);
-            responseData.put("data", "User not authenticated 1111");
+            responseData.put("data", "User not authenticated");
 
             // Convert map to JSON
             ObjectMapper mapper = new ObjectMapper();

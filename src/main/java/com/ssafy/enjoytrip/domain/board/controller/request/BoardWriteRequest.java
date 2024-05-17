@@ -11,12 +11,14 @@ public class BoardWriteRequest {
     private String content;
     private String userId;
     private int boardTypeId;
+    private int contentId;
 
     @Builder
-    public BoardWriteRequest(final String subject, final String content, final String userId, final int boardTypeId) {
+    public BoardWriteRequest(final String subject, final String content, final String userId, final int boardTypeId, final int contentId) {
         this.subject = subject;
         this.content = content;
         this.userId = userId;
         this.boardTypeId = boardTypeId;
+        this.contentId = contentId;
     }
 }
