@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SimilarDto {
-    private int index;
+    private String title;
     private double similarity;
 
-    public SimilarDto(final int index, final double similarity) {
-        this.index = index;
+    public SimilarDto(final String title, final double similarity) {
+        this.title = title;
         this.similarity = similarity;
     }
 }

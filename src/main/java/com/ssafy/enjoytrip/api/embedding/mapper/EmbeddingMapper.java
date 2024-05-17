@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper
 public interface EmbeddingMapper {
     List<EmbeddingDto> findAll() throws SQLException;
-    EmbeddingDto findByName(String name) throws SQLException;
+    EmbeddingDto findByTitle(String title) throws SQLException;
     void save(EmbeddingDto embeddingDto) throws SQLException;
 }

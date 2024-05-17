@@ -4,7 +4,7 @@
 <mapper namespace="com.ssafy.enjoytrip.domain.trip.mapper.AttractionInfoMapper">
 
     <select id="searchTrip" parameterType="tripSearchCondition" resultType="AttractionInfoDto">
-        select *
+        select distinct *
         from attraction_info
         <where>
             <if test="contentTypeId != 0">
@@ -56,7 +56,35 @@
     </insert>
 
     <select id="findAll" resultType="AttractionInfoDto">
-        select *
-        from attraction_info;
+        select distinct *
+        from attraction_info
+        order by content_id;
+    </select>
+    <select id="findByName" resultType="AttractionInfoDto">
+        select distinct *
+        from attraction_info
+        where title = #{name}
+    </select>
+    <select id="findByContentId" parameterType="int" resultType="AttractionInfoDto">
+        select distinct *
+        from attraction_info
+        where content_id = #{contentId}
+    </select>
+
+    <select id="findNameBySidoCode">
+        select sido_name
+        from sido
+        where sido_code = #{sidoCode}
+    </select>
+
+    <select id="findNameByGugunCode">
+        select distinct gugun_name
+        from gugun
+        where gugun_code = #{gugunCode} and sido_code = #{sidoCode}
+    </select>
+    <select id="findNameByContentTypeId">
+        select type_name
+        from content_type
+        where content_type_id = #{contentTypeId}
     </select>
 </mapper>

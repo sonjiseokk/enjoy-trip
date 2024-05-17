@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,23 @@ public class AttractionDescriptionService {
         } catch (SQLException e) {
             throw new Exception("관광지 저장에 실패했습니다.");
         }
+    }
 
+    public AttractionDescDto findById(int contentId) throws Exception {
+        try {
+            return mapper.findById(contentId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("관광지 검색에 실패했습니다.");
+        }
+    }
+
+    public List<AttractionDescDto> findAll() throws Exception {
+        try {
+            return mapper.findAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("관광지 검색에 실패했습니다.");
+        }
     }
 }

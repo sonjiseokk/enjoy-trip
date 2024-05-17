@@ -1,8 +1,11 @@
 package com.ssafy.enjoytrip.api.embedding.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.api.embedding.mapper.EmbeddingMapper;
 import com.ssafy.enjoytrip.api.embedding.model.EmbeddingDto;
+import com.ssafy.enjoytrip.api.embedding.model.SimilarDto;
+import com.ssafy.enjoytrip.domain.trip.model.AttractionInfoDto;
+import com.ssafy.enjoytrip.domain.trip.service.AttractionDescriptionService;
+import com.ssafy.enjoytrip.domain.trip.service.AttractionInfoService;
 import com.ssafy.enjoytrip.global.exception.DuplicateNameException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.embedding.EmbeddingClient;
@@ -17,18 +20,31 @@ public class EmbeddingService {
     private final EmbeddingMapper embeddingMapper;
     private final InternalSearchService internalSearchService;
     private final EmbeddingClient embeddingClient;
-    public int join(String name) throws Exception{
-        try {
-            if (embeddingMapper.findByName(name) != null) throw new DuplicateNameException("이미 존재하는 임베딩 데이터입니다.");
+    private final AttractionInfoService attractionInfoService;
+    private final AttractionDescriptionService attractionDescriptionService;
 
-            EmbeddingResponse embeddingResponse = embeddingClient.embedForResponse(List.of(name));
+    public int join(String title) throws Exception {
+        try {
+            if (embeddingMapper.findByTitle(title) != null) throw new DuplicateNameException("이미 존재하는 임베딩 데이터입니다.");
+
+
+            AttractionInfoDto info = attractionInfoService.findAttractionInfo(title);
+            String sidoName = attractionInfoService.findNameBySidoCode(info.getSidoCode());
+            String gugunName = attractionInfoService.findNameByGugunCode(info.getGugunCode(),info.getSidoCode());
+            String category = attractionInfoService.findNameByContentTypeId(info.getContentTypeId());
+
+            EmbeddingResponse embeddingResponse = embeddingClient.embedForResponse(List.of(title));
 
             double[] vector = getVector(embeddingResponse);
-
             EmbeddingDto embeddingDto = EmbeddingDto.builder()
-                    .embeddingName(name)
+                    .contentId(info.getContentId())
+                    .embeddingName(String.format("name : %s | location : %s | latitude : %f | longitude : %f | sido : %s | gugun : %s | category : %s",
+                            info.getTitle(), info.getAddress(), info.getLatitude(), info.getLongitude(), sidoName, gugunName, category)
+                    )
+                    .title(info.getTitle())
                     .vector(vector)
                     .build();
+
             embeddingMapper.save(embeddingDto);
             return embeddingDto.getContentId();
 
@@ -41,7 +57,17 @@ public class EmbeddingService {
         }
     }
 
+    public List<SimilarDto> getMostFive(String title) throws Exception {
+        try {
+            EmbeddingDto findByTitle = embeddingMapper.findByTitle(title);
+            List<EmbeddingDto> all = embeddingMapper.findAll();
 
+            return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 5);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("임베딩 서비스 로직에 실패했습니다.");
+        }
+    }
 
     public List<EmbeddingDto> findAll() throws Exception {
         try {
@@ -54,7 +80,7 @@ public class EmbeddingService {
 
     public EmbeddingDto findByName(String name) throws Exception {
         try {
-            return embeddingMapper.findByName(name);
+            return embeddingMapper.findByTitle(name);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("임베딩 서비스가 실패했습니다.");

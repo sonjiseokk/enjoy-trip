@@ -32,12 +32,13 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers("/api/member/join",
-                                 "/api/member/login",
-                                 "/api/member/check/duplication/*",
-                                 "/add/data",
-                                 "/api/auth/refresh",
-                                 "/api/trip/**",
-                                 "/images/**")
+                        "/api/member/login",
+                        "/api/member/check/duplication/*",
+                        "/add/data",
+                        "/api/auth/refresh",
+                        "/api/trip/**",
+                        "/ai/**",
+                        "/images/**")
                 .requestMatchers(PathRequest.toStaticResources()
                         .atCommonLocations());
     }
@@ -62,7 +63,6 @@ public class SecurityConfig {
     }
 
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // CORS 세팅
@@ -82,6 +82,11 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/member/join",
+                                "/api/member/login",
+                                "/add/data",
+                                "/api/auth/refresh",
+                                "/images/**").permitAll()
                         .anyRequest().authenticated());
 
         // JWT는 무상태 프로토콜이기때문에 꼭 선언해줘야함

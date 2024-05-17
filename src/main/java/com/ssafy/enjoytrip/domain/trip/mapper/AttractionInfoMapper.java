@@ -20,4 +20,13 @@ public interface AttractionInfoMapper {
     void save(AttractionInfoDto dto) throws SQLException;
 
 	List<AttractionInfoDto> findAll() throws SQLException;
+
+    AttractionInfoDto findByName(String name);
+
+	AttractionInfoDto findByContentId(int contentId);
+
+	String findNameBySidoCode(int sidoCode) throws SQLException;
+
+	String findNameByGugunCode(int gugunCode,int sidoCode);
+	String findNameByContentTypeId(int contentTypeId);
 }

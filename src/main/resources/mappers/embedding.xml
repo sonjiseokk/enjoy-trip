@@ -5,14 +5,18 @@
     <!-- 결과 매핑 정의 -->
     <resultMap id="embeddingMap" type="EmbeddingDto">
         <result column="content_id" property="contentId"/>
+        <result column="title" property="title"/>
         <result column="embedding_name" property="embeddingName"/>
         <result column="vector" property="vector"
                 typeHandler="com.ssafy.enjoytrip.global.handler.JsonDoubleArrayTypeHandler"/>
     </resultMap>
 
     <insert id="save" parameterType="EmbeddingDto">
-        insert into attraction_embedding (embedding_name, vector)
-        values (#{embeddingName}, #{vector, typeHandler=com.ssafy.enjoytrip.global.handler.JsonDoubleArrayTypeHandler})
+        insert into attraction_embedding (content_id, title, embedding_name, vector)
+        values (#{contentId},
+                #{title},
+                #{embeddingName},
+                #{vector, typeHandler=com.ssafy.enjoytrip.global.handler.JsonDoubleArrayTypeHandler})
     </insert>
 
     <select id="findAll" resultMap="embeddingMap">
@@ -20,10 +24,10 @@
         FROM attraction_embedding
     </select>
 
-    <select id="findByName" parameterType="String" resultMap="embeddingMap">
+    <select id="findByTitle" parameterType="String" resultMap="embeddingMap">
         select *
         from attraction_embedding
-        where embedding_name = #{name}
+        where title = #{title}
     </select>
 
 </mapper>

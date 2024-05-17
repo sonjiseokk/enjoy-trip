@@ -6,5 +6,13 @@
         insert into attraction_description(content_id, overview)
         values (#{contentId},#{overview});
     </insert>
-
+    <select id="findById" parameterType="int" resultType="AttractionDescDto">
+        select distinct *
+        from attraction_description
+        where content_id = #{contentId}
+    </select>
+    <select id="findAll" resultType="AttractionDescDto">
+        select distinct *
+        from attraction_description;
+    </select>
 </mapper>
