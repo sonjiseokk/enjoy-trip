@@ -12,7 +12,10 @@ import org.springframework.ai.embedding.EmbeddingClient;
 import org.springframework.ai.embedding.EmbeddingResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +30,9 @@ public class EmbeddingService {
         try {
             if (embeddingMapper.findByTitle(title) != null) throw new DuplicateNameException("이미 존재하는 임베딩 데이터입니다.");
 
-
             AttractionInfoDto info = attractionInfoService.findAttractionInfo(title);
             String sidoName = attractionInfoService.findNameBySidoCode(info.getSidoCode());
-            String gugunName = attractionInfoService.findNameByGugunCode(info.getGugunCode(),info.getSidoCode());
+            String gugunName = attractionInfoService.findNameByGugunCode(info.getGugunCode(), info.getSidoCode());
             String category = attractionInfoService.findNameByContentTypeId(info.getContentTypeId());
 
             EmbeddingResponse embeddingResponse = embeddingClient.embedForResponse(List.of(title));
@@ -92,5 +94,28 @@ public class EmbeddingService {
         return doubles.stream()
                 .mapToDouble(Double::doubleValue)
                 .toArray();
+    }
+
+    public List<SimilarDto> myMostFive(final List<AttractionInfoDto> myLikes) throws Exception {
+        try {
+            HashSet<SimilarDto> result = new HashSet<>();
+            Set<String> myLikeTitles = myLikes.stream()
+                    .map(AttractionInfoDto::getTitle)
+                    .collect(Collectors.toSet());
+
+            for (AttractionInfoDto myLike : myLikes) {
+                result.addAll(getMostFive(myLike.getTitle()));
+            }
+
+            // myLikeTitles에 포함되지 않은 SimilarDto만 필터링
+            return result.stream()
+                    .filter(dto -> !myLikeTitles.contains(dto.getTitle()))
+                    .sorted((d1, d2) -> Double.compare(d2.getSimilarity(), d1.getSimilarity()))
+                    .limit(5)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("most 5를 불러오는데 실패했습니다.");
+        }
     }
 }
