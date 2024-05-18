@@ -8,9 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@ControllerAdvice("com.ssafy.enjoytrip.domain.board")
+@RestControllerAdvice("com.ssafy.enjoytrip.domain.board")
 public class BoardExceptionAdvise {
     @ExceptionHandler(NotFoundArticleException.class)
     public ResponseEntity<?> exception(Exception e) {

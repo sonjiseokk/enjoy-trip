@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 @Slf4j
-@ControllerAdvice("com.ssafy.enjoytrip.domain.like")
+@RestControllerAdvice("com.ssafy.enjoytrip.domain.like")
 public class LikeAdvise {
 	@ExceptionHandler(Exception.class)
     public String notFound(Exception e, Model model) {

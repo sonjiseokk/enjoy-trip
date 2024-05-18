@@ -15,7 +15,7 @@ import com.ssafy.enjoytrip.domain.trip.service.AttractionInfoService;
 
 import lombok.RequiredArgsConstructor;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/api/trip")
