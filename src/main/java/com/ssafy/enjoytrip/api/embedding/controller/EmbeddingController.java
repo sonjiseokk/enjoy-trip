@@ -7,6 +7,7 @@ import com.ssafy.enjoytrip.domain.trip.model.AttractionInfoDto;
 import com.ssafy.enjoytrip.domain.trip.service.AttractionInfoService;
 import com.ssafy.enjoytrip.global.security.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +37,9 @@ public class EmbeddingController {
 
         List<SimilarDto> mostFive = embeddingService.myMostFive(myLikes);
 
-        List<AttractionInfoDto> result = new ArrayList<>();
+        List<SubResult> result = new ArrayList<>();
         for (SimilarDto similarDto : mostFive) {
-            result.add(attractionInfoService.findAttractionInfo(similarDto.getTitle()));
+            result.add(new SubResult(similarDto.getSimilarity(), attractionInfoService.findAttractionInfo(similarDto.getTitle())));
         }
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -57,6 +58,14 @@ public class EmbeddingController {
         boolean success;
         int status;
         T data;
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    static class SubResult<T> {
+        double similarity;
+        AttractionInfoDto info;
     }
 
 }

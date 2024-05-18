@@ -45,13 +45,13 @@ public class TestController {
 
     @GetMapping("/ai/embedding/addAll")
     public Map embed() throws Exception {
-        List<AttractionDescDto> dbInfos = attractionDescriptionService.findAll();
+        List<AttractionInfoDto> dbInfos = attractionInfoService.getAllDto();
 
         for (int i = 0; i < 100; i++) {
-            System.out.println("저장할 데이터의 제목은 : " + dbInfos.get(i).getContentId());
-            AttractionInfoDto findInfo = attractionInfoService.findAttractionContentId(dbInfos.get(i).getContentId());
+            System.out.println("저장할 데이터의 제목은 : " + dbInfos.get(i).getTitle());
+
             try {
-                embeddingService.join(findInfo.getTitle());
+                embeddingService.join(dbInfos.get(i).getTitle());
             } catch (Exception e) {
                 continue;
             }
@@ -83,7 +83,7 @@ public class TestController {
     public void addData2() throws Exception {
 
         List<AttractionInfoDto> allDto = attractionInfoService.getAllDto();
-        for (int i = 1300; i < allDto.size(); i++) {
+        for (int i = 0; i < allDto.size(); i++) {
             AttractionInfoDto attractionInfoDto = allDto.get(i);
             dataGoDescService.getDescList(attractionInfoDto.getContentId());
         }
