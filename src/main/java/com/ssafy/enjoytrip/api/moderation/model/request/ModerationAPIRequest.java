@@ -23,7 +23,7 @@ public class ModerationAPIRequest {
 
         this.requestedAttributes = new HashMap<>();
         String[] attributes = {"TOXICITY", "SEVERE_TOXICITY", "IDENTITY_ATTACK", "INSULT", "PROFANITY", "THREAT"};
-        Arrays.stream(attributes).forEach(attr -> requestedAttributes.put(attr, new Attribute(0.8)));
+        Arrays.stream(attributes).forEach(attr -> requestedAttributes.put(attr, new Attribute(0.6)));
     }
 
     @Setter

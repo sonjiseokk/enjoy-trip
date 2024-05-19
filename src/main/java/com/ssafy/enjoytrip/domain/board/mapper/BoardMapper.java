@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.domain.board.mapper;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.ssafy.enjoytrip.domain.board.model.BannedBoardDto;
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 import com.ssafy.enjoytrip.domain.board.controller.request.UpdateBoardDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,4 +19,12 @@ public interface BoardMapper {
 	void update(UpdateBoardDto boardDto) throws SQLException;
 
 	void delete(int id) throws SQLException;
+	
+	void writeBannedArticle(BannedBoardDto bannedBoardDto) throws SQLException;
+	
+	List<BannedBoardDto> listBannedArticle() throws SQLException;
+	
+	BannedBoardDto findBanById(int id) throws SQLException;
+
+	void viewBanCount(int id) throws SQLException;
 }

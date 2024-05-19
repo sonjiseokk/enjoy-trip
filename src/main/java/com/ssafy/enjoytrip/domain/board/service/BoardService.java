@@ -3,8 +3,11 @@ package com.ssafy.enjoytrip.domain.board.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.ssafy.enjoytrip.domain.board.model.BannedBoardDto;
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 import com.ssafy.enjoytrip.domain.board.mapper.BoardMapper;
+import com.ssafy.enjoytrip.api.moderation.model.response.ModerationResponse;
+import com.ssafy.enjoytrip.api.moderation.service.ModerationService;
 import com.ssafy.enjoytrip.domain.board.controller.request.BoardWriteRequest;
 import com.ssafy.enjoytrip.domain.board.controller.request.UpdateBoardDto;
 import com.ssafy.enjoytrip.global.exception.NotFoundArticleException;
@@ -20,6 +23,7 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class BoardService {
     private final BoardMapper boardMapper;
+    private final ModerationService moderationService;
 
     /**
      * 글 작성 로직을 수행하는 메소드
@@ -39,7 +43,82 @@ public class BoardService {
                 .contentId(request.getContentId())
                 .build();
         try {
-            boardMapper.writeArticle(boardDto);
+        	List<ModerationResponse> subjectModeration = moderationService.calculateModeration(boardDto.getSubject());
+        	List<ModerationResponse> contentModeration = moderationService.calculateModeration(boardDto.getContent());
+        	
+        	if(subjectModeration.isEmpty() && contentModeration.isEmpty()) {
+        		boardMapper.writeArticle(boardDto);
+        	}
+        	else {
+        		BannedBoardDto bannedBoardDto = new BannedBoardDto(boardDto);
+        		
+        		for(ModerationResponse mr : subjectModeration) {
+        			double max;
+        			switch (mr.getAttributeName()) {
+                    case "TOXICITY":
+                    	max = Math.max(bannedBoardDto.getToxicity(), mr.getScore());
+                        bannedBoardDto.setToxicity(max);
+                        break;
+                    case "SEVERE_TOXICITY":
+                    	max = Math.max(bannedBoardDto.getSevereToxicity(), mr.getScore());
+                    	bannedBoardDto.setSevereToxicity(max);
+                        break;
+                    case "IDENTITY_ATTACK":
+                    	max = Math.max(bannedBoardDto.getIdentityAttack(), mr.getScore());
+                    	bannedBoardDto.setIdentityAttack(max);
+                        break;
+                    case "INSULT":
+                    	max = Math.max(bannedBoardDto.getInsult(), mr.getScore());
+                    	bannedBoardDto.setInsult(max);
+                        break;
+                    case "PROFANITY":
+                    	max = Math.max(bannedBoardDto.getProfanity(), mr.getScore());
+                    	bannedBoardDto.setProfanity(max);
+                        break;
+                    case "THREAT":
+                    	max = Math.max(bannedBoardDto.getThreat(), mr.getScore());
+                    	bannedBoardDto.setThreat(max);
+                        break;
+                    default:
+                        break;
+        			}
+        		}
+        		
+        		for(ModerationResponse mr : contentModeration) {
+        			double max;
+        			switch (mr.getAttributeName()) {
+                    case "TOXICITY":
+                    	max = Math.max(bannedBoardDto.getToxicity(), mr.getScore());
+                        bannedBoardDto.setToxicity(max);
+                        break;
+                    case "SEVERE_TOXICITY":
+                    	max = Math.max(bannedBoardDto.getSevereToxicity(), mr.getScore());
+                    	bannedBoardDto.setSevereToxicity(max);
+                        break;
+                    case "IDENTITY_ATTACK":
+                    	max = Math.max(bannedBoardDto.getIdentityAttack(), mr.getScore());
+                    	bannedBoardDto.setIdentityAttack(max);
+                        break;
+                    case "INSULT":
+                    	max = Math.max(bannedBoardDto.getInsult(), mr.getScore());
+                    	bannedBoardDto.setInsult(max);
+                        break;
+                    case "PROFANITY":
+                    	max = Math.max(bannedBoardDto.getProfanity(), mr.getScore());
+                    	bannedBoardDto.setProfanity(max);
+                        break;
+                    case "THREAT":
+                    	max = Math.max(bannedBoardDto.getThreat(), mr.getScore());
+                    	bannedBoardDto.setThreat(max);
+                        break;
+                    default:
+                        break;
+        			}
+        		}
+        		
+        		boardMapper.writeBannedArticle(bannedBoardDto);
+        		return -1;
+        	}
             return boardDto.getBoardId();
         } catch (Exception e) {
             e.fillInStackTrace();
@@ -58,7 +137,6 @@ public class BoardService {
      */
     public List<BoardDto> listArticle(int boardType,String keyword) throws Exception {
         try {
-            log.info("keyword = {}",keyword);
             if (keyword == null) {
                 return boardMapper.listArticle(boardType);
             }
@@ -66,6 +144,41 @@ public class BoardService {
         } catch (Exception e) {
             e.fillInStackTrace();
             throw new Exception("게시물 리스트 조회중에 오류가 발생했습니다.");
+        }
+    }
+    
+    /**
+     * 차단된 글 전체 목록을 조회하는 메소드
+     * 키워드를 입력받으면 검색 기능으로서 활용된다.
+     *
+     * @param boardType 조회할 글 카테고리
+     * @param keyword 검색 기능으로 활용할 키워드
+     * @return 글 전체 목록
+     * @throws Exception 조회 실패 메시지
+     */
+    public List<BannedBoardDto> listBannedArticle(String keyword) throws Exception {
+        try {
+        	return boardMapper.listBannedArticle();
+        } catch (Exception e) {
+            e.fillInStackTrace();
+            throw new Exception("게시물 리스트 조회중에 오류가 발생했습니다.");
+        }
+    }
+    
+    public BannedBoardDto detailBanArticle(final int id) throws Exception {
+        try {
+            BannedBoardDto bannedBoardDto = boardMapper.findBanById(id);
+            if (bannedBoardDto == null) {
+                throw new NotFoundArticleException();
+            }
+            boardMapper.viewBanCount(id);
+            return bannedBoardDto;
+        } catch (NotFoundArticleException e) {
+            e.fillInStackTrace();
+            throw new NotFoundArticleException("해당 게시물이 없습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("게시물 상세 조회중에 오류가 발생했습니다.");
         }
     }
 

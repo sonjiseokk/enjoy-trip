@@ -33,6 +33,7 @@ public class ModerationService {
         log.info(key);
         String url = "https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=" + key;
 
+        //ModerationAPIRequest request = new ModerationAPIRequest("시발");
         ModerationAPIRequest request = new ModerationAPIRequest(message);
 
         HttpHeaders headers = new HttpHeaders();
@@ -50,7 +51,12 @@ public class ModerationService {
         ModerationAPIResponse response = responseEntity.getBody();
 
         List<ModerationResponse> responses = new ArrayList<>();
-        if (response != null && response.getAttributeScores() != null) {
+        System.out.println(responses.size());
+        if (response != null) {
+        	if(response.getAttributeScores() == null) {
+        		return responses;
+        	}
+        	
             for (Map.Entry<String, ModerationAPIResponse.AttributeScores> entry : response.getAttributeScores().entrySet()) {
                 String attributeName = entry.getKey();
                 double summaryScoreValue = entry.getValue().getSummaryScore().getValue();
@@ -61,7 +67,8 @@ public class ModerationService {
                         .build();
                 responses.add(moderationResponse);
             }
-        } else {
+        } 
+        else {
             throw new Exception("Moderation API 요청에 실패했습니다.");
         }
         return responses;
