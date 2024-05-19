@@ -59,12 +59,12 @@ public class EmbeddingService {
         }
     }
 
-    public List<SimilarDto> getMostFive(String title) throws Exception {
+    public List<SimilarDto> getMostTen(String title) throws Exception {
         try {
             EmbeddingDto findByTitle = embeddingMapper.findByTitle(title);
             List<EmbeddingDto> all = embeddingMapper.findAll();
 
-            return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 5);
+            return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 10);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("임베딩 서비스 로직에 실패했습니다.");
@@ -96,7 +96,7 @@ public class EmbeddingService {
                 .toArray();
     }
 
-    public List<SimilarDto> myMostFive(final List<AttractionInfoDto> myLikes) throws Exception {
+    public List<SimilarDto> myMostTen(final List<AttractionInfoDto> myLikes) throws Exception {
         try {
             HashSet<SimilarDto> result = new HashSet<>();
             Set<String> myLikeTitles = myLikes.stream()
@@ -104,14 +104,14 @@ public class EmbeddingService {
                     .collect(Collectors.toSet());
 
             for (AttractionInfoDto myLike : myLikes) {
-                result.addAll(getMostFive(myLike.getTitle()));
+                result.addAll(getMostTen(myLike.getTitle()));
             }
 
             // myLikeTitles에 포함되지 않은 SimilarDto만 필터링
             return result.stream()
                     .filter(dto -> !myLikeTitles.contains(dto.getTitle()))
                     .sorted((d1, d2) -> Double.compare(d2.getSimilarity(), d1.getSimilarity()))
-                    .limit(5)
+                    .limit(10)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();

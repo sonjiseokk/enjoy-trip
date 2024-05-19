@@ -29,13 +29,13 @@ public class EmbeddingController {
     private final EmbeddingService embeddingService;
     private final AttractionInfoService attractionInfoService;
 
-    @GetMapping("/most5")
-    public ResponseEntity<?> getMost5(HttpServletRequest request) throws Exception {
-        // TODO : like 기능 구현하고 올게요
+    @GetMapping("/most")
+    public ResponseEntity<?> getMostTen(HttpServletRequest request) throws Exception {
+
         String userId = getUserId(request);
         List<AttractionInfoDto> myLikes = likeService.listLike(userId);
 
-        List<SimilarDto> mostFive = embeddingService.myMostFive(myLikes);
+        List<SimilarDto> mostFive = embeddingService.myMostTen(myLikes);
 
         List<SubResult> result = new ArrayList<>();
         for (SimilarDto similarDto : mostFive) {
@@ -45,6 +45,7 @@ public class EmbeddingController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(true, HttpStatus.OK.value(), result));
     }
+
 
     private String getUserId(final HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");

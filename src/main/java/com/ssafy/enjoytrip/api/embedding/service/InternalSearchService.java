@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class InternalSearchService {
-    private final AttractionInfoService attractionInfoService;
     private static final double SIMILARITY_THRESHOLD = 0.8; // Just an example threshold to limit the results
 
     public List<SimilarDto> findMostSimilarEmbeddings(EmbeddingDto queryEmbedding, List<EmbeddingDto> dbEmbeddings, int topResults) {

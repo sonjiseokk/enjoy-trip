@@ -7,7 +7,6 @@ import com.ssafy.enjoytrip.api.embedding.model.SimilarDto;
 import com.ssafy.enjoytrip.api.embedding.service.EmbeddingService;
 import com.ssafy.enjoytrip.api.moderation.model.response.ModerationResponse;
 import com.ssafy.enjoytrip.api.moderation.service.ModerationService;
-import com.ssafy.enjoytrip.domain.trip.model.AttractionDescDto;
 import com.ssafy.enjoytrip.domain.trip.model.AttractionInfoDto;
 import com.ssafy.enjoytrip.domain.trip.service.AttractionDescriptionService;
 import com.ssafy.enjoytrip.domain.trip.service.AttractionInfoService;
@@ -62,7 +61,7 @@ public class TestController {
 
     @GetMapping("/ai/embedding/most5")
     public ResponseEntity<?> most(@RequestParam String name) throws Exception {
-        List<SimilarDto> similarityDto = embeddingService.getMostFive(name);
+        List<SimilarDto> similarityDto = embeddingService.getMostTen(name);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(similarityDto);
     }
