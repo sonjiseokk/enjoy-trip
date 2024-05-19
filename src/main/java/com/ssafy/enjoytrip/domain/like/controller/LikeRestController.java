@@ -31,6 +31,20 @@ public class LikeRestController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(true, HttpStatus.OK.value(), myLikes));
     }
+
+    @GetMapping("/like/{contentId}")
+    public ResponseEntity<?> isLiked(@PathVariable("contentId") int contentId, HttpServletRequest request) throws Exception {
+
+        String userId = getUserId(request);
+
+        if (likeService.likeCheck(contentId, userId)) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Result<>(true, HttpStatus.OK.value(), true));
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Result<>(true, HttpStatus.OK.value(), false));
+    }
+
     @PostMapping("/like/{contentId}")
     public ResponseEntity<?> getLike(@PathVariable("contentId") int contentId, HttpServletRequest request) throws Exception {
 
@@ -50,7 +64,7 @@ public class LikeRestController {
                 .body(new Result<>(true, HttpStatus.OK.value(), "좋아요 삭제 완료"));
     }
 
-//    @PostMapping(value = "/optimalpath")
+    //    @PostMapping(value = "/optimalpath")
 //	public ResponseEntity<?> optimalPath(HttpServletRequest request) throws Exception {
 //
 //        String userId = getUserId(request);

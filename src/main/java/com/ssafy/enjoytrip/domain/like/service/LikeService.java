@@ -22,7 +22,15 @@ public class LikeService {
 	
 	Double minDistance;
 	int[] shortestPath;
-
+	public boolean likeCheck(int contentId, final String userId) throws Exception {
+		List<LikeDto> likeDtos = likeMapper.listLike(userId);
+		for (LikeDto likeDto : likeDtos) {
+			if (likeDto.getContentId() == contentId) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void registLike(String userId, int contentId) throws Exception {
 		LikeDto likeDto = new LikeDto(userId, contentId);
@@ -134,4 +142,6 @@ public class LikeService {
             }
         }
     }
+
+
 }
