@@ -55,8 +55,9 @@ public class LikeService {
 	}
 
 
-	public void deleteLike(String userId) throws Exception {
-		likeMapper.deleteLike(userId);
+	public void deleteLike(int contentId, String userId) throws Exception {
+		LikeDto likeDto = new LikeDto(userId, contentId);
+		likeMapper.deleteLike(likeDto);
 	}
 
 

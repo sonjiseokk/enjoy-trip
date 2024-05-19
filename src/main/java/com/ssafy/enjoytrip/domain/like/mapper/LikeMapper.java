@@ -10,5 +10,5 @@ import com.ssafy.enjoytrip.domain.like.model.LikeDto;
 public interface LikeMapper {
 	public void registLike(LikeDto likeDto) throws Exception;
 	public List<LikeDto> listLike(String userId) throws Exception;
-	public void deleteLike (String userId) throws Exception;
+	public void deleteLike (LikeDto dto) throws Exception;
 }

@@ -18,9 +18,9 @@
 		where user_id = #{userId}
 	</select>
 	
-	<delete id = "deleteLike" parameterType = "string">
+	<delete id = "deleteLike" parameterType = "LikeDto">
 		delete
 		from attraction_like
-		where user_id = #{userId}
+		where user_id = #{userId} and content_id = #{contentId}
 	</delete>
 </mapper>

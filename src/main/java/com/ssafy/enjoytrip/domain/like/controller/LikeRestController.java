@@ -58,7 +58,7 @@ public class LikeRestController {
     @DeleteMapping("/like/{contentId}")
     public ResponseEntity<?> removeLike(@PathVariable("contentId") int contentId, HttpServletRequest request) throws Exception {
         String userId = getUserId(request);
-        likeService.deleteLike(userId);
+        likeService.deleteLike(contentId,userId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(true, HttpStatus.OK.value(), "좋아요 삭제 완료"));
