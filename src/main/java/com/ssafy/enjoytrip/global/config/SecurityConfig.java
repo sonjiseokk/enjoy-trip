@@ -38,6 +38,7 @@ public class SecurityConfig {
                         "/api/trip/**",
                         "/images/**",
                         "/api/member/email/**",
+                        "/api/news/list/*",
                         "/test/**")
                 .requestMatchers(PathRequest.toStaticResources()
                         .atCommonLocations());
