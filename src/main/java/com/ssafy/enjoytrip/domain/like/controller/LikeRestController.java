@@ -64,20 +64,23 @@ public class LikeRestController {
                 .body(new Result<>(true, HttpStatus.OK.value(), "좋아요 삭제 완료"));
     }
 
-    //    @PostMapping(value = "/optimalpath")
-//	public ResponseEntity<?> optimalPath(HttpServletRequest request) throws Exception {
-//
-//        String userId = getUserId(request);
-//
-//		List<AttractionInfoDto> path = likeService.optimalPath(userId,contentId);
-//		if(path != null && !path.isEmpty()) {
-//			return new ResponseEntity<>(path, HttpStatus.OK);
-//		}
-//		else {
-//			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-//		}
-//
-//	}
+    @PostMapping(value = "/optimalpath")
+	public ResponseEntity<?> optimalPath(@RequestBody String contentId, HttpServletRequest request) throws Exception {
+
+        String userId = getUserId(request);
+        int intId = Integer.parseInt(contentId);
+
+		List<AttractionInfoDto> path = likeService.optimalPath(userId,intId);
+		if(path != null && !path.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Result<>(true, HttpStatus.OK.value(), path));
+		}
+		else {
+			
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+    
     private String getUserId(final HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
         String token = authorization.split(" ")[1];
