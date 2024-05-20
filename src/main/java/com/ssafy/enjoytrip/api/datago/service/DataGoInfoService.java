@@ -29,8 +29,8 @@ public class DataGoInfoService {
 
     public void getAreaBasedList(int pageNo, int numOfRows) throws Exception {
         // 하드코딩된 URL
-//        String url = "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=wcRHiVOvmjix4S7zSPQtgL%2F21iI0rhaUP9h1tpm0o2Daihy8Loue%2F0zyveUmedwhOcsE9%2Bcui3hkEudEAQiyuA%3D%3D&numOfRows=1000&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A";
-        String url = "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=wcRHiVOvmjix4S7zSPQtgL%2F21iI0rhaUP9h1tpm0o2Daihy8Loue%2F0zyveUmedwhOcsE9%2Bcui3hkEudEAQiyuA%3D%3D&numOfRows=10000&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=Q";
+        String url = "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=Q0MR3QSTJqaZFrXpIOb7lBY7Z8LJx8cBz3IxRFBdDrEwbnUdn11uJ1ntwaBj9ZIypnEnvlWR6eGP3w/TEexEfA==&numOfRows=1000&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=Q";
+//        String url = "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=wcRHiVOvmjix4S7zSPQtgL%2F21iI0rhaUP9h1tpm0o2Daihy8Loue%2F0zyveUmedwhOcsE9%2Bcui3hkEudEAQiyuA%3D%3D&numOfRows=10000&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=Q";
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -53,7 +53,13 @@ public class DataGoInfoService {
                 String title = attractionInfoDto.getTitle();
                 System.out.println(title);
 
-                attractionInfoMapper.save(attractionInfoDto);
+                try {
+
+                    attractionInfoMapper.save(attractionInfoDto);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    continue;
+                }
             }
         } else {
             throw new Exception("API 요청에 실패했습니다.");

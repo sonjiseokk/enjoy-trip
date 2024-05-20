@@ -65,7 +65,7 @@ public class EmbeddingService {
             EmbeddingDto findByTitle = embeddingMapper.findByTitle(title);
             List<EmbeddingDto> all = embeddingMapper.findAll();
 
-            return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 10);
+            return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 20);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("임베딩 서비스 로직에 실패했습니다.");
@@ -90,11 +90,13 @@ public class EmbeddingService {
         }
     }
 
-    public List<SimilarDto> mostTen(AttractionInfoDto dto) throws Exception {
+    public List<SimilarDto> mostTen(final List<AttractionInfoDto> myLikes, AttractionInfoDto dto) throws Exception {
         List<SimilarDto> containMeMostTen = getMostTen(dto.getTitle());
         return containMeMostTen.stream()
                 .filter(similarDto -> !similarDto.getTitle().equals(dto.getTitle()))
+                .filter(similarDto -> myLikes.stream().noneMatch(like -> like.getTitle().equals(similarDto.getTitle())))
                 .sorted((d1, d2) -> Double.compare(d2.getSimilarity(), d1.getSimilarity()))
+                .limit(10)
                 .toList();
     }
 

@@ -35,7 +35,7 @@ public class EmbeddingController {
         String userId = getUserId(request);
         List<AttractionInfoDto> myLikes = likeService.listLike(userId);
         AttractionInfoDto randomAttraction = embeddingService.pickRandomAttraction(myLikes);
-        List<SimilarDto> mostFive = embeddingService.mostTen(randomAttraction);
+        List<SimilarDto> mostFive = embeddingService.mostTen(myLikes, randomAttraction);
 
         List<SubResult> result = new ArrayList<>();
         for (SimilarDto similarDto : mostFive) {
