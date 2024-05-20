@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.domain.member.service;
 
 import com.ssafy.enjoytrip.domain.member.repository.VerificationCodeStore;
+import com.ssafy.enjoytrip.global.util.RandomGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,20 +15,11 @@ public class VerificationService {
     private final VerificationCodeStore codeStore = new VerificationCodeStore();
 
     public void sendVerificationCode(String email) throws Exception {
-        String code = generateCode();
+        String code = RandomGenerator.generateCode();
         LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(10); // 10분 유효
         codeStore.save(email, code, expirationTime);
         String emailContent = mailService.buildVerificationEmail(code);
         mailService.sendEmail(email, "Email Verification Code", emailContent);
-    }
-
-    private String generateCode() {
-        SecureRandom random = new SecureRandom();
-        StringBuilder code = new StringBuilder();
-        for (int i = 0; i < 6; i++) {
-            code.append(random.nextInt(10));
-        }
-        return code.toString();
     }
 
     public boolean verifyCode(String email, String code) {
