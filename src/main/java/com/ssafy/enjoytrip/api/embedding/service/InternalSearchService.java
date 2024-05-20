@@ -22,7 +22,11 @@ public class InternalSearchService {
         for (EmbeddingDto dbEmbedding : dbEmbeddings) {
             double similarity = cosineSimilarity(queryEmbedding.getVector(), dbEmbedding.getVector());
             if (similarity >= SIMILARITY_THRESHOLD) {
-                mostSimilarIndices.add(new SimilarDto(dbEmbedding.getTitle(), similarity));
+                mostSimilarIndices.add(SimilarDto.builder()
+                                .title(dbEmbedding.getTitle())
+                                .sourceTitle(queryEmbedding.getTitle())
+                                .similarity(similarity)
+                        .build());
             }
         }
 
