@@ -41,8 +41,8 @@ public class EmbeddingService {
             double[] vector = getVector(embeddingResponse);
             EmbeddingDto embeddingDto = EmbeddingDto.builder()
                     .contentId(info.getContentId())
-                    .embeddingName(String.format("name : %s | location : %s | latitude : %f | longitude : %f | sido : %s | gugun : %s | category : %s",
-                            info.getTitle(), info.getAddress(), info.getLatitude(), info.getLongitude(), sidoName, gugunName, category)
+                    .embeddingName(String.format("name : %s | location : %s | sido : %s | gugun : %s | category : %s",
+                            info.getTitle(), info.getAddress(), sidoName, gugunName, category)
                     )
                     .title(info.getTitle())
                     .vector(vector)
