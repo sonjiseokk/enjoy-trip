@@ -34,16 +34,18 @@ public class EmbeddingController {
 
         String userId = getUserId(request);
         List<AttractionInfoDto> myLikes = likeService.listLike(userId);
-
-        List<SimilarDto> mostFive = embeddingService.myMostTen(myLikes);
+        AttractionInfoDto randomAttraction = embeddingService.pickRandomAttraction(myLikes);
+        List<SimilarDto> mostFive = embeddingService.mostTen(randomAttraction);
 
         List<SubResult> result = new ArrayList<>();
         for (SimilarDto similarDto : mostFive) {
             result.add(new SubResult(similarDto.getSimilarity(), attractionInfoService.findAttractionInfo(similarDto.getTitle())));
         }
 
+        SelectedInfo selectedInfo = new SelectedInfo(randomAttraction, result);
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(true, HttpStatus.OK.value(), result));
+                .body(new Result<>(true, HttpStatus.OK.value(), selectedInfo));
     }
 
 
@@ -62,9 +64,16 @@ public class EmbeddingController {
     }
 
     @Data
+    @AllArgsConstructor
+    static class SelectedInfo {
+        AttractionInfoDto dto;
+        List<SubResult> recommendations;
+    }
+
+    @Data
     @Builder
     @AllArgsConstructor
-    static class SubResult<T> {
+    static class SubResult {
         double similarity;
         AttractionInfoDto info;
     }

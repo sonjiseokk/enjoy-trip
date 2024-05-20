@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -89,13 +90,32 @@ public class EmbeddingService {
         }
     }
 
-    private static double[] getVector(final EmbeddingResponse embeddingResponse) {
-        List<Double> doubles = embeddingResponse.getResult().getOutput();
-        return doubles.stream()
-                .mapToDouble(Double::doubleValue)
-                .toArray();
+    public List<SimilarDto> mostTen(AttractionInfoDto dto) throws Exception {
+        List<SimilarDto> containMeMostTen = getMostTen(dto.getTitle());
+        return containMeMostTen.stream()
+                .filter(similarDto -> !similarDto.getTitle().equals(dto.getTitle()))
+                .sorted((d1, d2) -> Double.compare(d2.getSimilarity(), d1.getSimilarity()))
+                .toList();
     }
 
+    public AttractionInfoDto pickRandomAttraction(final List<AttractionInfoDto> myLikes) throws Exception {
+        if (myLikes == null || myLikes.isEmpty()) {
+            throw new Exception("The list of attractions is empty or null");
+        }
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(myLikes.size());
+        return myLikes.get(randomIndex);
+    }
+
+    /**
+     * 내 좋아요 목록을 토대로 유사한 관광지 10개를 뽑아내는 메소드
+     *
+     * @param myLikes
+     * @return
+     * @throws Exception
+     */
+    @Deprecated
     public List<SimilarDto> myMostTen(final List<AttractionInfoDto> myLikes) throws Exception {
         try {
             HashSet<SimilarDto> result = new HashSet<>();
@@ -117,5 +137,13 @@ public class EmbeddingService {
             e.printStackTrace();
             throw new Exception("most 5를 불러오는데 실패했습니다.");
         }
+    }
+
+
+    private static double[] getVector(final EmbeddingResponse embeddingResponse) {
+        List<Double> doubles = embeddingResponse.getResult().getOutput();
+        return doubles.stream()
+                .mapToDouble(Double::doubleValue)
+                .toArray();
     }
 }
