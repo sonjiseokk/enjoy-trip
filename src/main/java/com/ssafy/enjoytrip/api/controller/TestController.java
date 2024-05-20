@@ -10,11 +10,13 @@ import com.ssafy.enjoytrip.api.moderation.service.ModerationService;
 import com.ssafy.enjoytrip.domain.trip.model.AttractionInfoDto;
 import com.ssafy.enjoytrip.domain.trip.service.AttractionDescriptionService;
 import com.ssafy.enjoytrip.domain.trip.service.AttractionInfoService;
+import com.ssafy.enjoytrip.domain.member.service.VerificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +26,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/test")
 public class TestController {
     private final EmbeddingService embeddingService;
     private final ModerationService moderationService;
@@ -31,6 +34,7 @@ public class TestController {
     private final DataGoDescService dataGoDescService;
     private final AttractionInfoService attractionInfoService;
     private final AttractionDescriptionService attractionDescriptionService;
+    private final VerificationService verificationService;
 
     @GetMapping("/ai/embedding/add")
     public Map embed(@RequestParam(value = "message", defaultValue = "Tell me a joke") String message) throws Exception {

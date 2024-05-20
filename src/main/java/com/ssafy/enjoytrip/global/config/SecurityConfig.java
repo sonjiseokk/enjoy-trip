@@ -34,11 +34,11 @@ public class SecurityConfig {
                 .requestMatchers("/api/member/join",
                         "/api/member/login",
                         "/api/member/check/duplication/*",
-                        "/add/data",
                         "/api/auth/refresh",
                         "/api/trip/**",
-                        "/ai/**",
-                        "/images/**")
+                        "/images/**",
+                        "/api/member/email/**",
+                        "/test/**")
                 .requestMatchers(PathRequest.toStaticResources()
                         .atCommonLocations());
     }
