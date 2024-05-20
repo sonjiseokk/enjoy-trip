@@ -77,9 +77,10 @@ public class BoardRestController {
                 .body(new Result<>(true,HttpStatus.OK.value(), "글 작성이 완료되었습니다."));
     }
     
-    @GetMapping("/banList")
-    public ResponseEntity<?> listBanned(@RequestParam(value = "keyword", required = false) String keyword) throws Exception {
+    @GetMapping("/banList/{keyword}")
+    public ResponseEntity<?> listBanned(@PathVariable("keyword") String keyword) throws Exception {
         List<BannedBoardDto> list = boardService.listBannedArticle(keyword);
+        System.out.println(keyword + " " + list.size());
         if (!list.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Result<>(true,HttpStatus.OK.value(), list));

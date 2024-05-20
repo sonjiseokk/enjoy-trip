@@ -43,9 +43,15 @@
         values (#{subject}, #{content}, #{userId}, #{boardTypeId}, #{contentId}, #{toxicity}, #{severeToxicity}, #{identityAttack}, #{insult}, #{profanity}, #{threat});
     </insert>
     
-    <select id="listBannedArticle" parameterType="int" resultType="BannedBoardDto">
-        select *
-        from bannedboard
+    <select id="listBannedArticle" parameterType="string" resultType="BannedBoardDto">
+        <choose>
+	        <when test="keyword == null">
+	            select * from bannedboard
+	        </when>
+	        <otherwise>
+	            select * from bannedboard where user_id = #{keyword}
+	        </otherwise>
+    </choose>
     </select>
     
     <select id="findBanById" parameterType="int" resultType="BannedBoardDto">

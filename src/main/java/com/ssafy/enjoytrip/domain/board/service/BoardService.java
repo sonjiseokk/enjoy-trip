@@ -158,7 +158,7 @@ public class BoardService {
      */
     public List<BannedBoardDto> listBannedArticle(String keyword) throws Exception {
         try {
-        	return boardMapper.listBannedArticle();
+        	return boardMapper.listBannedArticle(keyword);
         } catch (Exception e) {
             e.fillInStackTrace();
             throw new Exception("게시물 리스트 조회중에 오류가 발생했습니다.");

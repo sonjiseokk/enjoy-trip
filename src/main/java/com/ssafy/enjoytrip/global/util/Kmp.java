@@ -1,9 +1,10 @@
 package com.ssafy.enjoytrip.global.util;
 
-import com.ssafy.enjoytrip.domain.board.model.BoardDto;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ssafy.enjoytrip.domain.board.model.BannedBoardDto;
+import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 
 public class Kmp {
     static int[] makeTable(String pattern) {

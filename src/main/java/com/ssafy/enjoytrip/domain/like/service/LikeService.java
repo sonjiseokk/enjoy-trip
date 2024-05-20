@@ -49,7 +49,7 @@ public class LikeService {
 			}
 			return likeAttractions;
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.fillInStackTrace();
 			throw new Exception("관심 목록을 가져오는 과정에서 에러 발생");
 		}
 	}

@@ -22,7 +22,7 @@ public interface BoardMapper {
 	
 	void writeBannedArticle(BannedBoardDto bannedBoardDto) throws SQLException;
 	
-	List<BannedBoardDto> listBannedArticle() throws SQLException;
+	List<BannedBoardDto> listBannedArticle(String keyword) throws SQLException;
 	
 	BannedBoardDto findBanById(int id) throws SQLException;
 
