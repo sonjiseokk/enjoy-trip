@@ -35,3 +35,4 @@ build/
 /src/main/resources/application-openai.properties
 /src/test/resources/application-openai.properties
 /src/main/resources/application-mail.properties
+/src/main/resources/application-news.properties
