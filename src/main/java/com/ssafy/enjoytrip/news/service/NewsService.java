@@ -27,9 +27,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NewsService {
 	@Value("${X-Naver-Client-Id}")
-	String clientId = "cPj7bWvpd8YbY8kGPrOW"; //애플리케이션 클라이언트 아이디
+	String clientId; //애플리케이션 클라이언트 아이디
 	@Value("${X-Naver-Client-Secret}")
-	String clientSecret = "lboRZ16rSF"; //애플리케이션 클라이언트 시크릿
+	String clientSecret; //애플리케이션 클라이언트 시크릿
 	
 	public List<NewsDto> getNews(String text) {
 	     try {
