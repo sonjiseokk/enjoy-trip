@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.domain.board.controller;
 
 import com.ssafy.enjoytrip.domain.board.model.BannedBoardDto;
 import com.ssafy.enjoytrip.domain.board.model.BoardDto;
+import com.ssafy.enjoytrip.domain.board.model.WriteResponse;
 import com.ssafy.enjoytrip.domain.board.controller.request.BoardWriteRequest;
 import com.ssafy.enjoytrip.domain.board.controller.request.UpdateBoardDto;
 import com.ssafy.enjoytrip.domain.board.service.BoardService;
@@ -49,12 +50,17 @@ public class BoardRestController {
     @PostMapping("/write")
     public ResponseEntity<?> write(@RequestBody BoardWriteRequest request) throws Exception {
     	int result = boardService.writeArticle(request);
+    	WriteResponse writeResponse;
     	if(result < 0) {
+    		 writeResponse = new WriteResponse(-1, "부적절한 게시글로 판단되어 차단되었습니다.");
+    		
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Result<>(true,HttpStatus.OK.value(), "부적절한 게시글로 판단되어 차단되었습니다."));
+                    .body(new Result<>(true,HttpStatus.OK.value(), writeResponse));
     	}
+    	writeResponse = new WriteResponse(1, "글 작성이 완료되었습니다.");
+		
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(true,HttpStatus.OK.value(), "글 작성이 완료되었습니다."));
+                .body(new Result<>(true,HttpStatus.OK.value(), writeResponse));
     }
     
     @PostMapping("/delete/{id}")
