@@ -65,7 +65,7 @@ public class EmbeddingService {
             EmbeddingDto findByTitle = embeddingMapper.findByTitle(title);
             List<EmbeddingDto> all = embeddingMapper.findAll();
 
-            return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 20);
+            return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 10);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("임베딩 서비스 로직에 실패했습니다.");

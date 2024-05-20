@@ -13,9 +13,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +44,22 @@ public class EmbeddingController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(true, HttpStatus.OK.value(), selectedInfo));
+    }
+
+    @GetMapping("/recommend")
+    public ResponseEntity<?> recommend(@RequestParam int contentId) throws Exception {
+        AttractionInfoDto selectedInfo = attractionInfoService.getTrip(contentId);
+        List<SimilarDto> mostTen = embeddingService.getMostTen(selectedInfo.getTitle());
+
+        List<SubResult> result = new ArrayList<>();
+        // 0은 자기 자신, 이외의 3개를 뽑아냄
+        for (int i = 1; i < 4; i++) {
+            SimilarDto similarDto = mostTen.get(i);
+            result.add(new SubResult(similarDto.getSimilarity(), attractionInfoService.findAttractionInfo(similarDto.getTitle())));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Result<>(true, HttpStatus.OK.value(), result));
     }
 
 
