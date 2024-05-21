@@ -10,19 +10,22 @@
             <if test="contentTypeId != 0">
                 content_type_id = #{contentTypeId}
             </if>
-            <if test="contentTypeId != 0 and sidoCode != 0">
+            <if test="sidoCode != 0">
                 and sido_code = #{sidoCode}
             </if>
-            <if test="contentTypeId == 0 and sidoCode != 0">
-                sido_code = #{sidoCode}
-            </if>
-            <if test="(contentTypeId != 0 or sidoCode != 0) and gugunCode != 0">
+            <if test="gugunCode != 0">
                 and gugun_code = #{gugunCode}
             </if>
-            <if test="(contentTypeId == 0 and sidoCode == 0) and gugunCode != 0">
-                gugun_code = #{gugunCode}
+            <if test="keyword != null and keyword != ''">
+                and title like concat('%', #{keyword}, '%')
             </if>
         </where>
+    </select>
+
+    <select id="searchAll" parameterType="String" resultType="AttractionInfoDto">
+        select distinct *
+        from attraction_info
+        where title like concat('%', #{keyword}, '%')
     </select>
 
     <select id="getTrip" parameterType="int" resultType="AttractionInfoDto">
@@ -46,13 +49,13 @@
         from content_type;
     </select>
 
-    <insert id="save" parameterType="AttractionInfoDto" >
+    <insert id="save" parameterType="AttractionInfoDto">
         insert into attraction_info(content_id, title, address, thumnail_image, readcount,
                                     latitude, longitude, mlevel, gugun_code, sido_code,
-                                     content_type_id)
+                                    content_type_id)
         values (#{contentId}, #{title}, #{address}, #{thumnailImage}, #{readcount},
                 #{latitude}, #{longitude}, #{mlevel}, #{gugunCode}, #{sidoCode},
-                 #{contentTypeId});
+                #{contentTypeId});
     </insert>
 
     <select id="findAll" resultType="AttractionInfoDto">
@@ -80,7 +83,8 @@
     <select id="findNameByGugunCode">
         select distinct gugun_name
         from gugun
-        where gugun_code = #{gugunCode} and sido_code = #{sidoCode}
+        where gugun_code = #{gugunCode}
+          and sido_code = #{sidoCode}
     </select>
     <select id="findNameByContentTypeId">
         select type_name

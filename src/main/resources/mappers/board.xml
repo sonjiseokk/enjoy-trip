@@ -11,6 +11,7 @@
         select *
         from board
         where board_type_id = #{boardTypeId}
+        order by board_id desc
     </select>
     <select id="findUserIdByBoardId" parameterType="int" resultType="String">
         select user_id

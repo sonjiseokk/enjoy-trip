@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +20,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/api/trip")
+@Slf4j
 public class TripController {
     private final AttractionInfoService attractionInfoService;
     private final AttractionDescriptionService attractionDescriptionService;
+
     @PostMapping(value = "/search")
     public ResponseEntity<?> tripList(@RequestBody TripSearchCondition con) throws Exception {
         List<AttractionInfoDto> list = attractionInfoService.searchTrip(con);
@@ -32,7 +35,28 @@ public class TripController {
         }
 
         if (!list.isEmpty()) {
-            return new ResponseEntity<>(new Result(HttpStatus.OK.value(),result), HttpStatus.OK);
+            return new ResponseEntity<>(new Result(HttpStatus.OK.value(), result), HttpStatus.OK);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new Result<>(HttpStatus.NOT_FOUND.value(), "데이터를 찾을 수 없습니다."));
+        }
+    }
+
+    @GetMapping(value = "/searchAll")
+    public ResponseEntity<?> tripList(@RequestParam("keyword") String keyword) throws Exception {
+        log.info("넘어온 키워드는 = {}",keyword);
+        List<AttractionInfoDto> list = attractionInfoService.serachAll(keyword);
+        List<SubResult> result = new ArrayList<>();
+        for (AttractionInfoDto dto : list) {
+            AttractionDescDto descDto = attractionDescriptionService.findById(dto.getContentId());
+            if (descDto == null) {
+                continue;
+            }
+            result.add(new SubResult<>(dto, descDto.getOverview()));
+        }
+
+        if (!result.isEmpty()) {
+            return new ResponseEntity<>(new Result(HttpStatus.OK.value(), result), HttpStatus.OK);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new Result<>(HttpStatus.NOT_FOUND.value(), "데이터를 찾을 수 없습니다."));
@@ -88,9 +112,10 @@ public class TripController {
         int status;
         T data;
     }
+
     @Data
     @AllArgsConstructor
-    static class SubResult<T>{
+    static class SubResult<T> {
         AttractionInfoDto info;
         String desc;
     }
