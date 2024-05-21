@@ -227,7 +227,7 @@ public class BoardService {
         try {
             MemberDto viewMember = memberService.findMember(userId);
             String boardWriter = boardMapper.findUserIdByBoardId(id);
-            if (viewMember.getRole().equals("ADMIN") || viewMember.getUserName().equals(boardWriter)) {
+            if (viewMember.getRole().equals("ADMIN") || viewMember.getUserId().equals(boardWriter)) {
                 BoardDto boardDto = boardMapper.findById(id);
                 if (boardDto == null) {
                     throw new NotFoundArticleException();
