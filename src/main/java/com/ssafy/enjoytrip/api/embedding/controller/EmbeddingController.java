@@ -21,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/embed")
 @RequiredArgsConstructor
+@CrossOrigin(value = "*")
 public class EmbeddingController {
     private final JwtUtil jwtUtil;
     private final LikeService likeService;

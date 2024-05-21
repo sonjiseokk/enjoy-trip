@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/board")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin(origins = "*")
 public class BoardRestController {
     private final BoardService boardService;
 

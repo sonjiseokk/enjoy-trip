@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/member")
+@CrossOrigin(value = "*")
 public class LikeRestController {
     private final LikeService likeService;
     private final JwtUtil jwtUtil;

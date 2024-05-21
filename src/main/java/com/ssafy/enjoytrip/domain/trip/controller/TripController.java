@@ -1,19 +1,19 @@
 package com.ssafy.enjoytrip.domain.trip.controller;
 
-import java.util.List;
-
+import com.ssafy.enjoytrip.domain.trip.controller.request.TripSearchCondition;
 import com.ssafy.enjoytrip.domain.trip.model.*;
+import com.ssafy.enjoytrip.domain.trip.service.AttractionDescriptionService;
+import com.ssafy.enjoytrip.domain.trip.service.AttractionInfoService;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.enjoytrip.domain.trip.controller.request.TripSearchCondition;
-import com.ssafy.enjoytrip.domain.trip.service.AttractionInfoService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,12 +21,18 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/trip")
 public class TripController {
     private final AttractionInfoService attractionInfoService;
-
+    private final AttractionDescriptionService attractionDescriptionService;
     @PostMapping(value = "/search")
     public ResponseEntity<?> tripList(@RequestBody TripSearchCondition con) throws Exception {
         List<AttractionInfoDto> list = attractionInfoService.searchTrip(con);
-        if (list != null && !list.isEmpty()) {
-            return new ResponseEntity<List<AttractionInfoDto>>(list, HttpStatus.OK);
+        List<SubResult> result = new ArrayList<>();
+        for (AttractionInfoDto dto : list) {
+            AttractionDescDto descDto = attractionDescriptionService.findById(dto.getContentId());
+            result.add(new SubResult<>(dto, descDto.getOverview()));
+        }
+
+        if (!list.isEmpty()) {
+            return new ResponseEntity<>(new Result(HttpStatus.OK.value(),result), HttpStatus.OK);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new Result<>(HttpStatus.NOT_FOUND.value(), "데이터를 찾을 수 없습니다."));
@@ -81,5 +87,11 @@ public class TripController {
     static class Result<T> {
         int status;
         T data;
+    }
+    @Data
+    @AllArgsConstructor
+    static class SubResult<T>{
+        AttractionInfoDto info;
+        String desc;
     }
 }
