@@ -6,6 +6,8 @@ import com.ssafy.enjoytrip.domain.board.model.WriteResponse;
 import com.ssafy.enjoytrip.domain.board.controller.request.BoardWriteRequest;
 import com.ssafy.enjoytrip.domain.board.controller.request.UpdateBoardDto;
 import com.ssafy.enjoytrip.domain.board.service.BoardService;
+import com.ssafy.enjoytrip.global.security.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -23,83 +25,98 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class BoardRestController {
     private final BoardService boardService;
+    private final JwtUtil jwtUtil;
 
-    @GetMapping
-    public ResponseEntity<?> list(@RequestParam("boardType") int boardType,@RequestParam(value = "keyword", required = false) String keyword) throws Exception {
-        List<BoardDto> list = boardService.listArticle(boardType,keyword);
+    @GetMapping("/list")
+    public ResponseEntity<?> list(@RequestParam("boardType") int boardType, @RequestParam(value = "keyword", required = false) String keyword) throws Exception {
+        List<BoardDto> list = boardService.listArticle(boardType, keyword);
         if (!list.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Result<>(true,HttpStatus.OK.value(), list));
+                    .body(new Result<>(true, HttpStatus.OK.value(), list));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new Result<>(false,HttpStatus.NOT_FOUND.value(), "등록된 게시물이 없습니다."));
+                    .body(new Result<>(false, HttpStatus.NOT_FOUND.value(), "등록된 게시물이 없습니다."));
         }
     }
 
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<?> detail(@PathVariable("id") int id) throws Exception {
+    @GetMapping("/qna/detail/{id}")
+    public ResponseEntity<?> qnaDetail(HttpServletRequest request, @PathVariable("id") int id) throws Exception {
+        String userId = getUserId(request);
+
+        BoardDto boardDto = boardService.detailQna(userId, id);
+        if (boardDto != null) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Result<>(true, HttpStatus.OK.value(), boardDto));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new Result<>(false, HttpStatus.BAD_REQUEST.value(), "해당 게시물이 없습니다."));
+        }
+    }
+
+    @GetMapping("/notice/detail/{id}")
+    public ResponseEntity<?> noticeDetail(@PathVariable("id") int id) throws Exception {
         BoardDto boardDto = boardService.detailArticle(id);
         if (boardDto != null) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Result<>(true,HttpStatus.OK.value(), boardDto));
+                    .body(new Result<>(true, HttpStatus.OK.value(), boardDto));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new Result<>(false,HttpStatus.NOT_FOUND.value(), "해당 게시물이 없습니다."));
+                    .body(new Result<>(false, HttpStatus.BAD_REQUEST.value(), "해당 게시물이 없습니다."));
         }
     }
 
     @PostMapping("/write")
     public ResponseEntity<?> write(@RequestBody BoardWriteRequest request) throws Exception {
-    	int result = boardService.writeArticle(request);
-    	WriteResponse writeResponse;
-    	if(result < 0) {
-    		 writeResponse = new WriteResponse(-1, "부적절한 게시글로 판단되어 차단되었습니다.");
-    		
+        int result = boardService.writeArticle(request);
+        WriteResponse writeResponse;
+        if (result < 0) {
+            writeResponse = new WriteResponse(-1, "부적절한 게시글로 판단되어 차단되었습니다.");
+
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Result<>(true,HttpStatus.OK.value(), writeResponse));
-    	}
-    	writeResponse = new WriteResponse(1, "글 작성이 완료되었습니다.");
-		
+                    .body(new Result<>(true, HttpStatus.OK.value(), writeResponse));
+        }
+        writeResponse = new WriteResponse(1, "글 작성이 완료되었습니다.");
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(true,HttpStatus.OK.value(), writeResponse));
+                .body(new Result<>(true, HttpStatus.OK.value(), writeResponse));
     }
-    
+
     @PostMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id) throws Exception {
         boardService.deleteArticle(id);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(true,HttpStatus.OK.value(), "글 삭제가 완료되었습니다."));
+                .body(new Result<>(true, HttpStatus.OK.value(), "글 삭제가 완료되었습니다."));
     }
 
     @PostMapping("/modify")
     public ResponseEntity<?> modify(@RequestBody UpdateBoardDto request) throws Exception {
-    	boardService.updateArticle(request);
+        boardService.updateArticle(request);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(true,HttpStatus.OK.value(), "글 작성이 완료되었습니다."));
+                .body(new Result<>(true, HttpStatus.OK.value(), "글 작성이 완료되었습니다."));
     }
-    
+
     @GetMapping("/banList/{keyword}")
     public ResponseEntity<?> listBanned(@PathVariable("keyword") String keyword) throws Exception {
         List<BannedBoardDto> list = boardService.listBannedArticle(keyword);
         System.out.println(keyword + " " + list.size());
         if (!list.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Result<>(true,HttpStatus.OK.value(), list));
+                    .body(new Result<>(true, HttpStatus.OK.value(), list));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new Result<>(false,HttpStatus.NOT_FOUND.value(), "등록된 게시물이 없습니다."));
+                    .body(new Result<>(false, HttpStatus.NOT_FOUND.value(), "등록된 게시물이 없습니다."));
         }
     }
-    
+
     @GetMapping("/ban/{id}")
     public ResponseEntity<?> banDetail(@PathVariable("id") int id) throws Exception {
         BannedBoardDto bannedBoardDto = boardService.detailBanArticle(id);
         if (bannedBoardDto != null) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Result<>(true,HttpStatus.OK.value(), bannedBoardDto));
+                    .body(new Result<>(true, HttpStatus.OK.value(), bannedBoardDto));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new Result<>(false,HttpStatus.NOT_FOUND.value(), "해당 게시물이 없습니다."));
+                    .body(new Result<>(false, HttpStatus.NOT_FOUND.value(), "해당 게시물이 없습니다."));
         }
     }
 
@@ -118,6 +135,11 @@ public class BoardRestController {
 //        model.addAttribute("boardList", boardDtoList);
 //        return "board";
 //    }
+    private String getUserId(final HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        String token = authorization.split(" ")[1];
+        return jwtUtil.getUserId(token);
+    }
 
     @Data
     @Builder

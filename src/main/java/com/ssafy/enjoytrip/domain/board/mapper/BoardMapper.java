@@ -13,7 +13,7 @@ public interface BoardMapper {
 	void writeArticle(BoardDto boardDto) throws SQLException;
 	List<BoardDto> listArticle(int boardType) throws SQLException;
 	BoardDto findById(int id) throws SQLException;
-
+	String findUserIdByBoardId(int boardId) throws SQLException;
 	void viewCount(int id) throws SQLException;
 
 	void update(UpdateBoardDto boardDto) throws SQLException;

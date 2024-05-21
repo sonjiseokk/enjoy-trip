@@ -10,6 +10,8 @@ import com.ssafy.enjoytrip.api.moderation.model.response.ModerationResponse;
 import com.ssafy.enjoytrip.api.moderation.service.ModerationService;
 import com.ssafy.enjoytrip.domain.board.controller.request.BoardWriteRequest;
 import com.ssafy.enjoytrip.domain.board.controller.request.UpdateBoardDto;
+import com.ssafy.enjoytrip.domain.member.model.MemberDto;
+import com.ssafy.enjoytrip.domain.member.service.MemberService;
 import com.ssafy.enjoytrip.global.exception.NotFoundArticleException;
 import com.ssafy.enjoytrip.global.util.Kmp;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,11 @@ import org.springframework.util.StringUtils;
 public class BoardService {
     private final BoardMapper boardMapper;
     private final ModerationService moderationService;
+    private final MemberService memberService;
 
     /**
      * 글 작성 로직을 수행하는 메소드
+     *
      * @param request 제목, 내용, 작성자 아이디, 게시판 타입 (1 : 공지사항, 2 : QnA, 3 : 여행지 게시판)
      * @return 작성된 게시물의 ID
      * @throws Exception 작성 실패 메시지
@@ -43,82 +47,81 @@ public class BoardService {
                 .contentId(request.getContentId())
                 .build();
         try {
-        	List<ModerationResponse> subjectModeration = moderationService.calculateModeration(boardDto.getSubject());
-        	List<ModerationResponse> contentModeration = moderationService.calculateModeration(boardDto.getContent());
-        	
-        	if(subjectModeration.isEmpty() && contentModeration.isEmpty()) {
-        		boardMapper.writeArticle(boardDto);
-        	}
-        	else {
-        		BannedBoardDto bannedBoardDto = new BannedBoardDto(boardDto);
-        		
-        		for(ModerationResponse mr : subjectModeration) {
-        			double max;
-        			switch (mr.getAttributeName()) {
-                    case "TOXICITY":
-                    	max = Math.max(bannedBoardDto.getToxicity(), mr.getScore());
-                        bannedBoardDto.setToxicity(max);
-                        break;
-                    case "SEVERE_TOXICITY":
-                    	max = Math.max(bannedBoardDto.getSevereToxicity(), mr.getScore());
-                    	bannedBoardDto.setSevereToxicity(max);
-                        break;
-                    case "IDENTITY_ATTACK":
-                    	max = Math.max(bannedBoardDto.getIdentityAttack(), mr.getScore());
-                    	bannedBoardDto.setIdentityAttack(max);
-                        break;
-                    case "INSULT":
-                    	max = Math.max(bannedBoardDto.getInsult(), mr.getScore());
-                    	bannedBoardDto.setInsult(max);
-                        break;
-                    case "PROFANITY":
-                    	max = Math.max(bannedBoardDto.getProfanity(), mr.getScore());
-                    	bannedBoardDto.setProfanity(max);
-                        break;
-                    case "THREAT":
-                    	max = Math.max(bannedBoardDto.getThreat(), mr.getScore());
-                    	bannedBoardDto.setThreat(max);
-                        break;
-                    default:
-                        break;
-        			}
-        		}
-        		
-        		for(ModerationResponse mr : contentModeration) {
-        			double max;
-        			switch (mr.getAttributeName()) {
-                    case "TOXICITY":
-                    	max = Math.max(bannedBoardDto.getToxicity(), mr.getScore());
-                        bannedBoardDto.setToxicity(max);
-                        break;
-                    case "SEVERE_TOXICITY":
-                    	max = Math.max(bannedBoardDto.getSevereToxicity(), mr.getScore());
-                    	bannedBoardDto.setSevereToxicity(max);
-                        break;
-                    case "IDENTITY_ATTACK":
-                    	max = Math.max(bannedBoardDto.getIdentityAttack(), mr.getScore());
-                    	bannedBoardDto.setIdentityAttack(max);
-                        break;
-                    case "INSULT":
-                    	max = Math.max(bannedBoardDto.getInsult(), mr.getScore());
-                    	bannedBoardDto.setInsult(max);
-                        break;
-                    case "PROFANITY":
-                    	max = Math.max(bannedBoardDto.getProfanity(), mr.getScore());
-                    	bannedBoardDto.setProfanity(max);
-                        break;
-                    case "THREAT":
-                    	max = Math.max(bannedBoardDto.getThreat(), mr.getScore());
-                    	bannedBoardDto.setThreat(max);
-                        break;
-                    default:
-                        break;
-        			}
-        		}
-        		
-        		boardMapper.writeBannedArticle(bannedBoardDto);
-        		return -1;
-        	}
+            List<ModerationResponse> subjectModeration = moderationService.calculateModeration(boardDto.getSubject());
+            List<ModerationResponse> contentModeration = moderationService.calculateModeration(boardDto.getContent());
+
+            if (subjectModeration.isEmpty() && contentModeration.isEmpty()) {
+                boardMapper.writeArticle(boardDto);
+            } else {
+                BannedBoardDto bannedBoardDto = new BannedBoardDto(boardDto);
+
+                for (ModerationResponse mr : subjectModeration) {
+                    double max;
+                    switch (mr.getAttributeName()) {
+                        case "TOXICITY":
+                            max = Math.max(bannedBoardDto.getToxicity(), mr.getScore());
+                            bannedBoardDto.setToxicity(max);
+                            break;
+                        case "SEVERE_TOXICITY":
+                            max = Math.max(bannedBoardDto.getSevereToxicity(), mr.getScore());
+                            bannedBoardDto.setSevereToxicity(max);
+                            break;
+                        case "IDENTITY_ATTACK":
+                            max = Math.max(bannedBoardDto.getIdentityAttack(), mr.getScore());
+                            bannedBoardDto.setIdentityAttack(max);
+                            break;
+                        case "INSULT":
+                            max = Math.max(bannedBoardDto.getInsult(), mr.getScore());
+                            bannedBoardDto.setInsult(max);
+                            break;
+                        case "PROFANITY":
+                            max = Math.max(bannedBoardDto.getProfanity(), mr.getScore());
+                            bannedBoardDto.setProfanity(max);
+                            break;
+                        case "THREAT":
+                            max = Math.max(bannedBoardDto.getThreat(), mr.getScore());
+                            bannedBoardDto.setThreat(max);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                for (ModerationResponse mr : contentModeration) {
+                    double max;
+                    switch (mr.getAttributeName()) {
+                        case "TOXICITY":
+                            max = Math.max(bannedBoardDto.getToxicity(), mr.getScore());
+                            bannedBoardDto.setToxicity(max);
+                            break;
+                        case "SEVERE_TOXICITY":
+                            max = Math.max(bannedBoardDto.getSevereToxicity(), mr.getScore());
+                            bannedBoardDto.setSevereToxicity(max);
+                            break;
+                        case "IDENTITY_ATTACK":
+                            max = Math.max(bannedBoardDto.getIdentityAttack(), mr.getScore());
+                            bannedBoardDto.setIdentityAttack(max);
+                            break;
+                        case "INSULT":
+                            max = Math.max(bannedBoardDto.getInsult(), mr.getScore());
+                            bannedBoardDto.setInsult(max);
+                            break;
+                        case "PROFANITY":
+                            max = Math.max(bannedBoardDto.getProfanity(), mr.getScore());
+                            bannedBoardDto.setProfanity(max);
+                            break;
+                        case "THREAT":
+                            max = Math.max(bannedBoardDto.getThreat(), mr.getScore());
+                            bannedBoardDto.setThreat(max);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                boardMapper.writeBannedArticle(bannedBoardDto);
+                return -1;
+            }
             return boardDto.getBoardId();
         } catch (Exception e) {
             e.fillInStackTrace();
@@ -131,40 +134,40 @@ public class BoardService {
      * 키워드를 입력받으면 검색 기능으로서 활용된다.
      *
      * @param boardType 조회할 글 카테고리
-     * @param keyword 검색 기능으로 활용할 키워드
+     * @param keyword   검색 기능으로 활용할 키워드
      * @return 글 전체 목록
      * @throws Exception 조회 실패 메시지
      */
-    public List<BoardDto> listArticle(int boardType,String keyword) throws Exception {
+    public List<BoardDto> listArticle(int boardType, String keyword) throws Exception {
         try {
             if (keyword == null) {
                 return boardMapper.listArticle(boardType);
             }
-            return search(boardType,keyword);
+            return search(boardType, keyword);
         } catch (Exception e) {
             e.fillInStackTrace();
             throw new Exception("게시물 리스트 조회중에 오류가 발생했습니다.");
         }
     }
-    
+
     /**
      * 차단된 글 전체 목록을 조회하는 메소드
      * 키워드를 입력받으면 검색 기능으로서 활용된다.
      *
      * @param boardType 조회할 글 카테고리
-     * @param keyword 검색 기능으로 활용할 키워드
+     * @param keyword   검색 기능으로 활용할 키워드
      * @return 글 전체 목록
      * @throws Exception 조회 실패 메시지
      */
     public List<BannedBoardDto> listBannedArticle(String keyword) throws Exception {
         try {
-        	return boardMapper.listBannedArticle(keyword);
+            return boardMapper.listBannedArticle(keyword);
         } catch (Exception e) {
             e.fillInStackTrace();
             throw new Exception("게시물 리스트 조회중에 오류가 발생했습니다.");
         }
     }
-    
+
     public BannedBoardDto detailBanArticle(final int id) throws Exception {
         try {
             BannedBoardDto bannedBoardDto = boardMapper.findBanById(id);
@@ -185,18 +188,20 @@ public class BoardService {
     /**
      * 글 제목을 기준으로 검색을 수행함
      * KMP 알고리즘을 사용
+     *
      * @param boardType 카테고리
-     * @param keyword 검색 키워드
+     * @param keyword   검색 키워드
      * @return 글 전체 목록
      * @throws Exception 전체 조회 실패메시지
      */
-    public List<BoardDto> search(int boardType,String keyword) throws Exception {
+    public List<BoardDto> search(int boardType, String keyword) throws Exception {
         String[] keywords = keyword.split(" ");
         return Kmp.multiKmp(boardMapper.listArticle(boardType), keywords);
     }
 
     /**
      * 글 ID를 기준으로 게시물 상세 조회를 수행함
+     *
      * @param id 게시물 ID
      * @return 게시물
      * @throws Exception 상세조회 실패 메시지
@@ -218,9 +223,31 @@ public class BoardService {
         }
     }
 
+    public BoardDto detailQna(String userId, final int id) throws Exception {
+        try {
+            MemberDto viewMember = memberService.findMember(userId);
+            String boardWriter = boardMapper.findUserIdByBoardId(id);
+            if (viewMember.getRole().equals("ADMIN") || viewMember.getUserName().equals(boardWriter)) {
+                BoardDto boardDto = boardMapper.findById(id);
+                if (boardDto == null) {
+                    throw new NotFoundArticleException();
+                }
+                boardMapper.viewCount(id);
+                return boardDto;
+            }
+            throw new Exception("해당 권한이 없습니다.");
+        } catch (NotFoundArticleException e) {
+            e.fillInStackTrace();
+            throw new NotFoundArticleException("해당 게시물이 없습니다.");
+        } catch (Exception e) {
+            e.fillInStackTrace();
+            throw new Exception("게시물 상세 조회중에 오류가 발생했습니다.");
+        }
+    }
+
     @Transactional
     public void updateArticle(UpdateBoardDto boardDto) throws Exception {
-    	try {
+        try {
             boardMapper.update(boardDto);
         } catch (Exception e) {
             e.printStackTrace();

@@ -29,10 +29,12 @@ public class MemberAuthController {
             Map<String, String> result = new HashMap<>();
 
             Date createdTime = new Date(System.currentTimeMillis());
+            Date accessExpireTime = jwtUtil.calculateAccessExpireTime(createdTime);
             String accessToken = jwtUtil.createAccessToken(jwtDto.getUserId(),
-                    jwtDto.getRole(), createdTime, jwtUtil.calculateAccessExpireTime(createdTime));
+                    jwtDto.getRole(), createdTime, accessExpireTime);
 
             result.put("token", accessToken);
+            result.put("expiredTime", accessExpireTime.toString());
             return ResponseEntity.status(HttpStatus.OK)
                     .body(result);
         }

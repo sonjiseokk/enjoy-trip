@@ -12,6 +12,11 @@
         from board
         where board_type_id = #{boardTypeId}
     </select>
+    <select id="findUserIdByBoardId" parameterType="int" resultType="String">
+        select user_id
+        from board
+        where board_id = #{boardId}
+    </select>
 
     <select id="findById" parameterType="int" resultType="BoardDto">
         select *
@@ -37,29 +42,31 @@
         from board
         where board_id = #{id};
     </update>
-    
+
     <insert id="writeBannedArticle" parameterType="BannedBoardDto" useGeneratedKeys="true" keyProperty="boardId">
-        insert into bannedboard (subject, content, user_id, board_type_id, content_id, toxicity, severe_toxicity, identity_attack, insult, profanity, threat)
-        values (#{subject}, #{content}, #{userId}, #{boardTypeId}, #{contentId}, #{toxicity}, #{severeToxicity}, #{identityAttack}, #{insult}, #{profanity}, #{threat});
+        insert into bannedboard (subject, content, user_id, board_type_id, content_id, toxicity, severe_toxicity,
+                                 identity_attack, insult, profanity, threat)
+        values (#{subject}, #{content}, #{userId}, #{boardTypeId}, #{contentId}, #{toxicity}, #{severeToxicity},
+                #{identityAttack}, #{insult}, #{profanity}, #{threat});
     </insert>
-    
+
     <select id="listBannedArticle" parameterType="string" resultType="BannedBoardDto">
         <choose>
-	        <when test="keyword == null">
-	            select * from bannedboard
-	        </when>
-	        <otherwise>
-	            select * from bannedboard where user_id = #{keyword}
-	        </otherwise>
-    </choose>
+            <when test="keyword == null">
+                select * from bannedboard
+            </when>
+            <otherwise>
+                select * from bannedboard where user_id = #{keyword}
+            </otherwise>
+        </choose>
     </select>
-    
+
     <select id="findBanById" parameterType="int" resultType="BannedBoardDto">
         select *
         from bannedboard
         where board_id = #{id}
     </select>
-    
+
     <update id="viewBanCount" parameterType="int">
         update bannedboard
         set view_count = view_count + 1

@@ -8,6 +8,7 @@ import com.ssafy.enjoytrip.domain.trip.service.AttractionDescriptionService;
 import com.ssafy.enjoytrip.domain.trip.service.AttractionInfoService;
 import com.ssafy.enjoytrip.global.exception.DuplicateNameException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.embedding.EmbeddingClient;
 import org.springframework.ai.embedding.EmbeddingResponse;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmbeddingService {
     private final EmbeddingMapper embeddingMapper;
     private final InternalSearchService internalSearchService;
@@ -63,10 +65,14 @@ public class EmbeddingService {
     public List<SimilarDto> getMostTen(String title) throws Exception {
         try {
             EmbeddingDto findByTitle = embeddingMapper.findByTitle(title);
+            if (findByTitle == null) {
+                throw new Exception("임베딩이 지원되지 않는 관심목록이 추가되어있습니다.");
+            }
             List<EmbeddingDto> all = embeddingMapper.findAll();
 
             return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 10);
         } catch (Exception e) {
+            log.error(e.getMessage());
             e.printStackTrace();
             throw new Exception("임베딩 서비스 로직에 실패했습니다.");
         }
