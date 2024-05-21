@@ -16,6 +16,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,7 +36,7 @@ public class NewsService {
 	
 	public List<NewsDto> getNews(String text) {
 	     try {
-	         text = URLEncoder.encode("그린팩토리", "UTF-8");
+	         text = URLEncoder.encode(text, "UTF-8");
 	     } catch (UnsupportedEncodingException e) {
 	         throw new RuntimeException("검색어 인코딩 실패",e);
 	     }
