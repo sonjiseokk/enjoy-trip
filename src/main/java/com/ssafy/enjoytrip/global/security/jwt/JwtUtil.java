@@ -20,7 +20,6 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtUtil {
-    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
     private SecretKey secretKey;
 
     // 프로퍼티의 키를 사용하여 시크릿 키를 만들었다.
