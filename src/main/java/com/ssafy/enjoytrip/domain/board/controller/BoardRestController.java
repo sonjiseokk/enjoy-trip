@@ -28,8 +28,14 @@ public class BoardRestController {
     private final JwtUtil jwtUtil;
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@RequestParam("boardType") int boardType, @RequestParam(value = "keyword", required = false) String keyword) throws Exception {
-        List<BoardDto> list = boardService.listArticle(boardType, keyword);
+    public ResponseEntity<?> list(@RequestParam("boardType") int boardType, @RequestParam(value = "contentId", required = false) Integer contentId, @RequestParam(value = "keyword", required = false) String keyword) throws Exception {
+        List<BoardDto> list;
+    	if(contentId == null) {
+    		list = boardService.listArticle(boardType, keyword);
+        }
+    	else {    		
+    		list = boardService.listTripArticle(boardType, contentId, keyword);
+    	}
         if (!list.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Result<>(true, HttpStatus.OK.value(), list));

@@ -63,11 +63,21 @@ public class TripController {
         }
     }
 
-    @PostMapping(value = "/view")
-    public ResponseEntity<?> tripDescription(@RequestParam(value = "contentId") String contentId) throws Exception {
-        AttractionDescDto attractionDescDto = attractionInfoService.searchTripDescription(contentId);
+    @GetMapping(value = "/view")
+    public ResponseEntity<?> tripDescription(@RequestParam(value = "contentId") int contentId) throws Exception {
+        AttractionDescDto attractionDescDto = attractionDescriptionService.findById(contentId);
         if (attractionDescDto != null) {
             return new ResponseEntity<AttractionDescDto>(attractionDescDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        }
+    }
+    
+    @GetMapping(value = "/find")
+    public ResponseEntity<?> findTrip(@RequestParam(value = "contentId") int contentId) throws Exception {
+        AttractionInfoDto attractionInfoDto = attractionInfoService.getTrip(contentId);
+        if (attractionInfoDto != null) {
+            return new ResponseEntity<>(attractionInfoDto, HttpStatus.OK);
         } else {
             return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
         }

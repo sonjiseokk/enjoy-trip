@@ -73,4 +73,10 @@
         set view_count = view_count + 1
         where board_id = #{id}
     </update>
+    
+    <select id="listTripArticle" parameterType="TripBoardSearchDto" resultType="BoardDto">
+        select *
+        from board
+        where board_type_id = #{boardTypeId} and content_id = #{contentId}
+    </select>
 </mapper>

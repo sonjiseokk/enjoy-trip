@@ -11,8 +11,8 @@ import com.ssafy.enjoytrip.domain.trip.controller.request.TripSearchCondition;
 @Mapper
 public interface AttractionInfoMapper {
 	List<AttractionInfoDto> searchTrip(TripSearchCondition con) throws Exception;
-	List<AttractionInfoDto> searchAll(String keyword	) throws Exception;
-	AttractionDescDto searchTripDescription(String contentId) throws Exception;
+	List<AttractionInfoDto> searchAll(String keyword) throws Exception;
+	AttractionDescDto searchTripDescription(int contentId) throws Exception;
 	AttractionDescDto searchOverview(String contentId) throws Exception;
 	List<SidoDto> getSido() throws Exception;
 	List<GugunDto> getGugun(int sidoCode) throws Exception;

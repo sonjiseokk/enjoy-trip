@@ -3,22 +3,24 @@ package com.ssafy.enjoytrip.domain.board.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.ssafy.enjoytrip.domain.board.model.BannedBoardDto;
-import com.ssafy.enjoytrip.domain.board.model.BoardDto;
-import com.ssafy.enjoytrip.domain.board.mapper.BoardMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ssafy.enjoytrip.api.moderation.model.response.ModerationResponse;
 import com.ssafy.enjoytrip.api.moderation.service.ModerationService;
 import com.ssafy.enjoytrip.domain.board.controller.request.BoardWriteRequest;
+import com.ssafy.enjoytrip.domain.board.controller.request.TripBoardSearchDto;
 import com.ssafy.enjoytrip.domain.board.controller.request.UpdateBoardDto;
+import com.ssafy.enjoytrip.domain.board.mapper.BoardMapper;
+import com.ssafy.enjoytrip.domain.board.model.BannedBoardDto;
+import com.ssafy.enjoytrip.domain.board.model.BoardDto;
 import com.ssafy.enjoytrip.domain.member.model.MemberDto;
 import com.ssafy.enjoytrip.domain.member.service.MemberService;
 import com.ssafy.enjoytrip.global.exception.NotFoundArticleException;
 import com.ssafy.enjoytrip.global.util.Kmp;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -149,6 +151,18 @@ public class BoardService {
             throw new Exception("게시물 리스트 조회중에 오류가 발생했습니다.");
         }
     }
+    
+    public List<BoardDto> listTripArticle(int boardType, int contentId, String keyword) throws Exception {
+        try {
+            if (keyword == null) {
+                return boardMapper.listTripArticle(new TripBoardSearchDto(boardType, contentId));
+            }
+            return search(boardType, contentId, keyword);
+        } catch (Exception e) {
+            e.fillInStackTrace();
+            throw new Exception("게시물 리스트 조회중에 오류가 발생했습니다.");
+        }
+    }
 
     /**
      * 차단된 글 전체 목록을 조회하는 메소드
@@ -197,6 +211,11 @@ public class BoardService {
     public List<BoardDto> search(int boardType, String keyword) throws Exception {
         String[] keywords = keyword.split(" ");
         return Kmp.multiKmp(boardMapper.listArticle(boardType), keywords);
+    }
+    
+    public List<BoardDto> search(int boardType, int contentId, String keyword) throws Exception {
+        String[] keywords = keyword.split(" ");
+        return Kmp.multiKmp(boardMapper.listTripArticle(new TripBoardSearchDto(boardType, contentId)), keywords);
     }
 
     /**

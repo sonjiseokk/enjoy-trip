@@ -23,7 +23,7 @@ public class AttractionInfoService {
 	}
 
 	// 기본 info + overView
-	public AttractionDescDto searchTripDescription(String contentId) throws Exception {
+	public AttractionDescDto searchTripDescription(int contentId) throws Exception {
 		return attractionInfoMapper.searchTripDescription(contentId);
 	}
 
