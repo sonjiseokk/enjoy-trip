@@ -70,7 +70,7 @@ public class EmbeddingService {
             }
             List<EmbeddingDto> all = embeddingMapper.findAll();
 
-            return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 10);
+            return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 20);
         } catch (Exception e) {
             log.error(e.getMessage());
             e.printStackTrace();

@@ -75,4 +75,7 @@ public class AttractionInfoService {
 	public String findNameByContentTypeId(final int contentTypeId) {
 		return attractionInfoMapper.findNameByContentTypeId(contentTypeId);
 	}
+	public List<AttractionInfoDto> serachAll(String keyword) throws Exception {
+		return attractionInfoMapper.searchAll(keyword);
+	}
 }

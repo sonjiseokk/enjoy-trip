@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class InternalSearchService {
             }
         }
 
-        mostSimilarIndices.sort(Comparator.comparingDouble(SimilarDto::getSimilarity).reversed());
+        Collections.shuffle(mostSimilarIndices);
 
         return mostSimilarIndices.subList(0, Math.min(topResults, mostSimilarIndices.size()));
     }
