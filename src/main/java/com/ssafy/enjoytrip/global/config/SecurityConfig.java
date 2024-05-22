@@ -87,20 +87,10 @@ public class SecurityConfig {
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/api/member/join",
                                 "/api/member/login",
-                                "/add/data",
-                                "/api/auth/refresh",
-                                "/images/**").permitAll()
-                        .requestMatchers("/api/member/join",
-                                "/api/member/login",
                                 "/api/member/check/duplication/*",
                                 "/api/auth/refresh",
-                                "/api/board/list",
-                                "/api/board/notice/**",
-                                "/api/trip/**",
-                                "/images/**",
                                 "/api/member/email/**",
-                                "/api/news/list/*",
-                                "/test/**").permitAll()
+                                "/images/**").permitAll()
                         .anyRequest().authenticated());
 
         // JWT는 무상태 프로토콜이기때문에 꼭 선언해줘야함

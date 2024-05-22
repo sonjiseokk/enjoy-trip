@@ -7,6 +7,7 @@ import com.ssafy.enjoytrip.api.embedding.model.SimilarDto;
 import com.ssafy.enjoytrip.api.embedding.service.EmbeddingService;
 import com.ssafy.enjoytrip.api.moderation.model.response.ModerationResponse;
 import com.ssafy.enjoytrip.api.moderation.service.ModerationService;
+import com.ssafy.enjoytrip.api.pinecone.service.PineconeService;
 import com.ssafy.enjoytrip.domain.trip.model.AttractionInfoDto;
 import com.ssafy.enjoytrip.domain.trip.service.AttractionDescriptionService;
 import com.ssafy.enjoytrip.domain.trip.service.AttractionInfoService;
@@ -33,6 +34,7 @@ public class TestController {
     private final AttractionInfoService attractionInfoService;
     private final AttractionDescriptionService attractionDescriptionService;
     private final VerificationService verificationService;
+    private final PineconeService pineconeService;
 
     @GetMapping("/ai/embedding/add")
     public Map embed(@RequestParam(value = "message", defaultValue = "Tell me a joke") String message) throws Exception {
@@ -88,5 +90,20 @@ public class TestController {
             AttractionInfoDto attractionInfoDto = allDto.get(i);
             dataGoDescService.getDescList(attractionInfoDto.getContentId());
         }
+    }
+
+    @GetMapping("/pinecone")
+    public String pinecone() throws Exception {
+        List<EmbeddingDto> all = embeddingService.findAll();
+
+        for (EmbeddingDto embeddingDto : all) {
+            try {
+                pineconeService.upsertVectors(embeddingDto);
+            } catch (Exception e) {
+                log.info("에러 발생!!!!!!!!!!!!!!!!!!!!!!");
+                continue;
+            }
+        }
+        return "성공했다";
     }
 }
