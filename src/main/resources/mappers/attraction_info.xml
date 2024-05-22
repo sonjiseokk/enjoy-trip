@@ -3,24 +3,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.enjoytrip.domain.trip.mapper.AttractionInfoMapper">
 
-    <select id="searchTrip" parameterType="tripSearchCondition" resultType="AttractionInfoDto">
+    <select id="searchTrip" parameterType="RequestList" resultType="AttractionInfoDto">
         select distinct *
         from attraction_info
         <where>
-            <if test="contentTypeId != 0">
-                content_type_id = #{contentTypeId}
+            <if test="data.contentTypeId != 0">
+                content_type_id = #{data.contentTypeId}
             </if>
-            <if test="sidoCode != 0">
-                and sido_code = #{sidoCode}
+            <if test="data.sidoCode != 0">
+                and sido_code = #{data.sidoCode}
             </if>
-            <if test="gugunCode != 0">
-                and gugun_code = #{gugunCode}
+            <if test="data.gugunCode != 0">
+                and gugun_code = #{data.gugunCode}
             </if>
-            <if test="keyword != null and keyword != ''">
-                and title like concat('%', #{keyword}, '%')
+            <if test="data.keyword != null and data.keyword != ''">
+                and title like concat('%', #{data.keyword}, '%')
             </if>
         </where>
+        limit #{pageable.pageSize} offset #{pageable.offset}
     </select>
+
 
     <select id="searchAll" parameterType="String" resultType="AttractionInfoDto">
         select distinct *
@@ -50,7 +52,7 @@
     </select>
 
     <insert id="save" parameterType="AttractionInfoDto">
-        insert into attraction_info(content_id, title, address, thumnail_image, readcount,
+        insert into attraction_info(content_id, title, addr1, first_image, readcount,
                                     latitude, longitude, mlevel, gugun_code, sido_code,
                                     content_type_id)
         values (#{contentId}, #{title}, #{address}, #{thumnailImage}, #{readcount},

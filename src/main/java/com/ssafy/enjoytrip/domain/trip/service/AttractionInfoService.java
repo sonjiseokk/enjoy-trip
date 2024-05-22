@@ -3,7 +3,9 @@ package com.ssafy.enjoytrip.domain.trip.service;
 import java.util.List;
 
 import com.ssafy.enjoytrip.domain.trip.model.*;
+import com.ssafy.enjoytrip.global.RequestList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.domain.trip.controller.request.TripSearchCondition;
@@ -17,8 +19,12 @@ public class AttractionInfoService {
 	private final AttractionInfoMapper attractionInfoMapper;
 	
 	// 기본 info list
-	public List<AttractionInfoDto> searchTrip(TripSearchCondition con) throws Exception {
-		List<AttractionInfoDto> lists = attractionInfoMapper.searchTrip(con);
+	public List<AttractionInfoDto> searchTrip(TripSearchCondition con, final Pageable pageable) throws Exception {
+		RequestList<Object> request = RequestList.builder()
+				.data(con)
+				.pageable(pageable)
+				.build();
+		List<AttractionInfoDto> lists = attractionInfoMapper.searchTrip(request);
 		return lists;
 	}
 

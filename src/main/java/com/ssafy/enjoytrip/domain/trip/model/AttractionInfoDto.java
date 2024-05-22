@@ -9,8 +9,8 @@ import lombok.Setter;
 public class AttractionInfoDto {
 	private int contentId;
 	private String title;
-	private String address;
-	private String thumnailImage;
+	private String addr1;
+	private String firstImage;
 	private int readcount;
 	private double latitude;
 	private double longitude;
@@ -21,15 +21,15 @@ public class AttractionInfoDto {
 	@Setter
 	private int contentTypeId;
 
-	public AttractionInfoDto(final int contentId, final String title, final String address,
-							 final String thumnailImage, final int readcount,
+	public AttractionInfoDto(final int contentId, final String title, final String addr1,
+							 final String firstImage, final int readcount,
 							 final double latitude, final double longitude,
 							 final String mlevel, final int gugunCode,
 							 final int sidoCode, final int contentTypeId) {
 		this.contentId = contentId;
 		this.title = title;
-		this.address = address;
-		this.thumnailImage = thumnailImage;
+		this.addr1 = addr1;
+		this.firstImage = firstImage;
 		this.readcount = readcount;
 		this.latitude = latitude;
 		this.longitude = longitude;

@@ -4,13 +4,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.ssafy.enjoytrip.domain.trip.model.*;
+import com.ssafy.enjoytrip.global.RequestList;
 import org.apache.ibatis.annotations.Mapper;
-
-import com.ssafy.enjoytrip.domain.trip.controller.request.TripSearchCondition;
 
 @Mapper
 public interface AttractionInfoMapper {
-	List<AttractionInfoDto> searchTrip(TripSearchCondition con) throws Exception;
+	List<AttractionInfoDto> searchTrip(RequestList<Object> request) throws Exception;
 	List<AttractionInfoDto> searchAll(String keyword) throws Exception;
 	AttractionDescDto searchTripDescription(int contentId) throws Exception;
 	AttractionDescDto searchOverview(String contentId) throws Exception;
