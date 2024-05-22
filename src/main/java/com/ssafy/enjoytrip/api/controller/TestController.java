@@ -48,7 +48,7 @@ public class TestController {
     public Map embed() throws Exception {
         List<AttractionInfoDto> dbInfos = attractionInfoService.getAllDto();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < dbInfos.size(); i++) {
             System.out.println("저장할 데이터의 제목은 : " + dbInfos.get(i).getTitle());
 
             try {
@@ -75,16 +75,16 @@ public class TestController {
     }
 
     @GetMapping("/add/data")
-    public void addData() throws Exception {
+    public void addData(@RequestParam("pageNo") int pageNo) throws Exception {
 
-        dataGoInfoService.getAreaBasedList(1, 1000);
+        dataGoInfoService.getAreaBasedList(pageNo, 1000);
     }
 
     @GetMapping("/add/data2")
-    public void addData2() throws Exception {
+    public void addData2(@RequestParam("pageNo") int pageNo) throws Exception {
 
         List<AttractionInfoDto> allDto = attractionInfoService.getAllDto();
-        for (int i = 0; i < allDto.size(); i++) {
+        for (int i = pageNo; i < allDto.size(); i++) {
             AttractionInfoDto attractionInfoDto = allDto.get(i);
             dataGoDescService.getDescList(attractionInfoDto.getContentId());
         }

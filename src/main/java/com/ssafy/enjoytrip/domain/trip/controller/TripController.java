@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,9 @@ public class TripController {
     private final AttractionDescriptionService attractionDescriptionService;
 
     @PostMapping(value = "/search")
-    public ResponseEntity<?> tripList(@RequestBody TripSearchCondition con) throws Exception {
-        List<AttractionInfoDto> list = attractionInfoService.searchTrip(con);
+    public ResponseEntity<?> tripList(@RequestBody TripSearchCondition con, @PageableDefault(size = 10) Pageable pageable) throws Exception {
+        log.info("Pageable 정보 = {}, {}", pageable.getOffset(), pageable.getPageSize());
+        List<AttractionInfoDto> list = attractionInfoService.searchTrip(con, pageable);
         List<SubResult> result = new ArrayList<>();
         for (AttractionInfoDto dto : list) {
             AttractionDescDto descDto = attractionDescriptionService.findById(dto.getContentId());
@@ -35,7 +38,7 @@ public class TripController {
         }
 
         if (!list.isEmpty()) {
-            return new ResponseEntity<>(new Result(HttpStatus.OK.value(), result), HttpStatus.OK);
+            return new ResponseEntity<>(new PageResult<>(HttpStatus.OK.value(), pageable.getPageNumber(), result), HttpStatus.OK);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new Result<>(HttpStatus.NOT_FOUND.value(), "데이터를 찾을 수 없습니다."));
@@ -44,7 +47,7 @@ public class TripController {
 
     @GetMapping(value = "/searchAll")
     public ResponseEntity<?> tripList(@RequestParam("keyword") String keyword) throws Exception {
-        log.info("넘어온 키워드는 = {}",keyword);
+        log.info("넘어온 키워드는 = {}", keyword);
         List<AttractionInfoDto> list = attractionInfoService.serachAll(keyword);
         List<SubResult> result = new ArrayList<>();
         for (AttractionInfoDto dto : list) {
@@ -72,7 +75,7 @@ public class TripController {
             return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
         }
     }
-    
+
     @GetMapping(value = "/find")
     public ResponseEntity<?> findTrip(@RequestParam(value = "contentId") int contentId) throws Exception {
         AttractionInfoDto attractionInfoDto = attractionInfoService.getTrip(contentId);
@@ -120,6 +123,14 @@ public class TripController {
     @Builder
     static class Result<T> {
         int status;
+        T data;
+    }
+
+    @Data
+    @Builder
+    static class PageResult<T> {
+        int status;
+        int pageNum;
         T data;
     }
 
