@@ -19,11 +19,9 @@
                 #{vector, typeHandler=com.ssafy.enjoytrip.global.handler.JsonDoubleArrayTypeHandler})
     </insert>
 
-    <select id="findAll" parameterType="int" resultMap="embeddingMap">
+    <select id="findAll"  resultMap="embeddingMap">
         SELECT *
         FROM attraction_embedding
-        LIMIT 100
-        offset #{offset}
     </select>
 
 
@@ -31,6 +29,11 @@
         select *
         from attraction_embedding
         where title = #{title}
+    </select>
+    <select id="findByContentId" parameterType="int" resultMap="embeddingMap">
+        select *
+        from attraction_embedding
+        where content_id = #{contentId}
     </select>
 
 </mapper>

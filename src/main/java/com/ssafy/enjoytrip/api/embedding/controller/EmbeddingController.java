@@ -2,6 +2,8 @@ package com.ssafy.enjoytrip.api.embedding.controller;
 
 import com.ssafy.enjoytrip.api.embedding.model.SimilarDto;
 import com.ssafy.enjoytrip.api.embedding.service.EmbeddingService;
+import com.ssafy.enjoytrip.api.pinecone.PineConeDto;
+import com.ssafy.enjoytrip.api.pinecone.service.PineconeService;
 import com.ssafy.enjoytrip.domain.like.service.LikeService;
 import com.ssafy.enjoytrip.domain.trip.model.AttractionInfoDto;
 import com.ssafy.enjoytrip.domain.trip.service.AttractionInfoService;
@@ -27,6 +29,7 @@ public class EmbeddingController {
     private final LikeService likeService;
     private final EmbeddingService embeddingService;
     private final AttractionInfoService attractionInfoService;
+    private final PineconeService pineconeService;
 
     @GetMapping("/most")
     public ResponseEntity<?> getMostTen(HttpServletRequest request) throws Exception {
@@ -46,38 +49,21 @@ public class EmbeddingController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(true, HttpStatus.OK.value(), selectedInfo));
     }
-    
-    @GetMapping("/recommend5")
-    public ResponseEntity<?> recommend5(@RequestParam int contentId) throws Exception {
-        AttractionInfoDto selectedInfo = attractionInfoService.getTrip(contentId);
-        List<SimilarDto> mostTen = embeddingService.getMostTen(selectedInfo.getTitle());
-
-        List<SubResult> result = new ArrayList<>();
-        // 0은 자기 자신, 이외의 3개를 뽑아냄
-        for (int i = 1; i < 6; i++) {
-            SimilarDto similarDto = mostTen.get(i);
-            result.add(new SubResult(similarDto.getSimilarity(), attractionInfoService.findAttractionInfo(similarDto.getTitle())));
-        }
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(true, HttpStatus.OK.value(), result));
-    }
 
     @GetMapping("/recommend")
-    public ResponseEntity<?> recommend(@RequestParam int contentId) throws Exception {
-        AttractionInfoDto selectedInfo = attractionInfoService.getTrip(contentId);
-        List<SimilarDto> mostTen = embeddingService.getMostTen(selectedInfo.getTitle());
-
+    public ResponseEntity<?> recommend(@RequestParam int contentId,@RequestParam("number") int number) throws Exception {
+        List<PineConeDto> pineConeDtos = pineconeService.compareVectors(number, contentId);
         List<SubResult> result = new ArrayList<>();
         // 0은 자기 자신, 이외의 3개를 뽑아냄
-        for (int i = 1; i < 4; i++) {
-            SimilarDto similarDto = mostTen.get(i);
-            result.add(new SubResult(similarDto.getSimilarity(), attractionInfoService.findAttractionInfo(similarDto.getTitle())));
+        for (int i = 1; i < number; i++) {
+            PineConeDto pineConeDto = pineConeDtos.get(i);
+            result.add(new SubResult(pineConeDto.getSimilarity(), attractionInfoService.findAttractionContentId(pineConeDto.getContentId())));
         }
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(true, HttpStatus.OK.value(), result));
     }
+
 
 
     private String getUserId(final HttpServletRequest request) {

@@ -8,7 +8,10 @@ import java.util.List;
 
 @Mapper
 public interface EmbeddingMapper {
-    List<EmbeddingDto> findAll(int offset) throws SQLException;
+    List<EmbeddingDto> findAll() throws SQLException;
     EmbeddingDto findByTitle(String title) throws SQLException;
     void save(EmbeddingDto embeddingDto) throws SQLException;
+
+    EmbeddingDto findByContentId(int contentId) throws SQLException;
+
 }
