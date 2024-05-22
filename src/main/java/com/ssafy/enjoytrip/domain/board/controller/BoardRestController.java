@@ -77,11 +77,8 @@ public class BoardRestController {
         WriteResponse writeResponse;
         if (result < 0) {
             writeResponse = new WriteResponse(-1, "부적절한 게시글로 판단되어 차단되었습니다.");
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Result<>(true, HttpStatus.OK.value(), writeResponse));
         }
-        writeResponse = new WriteResponse(1, "글 작성이 완료되었습니다.");
+        else writeResponse = new WriteResponse(1, "글 작성이 완료되었습니다.");
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Result<>(true, HttpStatus.OK.value(), writeResponse));
@@ -96,9 +93,15 @@ public class BoardRestController {
 
     @PostMapping("/modify")
     public ResponseEntity<?> modify(@RequestBody UpdateBoardDto request) throws Exception {
-        boardService.updateArticle(request);
+        int response = boardService.updateArticle(request);
+        WriteResponse writeResponse;
+        if (response < 0) {
+            writeResponse = new WriteResponse(-1, "부적절한 표현이 감지되어 수정할 수 없습니다.");
+        }
+        else writeResponse = new WriteResponse(1, "글 작성이 완료되었습니다.");
+        
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Result<>(true, HttpStatus.OK.value(), "글 작성이 완료되었습니다."));
+        		.body(new Result<>(true, HttpStatus.OK.value(), writeResponse));
     }
 
     @GetMapping("/banList/{keyword}")

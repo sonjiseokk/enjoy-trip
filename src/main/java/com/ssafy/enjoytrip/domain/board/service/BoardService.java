@@ -265,9 +265,18 @@ public class BoardService {
     }
 
     @Transactional
-    public void updateArticle(UpdateBoardDto boardDto) throws Exception {
+    public int updateArticle(UpdateBoardDto boardDto) throws Exception {
         try {
-            boardMapper.update(boardDto);
+        	List<ModerationResponse> subjectModeration = moderationService.calculateModeration(boardDto.getSubject());
+            List<ModerationResponse> contentModeration = moderationService.calculateModeration(boardDto.getContent());
+
+            if (subjectModeration.isEmpty() && contentModeration.isEmpty()) {            	
+            	boardMapper.update(boardDto);
+            	return 1;
+            }
+            else {
+            	return -1;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("게시물 업데이트 중 오류가 발생했습니다.");
