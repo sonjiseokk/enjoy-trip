@@ -19,21 +19,25 @@ public class InternalSearchService {
 
     public List<SimilarDto> findMostSimilarEmbeddings(EmbeddingDto queryEmbedding, List<EmbeddingDto> dbEmbeddings, int topResults) {
 
+        Collections.shuffle(dbEmbeddings);
+
         List<SimilarDto> mostSimilarIndices = new ArrayList<>();
-        for (EmbeddingDto dbEmbedding : dbEmbeddings) {
+        for (int i = 0; i < 100; i++) {
+            EmbeddingDto dbEmbedding = dbEmbeddings.get(i);
             double similarity = cosineSimilarity(queryEmbedding.getVector(), dbEmbedding.getVector());
             if (similarity >= SIMILARITY_THRESHOLD) {
                 mostSimilarIndices.add(SimilarDto.builder()
-                                .title(dbEmbedding.getTitle())
-                                .sourceTitle(queryEmbedding.getTitle())
-                                .similarity(similarity)
+                        .title(dbEmbedding.getTitle())
+                        .sourceTitle(queryEmbedding.getTitle())
+                        .similarity(similarity)
                         .build());
             }
         }
 
-        Collections.shuffle(mostSimilarIndices);
+        List<SimilarDto> result = mostSimilarIndices.subList(0, Math.min(topResults, mostSimilarIndices.size()));
+        Collections.shuffle(result);
 
-        return mostSimilarIndices.subList(0, Math.min(topResults, mostSimilarIndices.size()));
+        return result;
     }
 
     private double cosineSimilarity(double[] vectorA, double[] vectorB) {

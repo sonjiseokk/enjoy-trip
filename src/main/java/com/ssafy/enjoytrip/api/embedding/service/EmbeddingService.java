@@ -64,13 +64,10 @@ public class EmbeddingService {
 
     public List<SimilarDto> getMostTen(String title) throws Exception {
         try {
-            EmbeddingDto findByTitle = embeddingMapper.findByTitle(title);
-            if (findByTitle == null) {
-                throw new Exception("임베딩이 지원되지 않는 관심목록이 추가되어있습니다.");
-            }
-            List<EmbeddingDto> all = embeddingMapper.findAll();
+            EmbeddingDto embeddingDto = embeddingMapper.findByTitle(title);
+            List<EmbeddingDto> all = embeddingMapper.findAll(getRandomOffset());
 
-            return internalSearchService.findMostSimilarEmbeddings(findByTitle, all, 20);
+            return internalSearchService.findMostSimilarEmbeddings(embeddingDto, all, 20);
         } catch (Exception e) {
             log.error(e.getMessage());
             e.printStackTrace();
@@ -80,11 +77,19 @@ public class EmbeddingService {
 
     public List<EmbeddingDto> findAll() throws Exception {
         try {
-            return embeddingMapper.findAll();
+            int offset = getRandomOffset();
+            return embeddingMapper.findAll(offset);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("임베딩 서비스가 실패했습니다.");
         }
+    }
+
+    private static int getRandomOffset() {
+        Random random = new Random();
+        long count = 10700;
+        int offset = random.nextInt((int) Math.max(count - 100, 1));
+        return offset;
     }
 
     public EmbeddingDto findByName(String name) throws Exception {
