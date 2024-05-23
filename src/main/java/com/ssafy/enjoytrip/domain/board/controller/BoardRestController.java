@@ -47,9 +47,8 @@ public class BoardRestController {
 
     @GetMapping("/qna/detail/{id}")
     public ResponseEntity<?> qnaDetail(HttpServletRequest request, @PathVariable("id") int id) throws Exception {
-        String userId = getUserId(request);
 
-        BoardDto boardDto = boardService.detailQna(userId, id);
+        BoardDto boardDto = boardService.detailQna(id);
         if (boardDto != null) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Result<>(true, HttpStatus.OK.value(), boardDto));

@@ -151,7 +151,7 @@ public class BoardService {
             throw new Exception("게시물 리스트 조회중에 오류가 발생했습니다.");
         }
     }
-    
+
     public List<BoardDto> listTripArticle(int boardType, int contentId, String keyword) throws Exception {
         try {
             if (keyword == null) {
@@ -212,7 +212,7 @@ public class BoardService {
         String[] keywords = keyword.split(" ");
         return Kmp.multiKmp(boardMapper.listArticle(boardType), keywords);
     }
-    
+
     public List<BoardDto> search(int boardType, int contentId, String keyword) throws Exception {
         String[] keywords = keyword.split(" ");
         return Kmp.multiKmp(boardMapper.listTripArticle(new TripBoardSearchDto(boardType, contentId)), keywords);
@@ -242,19 +242,14 @@ public class BoardService {
         }
     }
 
-    public BoardDto detailQna(String userId, final int id) throws Exception {
+    public BoardDto detailQna(final int id) throws Exception {
         try {
-            MemberDto viewMember = memberService.findMember(userId);
-            String boardWriter = boardMapper.findUserIdByBoardId(id);
-            if (viewMember.getRole().equals("ADMIN") || viewMember.getUserId().equals(boardWriter)) {
-                BoardDto boardDto = boardMapper.findById(id);
-                if (boardDto == null) {
-                    throw new NotFoundArticleException();
-                }
-                boardMapper.viewCount(id);
-                return boardDto;
+            BoardDto boardDto = boardMapper.findById(id);
+            if (boardDto == null) {
+                throw new NotFoundArticleException();
             }
-            throw new Exception("해당 권한이 없습니다.");
+            boardMapper.viewCount(id);
+            return boardDto;
         } catch (NotFoundArticleException e) {
             e.fillInStackTrace();
             throw new NotFoundArticleException("해당 게시물이 없습니다.");
@@ -267,15 +262,14 @@ public class BoardService {
     @Transactional
     public int updateArticle(UpdateBoardDto boardDto) throws Exception {
         try {
-        	List<ModerationResponse> subjectModeration = moderationService.calculateModeration(boardDto.getSubject());
+            List<ModerationResponse> subjectModeration = moderationService.calculateModeration(boardDto.getSubject());
             List<ModerationResponse> contentModeration = moderationService.calculateModeration(boardDto.getContent());
 
-            if (subjectModeration.isEmpty() && contentModeration.isEmpty()) {            	
-            	boardMapper.update(boardDto);
-            	return 1;
-            }
-            else {
-            	return -1;
+            if (subjectModeration.isEmpty() && contentModeration.isEmpty()) {
+                boardMapper.update(boardDto);
+                return 1;
+            } else {
+                return -1;
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -37,11 +37,14 @@ public class SecurityConfig {
                         "/api/auth/refresh",
                         "/api/board/list",
                         "/api/board/notice/**",
+                        "/api/board/qna/**",
                         "/api/trip/**",
                         "/images/**",
                         "/api/member/email/**",
                         "/api/news/list/*",
-                        "/test/**")
+                        "/test/**",
+                        "/api/board/*/detail/**",
+                        "/api/embed/recommend")
                 .requestMatchers(PathRequest.toStaticResources()
                         .atCommonLocations());
     }
@@ -90,6 +93,7 @@ public class SecurityConfig {
                                 "/api/member/check/duplication/*",
                                 "/api/auth/refresh",
                                 "/api/member/email/**",
+                                "/api/board/*/detail/**",
                                 "/images/**").permitAll()
                         .anyRequest().authenticated());
 
