@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.domain.board.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.ssafy.enjoytrip.global.util.HtmlUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,9 +40,13 @@ public class BoardService {
      */
     @Transactional
     public int writeArticle(BoardWriteRequest request) throws Exception {
+
+        String content = request.getContent();
+        String escapeContent = HtmlUtil.escapeHtml(content);
+
         BoardDto boardDto = BoardDto.builder()
                 .subject(request.getSubject())
-                .content(request.getContent())
+                .content(escapeContent)
                 .createDate(LocalDateTime.now().toString())
                 .viewCount(0)
                 .userId(request.getUserId())  // 사용자 ID 설정
@@ -266,6 +271,10 @@ public class BoardService {
             List<ModerationResponse> contentModeration = moderationService.calculateModeration(boardDto.getContent());
 
             if (subjectModeration.isEmpty() && contentModeration.isEmpty()) {
+
+                String content = boardDto.getContent();
+                String escapeContent = HtmlUtil.escapeHtml(content);
+                boardDto.setContent(escapeContent);
                 boardMapper.update(boardDto);
                 return 1;
             } else {
