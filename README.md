@@ -8,6 +8,40 @@
 > 
 > 프로젝트 기간 : 2024.05.10 ~ 2024.05.23
 
+## 프로젝트 기본 설정
+
+##### application-openai.properties
+``` properties
+spring.ai.openai.api-key=OPENAI 키
+spring.ai.openai.embedding.options.model=text-embedding-ada-002  
+  
+moderations.api.key=Perspective 키  
+  
+pinecone.api.key=Pinecone 키  
+pinecone.index.name=Pinecone 프로젝트 명
+```
+
+##### application-news.properties
+```properties
+X-Naver-Client-Id=네이버뉴스 API ID  
+X-Naver-Client-Secret=네이버 뉴스 API 시크릿키
+```
+
+##### application-mail.properties
+``` properties
+spring.mail.host=smtp.gmail.com  
+spring.mail.port=587  
+spring.mail.username=메일을 보낼 이메일주소  
+spring.mail.password=비밀번호 
+spring.mail.properties.mail.smtp.auth=true  
+spring.mail.properties.mail.smtp.starttls.enable=true  
+spring.mail.properties.mail.smtp.starttls.required=true  
+spring.mail.properties.mail.smtp.connectiontimeout=5000  
+spring.mail.properties.mail.smtp.timeout=5000  
+spring.mail.properties.mail.smtp.writetimeout=5000  
+spring.mail.auth-code-expiration-millis=1800000  # 30 * 60 * 1000 == 30?
+```
+
 ## Tech Stack (Core)
 ### BackEnd
   ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
@@ -64,7 +98,5 @@
 
 ## 이슈/해결 아카이빙
 [Embedding API 사용하여 추천 서비스를 만들어보자 (feat. 스프링)](https://velog.io/@sonjiseokk/Embedding%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EC%B6%94%EC%B2%9C-%EC%84%9C%EB%B9%84%EC%8A%A4%EB%A5%BC-%EB%A7%8C%EB%93%A4%EC%96%B4%EB%B3%B4%EC%9E%90)
-
-
 
 
